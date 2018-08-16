@@ -1,3 +1,10 @@
+/**
+ * 文档作者: kasepa94
+ * 创建时间：2018年08月16日
+ * 修改时间：2018年08月16日
+ * 描述信息：项目入口文件
+ */
+
 <script>
 import util from './public'
 export default {

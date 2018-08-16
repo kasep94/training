@@ -6,12 +6,50 @@
  */
 
 const util = (() => {
-    function test() {
-        console.log('success...')
-    }
-    return {
-        test
-    }
+  const ip = 'https://www.baidu.com/';
+
+  function test() {
+    console.log('success...')
+  }
+
+  /**
+   * 
+   * @param {String} url 请求地址
+   * @param {Object<method: string, data: Object>} params 请求参数和传给服务器的数据
+   * @param {Boolean} showError 是否显示错误信息
+   */
+  function httpGet(url = '', params = {}, showError = true) {
+    const { method = 'GET', data } = params
+    return new Promise((resolve, reject) => {
+      wx.request({
+        url: `${ip + url}`,
+        data,
+        method,
+        header: {
+          "content-type": "application/json"
+        },
+        success: res => {
+          if (showError) {
+            if (res.statusCode < 200 || res.statusCode > 300) {
+              return reject(res.data || {});
+            } else if (Number(res.data.status) !== 0) {
+              return reject(res.data || {});
+            }
+          }
+
+          return resolve(res.data || {});
+        },
+        complete: res => {
+          // TODO:
+          console.log('接口报错')
+        }
+      });
+    });
+  }
+  return {
+    test,
+    httpGet
+  }
 })()
 
 export default util;
