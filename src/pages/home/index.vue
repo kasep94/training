@@ -12,11 +12,10 @@
 
 <script>
 export default {
-  computed: {
-  },
-  methods: {
-  }
-}
+  created() {},
+  computed: {},
+  methods: {}
+};
 </script>
 
 <style>
