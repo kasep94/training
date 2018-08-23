@@ -8,10 +8,6 @@
 const util = (() => {
   const ip = 'https://www.baidu.com/';
 
-  function test() {
-    console.log('success...')
-  }
-
   /**
    * 
    * @param {String} url 请求地址
@@ -46,8 +42,17 @@ const util = (() => {
       });
     });
   }
+
+  /** 动态设置当前页面的标题
+   * @param {string} title 标题
+   */
+  function setTitle(title) {
+    wx.setNavigationBarTitle({
+      title: title
+    });
+  }
   return {
-    test,
+    setTitle,
     httpGet
   }
 })()

@@ -1,14 +1,14 @@
 {
   "pages": [
-    "pages/home/main",
     "pages/course/main",
+    "pages/home/main",
     "pages/evaluation/main",
     "pages/mine/main"
   ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "WeChat",
+    "navigationBarTitleText": "checkcheck",
     "navigationBarTextStyle": "black"
   },
   "tabBar": {
