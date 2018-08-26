@@ -7,22 +7,18 @@
 <template>
     <div class="course_page">
         <p>课程表页面</p>
-        <DateList :data='data' />
+        <DateList :data='dataList' />
     </div>
 </template>
 
 <script>
 import DateList from "../../components/dateList/dateList";
+import dataList from "../../components/dateList/list";
 
 export default {
   data() {
     return {
-      data: [
-        ["8月", "周一13日", "周二14日", "周三15日", "周三15日", "周三15日"],
-        ['上午', '9:00~9.45\n奥数', '', '', '', ''],
-        ['下午', '9:00~9.45', '', '', '', ''],
-        ['晚上', '', '', '', '9:00~9.45', '']
-      ]
+      dataList
     };
   },
   components: { DateList },
