@@ -29,6 +29,14 @@ export default {
   justify-content: center;
   align-items: center;
 }
+.flex-left {
+  display: flex;
+  justify-content: row;
+}
+.flex-left-center {
+  display: flex;
+  align-items: center;
+}
 .container {
   height: 100%;
   display: flex;

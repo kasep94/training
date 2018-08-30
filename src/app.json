@@ -1,8 +1,8 @@
 {
   "pages": [
+    "pages/evaluation/main",
     "pages/course/main",
     "pages/home/main",
-    "pages/evaluation/main",
     "pages/mine/main"
   ],
   "window": {
