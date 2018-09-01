@@ -7,12 +7,12 @@
 <template>
     <div class="home_page">
         <p>首页</p>
-        <swiper interval='3000' autoplay=false indicatorDots=false duration=1000>
-          <block v-for="item in imgUrls" :key='item'>
-            <swiper-item>
-              <img :src="item" class="slide-image" width="355" height="150"/>
-            </swiper-item>
-          </block>
+      <swiper interval='3000' autoplay=false indicatorDots=false duration=1000>
+        <block v-for="item in imgUrls" :key='item'>
+          <swiper-item>
+            <img :src="item" class="slide-image" width="355" height="150"/>
+          </swiper-item>
+        </block>
       </swiper>
     </div>
 </template>

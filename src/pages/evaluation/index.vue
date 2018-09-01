@@ -13,7 +13,7 @@
         <SelectedList title='年龄:' v-on:onNodeClick='onSelectedClick' :data='data.selectedData1' />
         <SelectedList title='科目:' v-on:onNodeClick='onSelectedClick' :data='data.selectedData2' />
         <SortList :data='data.sortData' />
-        <ViewList :data='viewListData' />
+        <ViewList @onViewList='onViewListClick' :data='viewListData' />
     </div>
 </template>
 
@@ -41,12 +41,20 @@ export default {
   },
   computed: {},
   methods: {
-    /** 子节点传值
+    /** 子组件传值
      * @param {Object} 节点属性
      * @memberof SelectedList
      */
     onSelectedClick(node) {
       console.log(node)
+    },
+    /** 子组件传值
+     * @param {Object} 节点属性
+     * @memberof ViewList
+     */
+    onViewListClick(node) {
+      console.log(node)
+      global.PUBLIC.util.jumpNavigateTo('../product-evaluation/main')
     }
   }
 };

@@ -1,6 +1,6 @@
 <template>
   <div class="view-list-comp">
-    <div class="content" v-for="item of data" :key="item.id">
+    <div class="content" v-for="item of data" @click="onClick(item)" :key="item.id">
       <img class="image" :src="item.image"/>
       <div class="left-main">
         <p class="title">{{item.title}}</p>
@@ -34,6 +34,10 @@ export default {
     }
   },
   methods: {
+    /** 单击的节点属性 */
+    onClick(node) {
+      this.$emit('onViewList', node)
+    }
   }
 }
 </script>

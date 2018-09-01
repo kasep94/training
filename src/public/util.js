@@ -9,7 +9,6 @@ const util = (() => {
   const ip = 'https://www.baidu.com/';
 
   /**
-   * 
    * @param {String} url 请求地址
    * @param {Object<method: string, data: Object>} params 请求参数和传给服务器的数据
    * @param {Boolean} showError 是否显示错误信息
@@ -51,9 +50,23 @@ const util = (() => {
       title: title
     });
   }
+
+  /** 保留当前页面，跳转到应用内的某个页面，使用wx.navigateBack可以返回到原页面。
+   * @param {string} url 需要跳转的应用内非 tabBar 的页面的路径 , 路径后可以带参数。
+   * @param {() => void} success 接口调用成功的回调函数
+   * @param {() => void} fail 接口调用失败的回调函数
+   * @param {() => void} complete 接口调用结束的回调函数（调用成功、失败都会执行）
+   */
+  function jumpNavigateTo(url, success = null, fail = null, complete = null) {
+    wx.navigateTo({
+      url,
+      success, fail, complete
+    })
+  }
   return {
     setTitle,
-    httpGet
+    httpGet,
+    jumpNavigateTo
   }
 })()
 

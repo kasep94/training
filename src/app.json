@@ -3,7 +3,8 @@
     "pages/evaluation/main",
     "pages/course/main",
     "pages/home/main",
-    "pages/mine/main"
+    "pages/mine/main",
+    "pages/product-evaluation/main"
   ],
   "window": {
     "backgroundTextStyle": "light",
