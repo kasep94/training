@@ -27,13 +27,13 @@ const sortData = [{
     label: '机构环境',
     name: 'surroundings',
     isShow: true,
-    data: [{
+    /* data: [{
       label: '测试1',
       name: 'test1',
     }, {
       label: '测试1',
       name: 'test1',
-    }]
+    }] */
   },
   {
     label: '老师好评度',
@@ -52,19 +52,8 @@ const sortData = [{
   }
 ]
 
-const childData = {
-  surroundings: [{
-    label: '测试1',
-    name: 'test1',
-  }, {
-    label: '测试1',
-    name: 'test1',
-  }]
-}
-
 export default {
   selectedData1,
   selectedData2,
   sortData,
-  childData
 }

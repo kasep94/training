@@ -15,10 +15,6 @@ export default {
     data: {
       type: Object
     },
-    // 子节点
-    child: {
-      type: Object
-    }
   },
 };
 </script>

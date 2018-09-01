@@ -10,21 +10,25 @@
             <img class="search" src="../../../static/images/evaluation/search.png" />
             <input placeholder="搜索内容" type="text"/>
         </div>
-        <SelectedList title='年龄:' v-on:onNodeClick='onSelectedClick' :data='data.selectedData1'></SelectedList>
-        <SelectedList title='科目:' v-on:onNodeClick='onSelectedClick' :data='data.selectedData2'></SelectedList>
-        <SortList :data='data.sortData' :child='data.childData'></SortList>
+        <SelectedList title='年龄:' v-on:onNodeClick='onSelectedClick' :data='data.selectedData1' />
+        <SelectedList title='科目:' v-on:onNodeClick='onSelectedClick' :data='data.selectedData2' />
+        <SortList :data='data.sortData' />
+        <ViewList :data='viewListData' />
     </div>
 </template>
 
 <script>
 import SelectedList from '../../components/selectedList/selectedList'
 import SortList from '../../components/sortList/sortList'
+import ViewList from '../../components/view-list/view-list'
+import viewListData from '../../components/view-list/data.js'
 import data from './data.js'
 
 export default {
   data() {
     return {
-      data
+      data,
+      viewListData,
     }
   },
   mounted() {
@@ -32,7 +36,8 @@ export default {
   },
   components: {
       SelectedList,
-      SortList
+      SortList,
+      ViewList,
   },
   computed: {},
   methods: {

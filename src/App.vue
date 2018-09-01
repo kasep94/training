@@ -37,6 +37,10 @@ export default {
   display: flex;
   align-items: center;
 }
+.flex-both {
+  display: flex;
+  justify-content: space-between;
+}
 .container {
   height: 100%;
   display: flex;
