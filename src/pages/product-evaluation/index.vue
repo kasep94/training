@@ -17,11 +17,7 @@
             <div class="top">
                 <p>{{details.name}}</p>
                 <div class="flex-left-center">
-                    <img
-                    v-for="(star, i) of [0, 0, 0, 0, 0]"
-                    :key="i"
-                    :src="i < details.score ? '../../../static/images/evaluation/star.png': '../../../static/images/evaluation/unstar.png'"
-                    />
+                  <Star :data='details.score' />
                     <p class="price">{{details.price}}/课时</p>
                 </div>
                 <div class="flex-both">
@@ -81,9 +77,10 @@ import CommentList from "../../components/comment-list/comment-list";
 import commentListData from "../../components/comment-list/data.js";
 import ScrollX from "../../components/scroll-x/scroll-x";
 import scrollXData from "../../components/scroll-x/data.js";
+import Star from '../../components/star/star'
 
 export default {
-  components: { CommentList, ScrollX },
+  components: { CommentList, ScrollX, Star },
   computed: {},
   data() {
     return {
@@ -120,11 +117,6 @@ export default {
       padding: 30rpx 0;
       .flex-left-center {
         margin: 11rpx 0 17rpx 0;
-      }
-      img {
-        height: 26rpx;
-        width: 26rpx;
-        margin-right: 7rpx;
       }
     }
     .center {

@@ -13,11 +13,7 @@
         <p class="title">{{item.title}}</p>
         <div class="flex-left-center">
           <p class="score">综合评分</p>
-          <img
-            v-for="(star, i) of [0, 0, 0, 0, 0]"
-            :key="i"
-            :src="i < item.score ? '../../../static/images/evaluation/star.png': '../../../static/images/evaluation/unstar.png'"
-          />
+          <Star :data='item.score'/>
         </div>
         
         <div class="flex-both score">
@@ -30,23 +26,24 @@
 </template>
 
 <script>
+import Star from "../star/star";
 export default {
   props: {
     data: {
       type: Array
     }
   },
+  components: { Star },
   data() {
-    return {
-    }
+    return {};
   },
   methods: {
     /** 单击的节点属性 */
     onClick(node) {
-      this.$emit('onViewList', node)
+      this.$emit("onViewList", node);
     }
   }
-}
+};
 </script>
 
 <style scoped>
@@ -60,9 +57,7 @@ export default {
   width: 555rpx;
 }
 .flex-left-center img {
-  height: 26rpx;
-  width: 26rpx;
-  margin: 18rpx 7rpx 21rpx 0;
+  margin: 18rpx 7rpx 21rpx 0 !important;
 }
 .score {
   font-size: 22rpx;
@@ -73,7 +68,7 @@ export default {
 }
 .content {
   padding: 30rpx 0;
-  border-bottom: 1px solid #E5E8F0;
+  border-bottom: 1px solid #e5e8f0;
   height: 133.6rpx;
   display: flex;
 }

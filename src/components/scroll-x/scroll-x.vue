@@ -12,12 +12,7 @@
         <img class="content" :src="item.img" />
         <p class="cl-black">{{item.name}}</p>
         <div class="flex">
-          <img
-            v-for="(star, i) of [0, 0, 0, 0, 0]"
-            class="star"
-            :key="i"
-            :src="i < item.score ? '../../../static/images/evaluation/star.png': '../../../static/images/evaluation/unstar.png'"
-          />
+          <Star :data='item.score' />
         </div>
       </view>
         <!-- <view v-for="(url, i) of details.imgs" :key="i" ><img :src="url" /></view> -->
@@ -26,12 +21,14 @@
 </template>
 
 <script>
+import Star from '../star/star'
 export default {
   props: {
     data: {
       type: Array
     }
-  }
+  },
+  components: {Star}
 };
 </script>
 
@@ -43,11 +40,6 @@ export default {
     height: 138rpx;
     width: 199.2rpx;
     border-radius: 8rpx;
-  }
-  .star {
-    height: 26rpx;
-    width: 26rpx;
-    margin-right: 7rpx;
   }
   .scroll-child {
     margin-left: 20rpx;
