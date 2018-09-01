@@ -1,10 +1,10 @@
 {
   "pages": [
+    "pages/product-evaluation/main",
     "pages/evaluation/main",
     "pages/course/main",
     "pages/home/main",
-    "pages/mine/main",
-    "pages/product-evaluation/main"
+    "pages/mine/main"
   ],
   "window": {
     "backgroundTextStyle": "light",

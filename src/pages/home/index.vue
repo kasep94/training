@@ -38,8 +38,17 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 swiper {
   text-align:center;
+}
+swiper {
+  text-align: center;
+  width: 750rpx;
+  height: 318.6rpx;
+}
+.slide-image {
+  width: 750rpx;
+  height: 318.6rpx;
 }
 </style>

@@ -6,24 +6,27 @@
  */
 
 <script>
-import util from './public'
+import util from "./public";
 export default {
-  created () {
+  created() {
     // 调用API从本地缓存中获取数据
-    const logs = wx.getStorageSync('logs') || []
-    logs.unshift(Date.now())
-    wx.setStorageSync('logs', logs)
-    
+    const logs = wx.getStorageSync("logs") || [];
+    logs.unshift(Date.now());
+    wx.setStorageSync("logs", logs);
+
     global.PUBLIC = {
       util
-    }
-    
-    console.log('app created and cache logs by setStorageSync')
+    };
+
+    console.log("app created and cache logs by setStorageSync");
   }
-}
+};
 </script>
 
 <style>
+.flex {
+  display: flex;
+}
 .flex-center {
   display: flex;
   justify-content: center;
@@ -39,8 +42,48 @@ export default {
 }
 .flex-both {
   display: flex;
+  align-items: center;
   justify-content: space-between;
 }
+.flex-end {
+  display: flex;
+  align-items: flex-end;
+}
+.gray {
+  font-size: 22rpx;
+  color: #677897;
+}
+.cl-gray {
+  font-size: 24rpx;
+  color: #677897;
+}
+.cl-black {
+  font-size: 24rpx;
+  font-weight: 400;
+  color: #2e3c50;
+}
+.cl-b-black {
+  font-size: 28rpx;
+  color: #2e3c50;
+  font-weight: 400;
+}
+.bt-border {
+  border-bottom: 20rpx solid #f4f6f8;
+}
+
+.top-border {
+  border-top: 20rpx solid #f4f6f8;
+}
+
+.scroll-div {
+  white-space: nowrap;
+  display: flex
+}
+
+.scroll-div .scroll-child {
+  display: inline-block;
+}
+
 .container {
   height: 100%;
   display: flex;

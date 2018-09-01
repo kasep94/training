@@ -1,3 +1,10 @@
+/**
+ * 文档作者: kasepa94
+ * 创建时间：2018年08月16日
+ * 修改时间：2018年08月16日
+ * 描述信息：视图列表
+ * 影响模块：course、
+ */
 <template>
   <div class="view-list-comp">
     <div class="content" v-for="item of data" @click="onClick(item)" :key="item.id">
@@ -7,10 +14,10 @@
         <div class="flex-left-center">
           <p class="score">综合评分</p>
           <img
-              v-for="(star, i) of [0, 0, 0, 0, 0]"
-              :key="i"
-              :src="i < item.score ? '../../../static/images/evaluation/star.png': '../../../static/images/evaluation/unstar.png'"
-            />
+            v-for="(star, i) of [0, 0, 0, 0, 0]"
+            :key="i"
+            :src="i < item.score ? '../../../static/images/evaluation/star.png': '../../../static/images/evaluation/unstar.png'"
+          />
         </div>
         
         <div class="flex-both score">

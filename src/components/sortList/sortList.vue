@@ -1,3 +1,10 @@
+/**
+ * 文档作者: kasepa94
+ * 创建时间：2018年08月16日
+ * 修改时间：2018年08月16日
+ * 描述信息：排序
+ * 影响模块：course、
+ */
 <template>
   <div class="sort-list-comp">
     <ul v-for="(item, i) of data" :key="i">
