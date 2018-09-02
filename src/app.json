@@ -1,8 +1,8 @@
 {
   "pages": [
-    "pages/product-evaluation/main",
-    "pages/evaluation/main",
     "pages/course/main",
+    "pages/evaluation/main",
+    "pages/product-evaluation/main",
     "pages/home/main",
     "pages/mine/main"
   ],

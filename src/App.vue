@@ -23,50 +23,11 @@ export default {
 };
 </script>
 
-<style>
-.flex {
-  display: flex;
-}
-.flex-center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.flex-left {
-  display: flex;
-  justify-content: row;
-}
-.flex-left-center {
-  display: flex;
-  align-items: center;
-}
-.flex-both {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.flex-end {
-  display: flex;
-  align-items: flex-end;
-}
-.gray {
-  font-size: 22rpx;
-  color: #677897;
-}
-.cl-gray {
-  font-size: 24rpx;
-  color: #677897;
-}
-.cl-black {
-  font-size: 24rpx;
-  font-weight: 400;
-  color: #2e3c50;
-}
-.cl-b-black {
-  font-size: 28rpx;
-  color: #2e3c50;
-  font-weight: 400;
-}
+<style lang='less'>
+@import './icon.less';
+@import './flex.less';
+@import './font.less';
+
 .bt-border {
   border-bottom: 20rpx solid #f4f6f8;
 }
