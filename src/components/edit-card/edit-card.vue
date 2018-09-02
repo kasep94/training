@@ -29,14 +29,8 @@ export default {
 };
 </script>
 
-<style lang='less'>
+<style scoped lang='less'>
 .edit-card-comp {
-  .flex-both:nth-of-type(1) {
-    border-color: #5592EE;
-  }
-  .flex-both:nth-of-type(3) {
-    border-color: #52bcc5;
-  }
   .flex-both {
     background: #f5f7f9;
     border-radius: 6rpx;

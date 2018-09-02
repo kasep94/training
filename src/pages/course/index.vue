@@ -63,6 +63,12 @@ export default {
 
 <style scoped lang='less'>
 .course-page {
+  /deep/ .flex-both:nth-of-type(1) {
+    border-color: #5592EE;
+  }
+  /deep/ .flex-both:nth-of-type(3) {
+    border-color: #52bcc5;
+  }
   .header {
     width: 750rpx;
     height: 74rpx;
