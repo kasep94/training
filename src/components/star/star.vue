@@ -21,8 +21,8 @@ export default {
     }
   },
   created() {
-    const star = '../../../static/images/evaluation/star.png'
-    const unStar = '../../../static/images/evaluation/unStar.png'
+    const star = 'https://okcdn.apiweixin.top/asserts/img/star1.jpg'
+    const unStar = 'https://okcdn.apiweixin.top/asserts/img/star2.jpg'
     this.starArr = [unStar, unStar, unStar, unStar, unStar].fill(star, 0, this.data)
   }
 };

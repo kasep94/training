@@ -4,7 +4,8 @@ const data = {
       label: '全部',
     },
     {
-      label: '好评'
+      label: '好评',
+      num: 4
     },
     {
       label: '全部',
