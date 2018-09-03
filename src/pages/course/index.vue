@@ -30,18 +30,35 @@
         </div>
         
         <div class="pop-comp">
-          <div v-if="page === 1" class="pop-content pop-content-1 flex-content-center ">
-            <p class="title">你孩子现在几岁</p>
-            <Btns @onBtnsClick="(e) => onBtnsClick(e, 1)" :data='btns1' />
-            <p class="btn-1 next">继续</p>
-            <p class='jump'>跳过此步骤</p>
+          <div v-if="page === 1" class="pop-content pop-1 flex-content-center">
+            <div class="pop-main">
+              <p class="title">你孩子现在几岁</p>
+              <Btns @onBtnsClick="(e) => onBtnsClick(e, 1)" :data='btns1' />
+              <p class="btn-1 next">继续</p>
+              <p class='jump'>跳过此步骤</p>
+            </div>
           </div>
-          <div v-if="page === 2" class="pop-content pop-content-2 flex-content-center">
-            <p class="title">您想要培养孩子哪些方面的好习惯？</p>
-            <Btns @onBtnsClick="(e) => onBtnsClick(e, 2)" :data='btns2' />
-            <p class="btn-1 next">继续</p>
-            <p class='jump'>跳过此步骤</p>
+          <div v-if="page === 2" class="pop-content pop-1 pop-2 flex-content-center">
+            <div class="pop-main">
+              <p class="title">您想要培养孩子哪些方面的好习惯？</p>
+              <Btns @onBtnsClick="(e) => onBtnsClick(e, 2)" :data='btns2' />
+              <p class="btn-1 next">继续</p>
+              <p class='jump'>跳过此步骤</p>
+            </div>
           </div>
+          <div v-if="page === 3" class="pop-content pop-3 flex-top-center">
+            <div class="pop-main">
+              <p class="title">您的孩子已经参加过的课程名称：</p>
+              <Btns @onBtnsClick="(e) => onBtnsClick(e, 3)" :data='btns3' />
+              <input class="btn-1" type="text" placeholder="其他（课程名称）"/>
+              <p class="title mechanism">所属机构：</p>
+              <Btns @onBtnsClick="(e) => onBtnsClick(e, 4)" :data='btns4' />
+              <input class="btn-1" type="text" placeholder="其他（机构名称）"/>
+              <p class="btn-1 next" @click="onNext">继续</p>
+              <p class='jump' @click="onJumpOver">跳过此步骤</p>
+            </div>
+          </div>
+          <!-- 
           <div v-if="page === 3" class="pop-content pop-content-3">
             <p class="title">您的孩子已经参加过的课程名称：</p>
             <Btns @onBtnsClick="(e) => onBtnsClick(e, 3)" :data='btns3' />
@@ -51,7 +68,7 @@
             <input class="btn-1" type="text" placeholder="其他（机构名称）"/>
             <p class="btn-1 next" @click="onNext">继续</p>
             <p class='jump' @click="onJumpOver">跳过此步骤</p>
-          </div>
+          </div> -->
         </div>
     </div>
 </template>
@@ -73,7 +90,7 @@ export default {
       // EditCard组件数据
       editCardData,
       // 弹出哪个弹出框
-      page: 4,
+      page: 3,
       // btns组件数据
       ...btnsData
     };
@@ -148,90 +165,85 @@ export default {
     padding: 0 25rpx;
     margin-top: 20rpx;
   }
-  .pop-comp {
+
+  .pop-content {
+    width: 632rpx;
+    background-color: white;
+    border-radius: 6rpx;
+    .pop-main {
+      width: 542rpx;
+    }
+    .title {
+      color: @cl-1;
+    }
     .jump {
       font-size: 24rpx;
       color: @cl-5;
-      width: 542rpx;
       text-align: center;
     }
     .next {
       background: @cl-4;
       color: white;
-      margin-top: 30rpx;
-      margin-bottom: 20rpx;
-      width: 542rpx;
     }
-    .pop-content {
-      width: 632rpx;
-      background: white;
-      border-radius: 6rpx;
-      .title {
-        font-size: 40rpx;
-        color: @cl-1;
-        margin: 89rpx 0 85rpx 0;
-        text-align: center;
-      }
-      /deep/ .btns-comp {
-        .btn-1 {
-          margin-bottom: 40rpx;
-          width: 542rpx;
-          height: 90rpx;
-          line-height: 90rpx;
-        }
-        .active {
-          background: @cl-3;
-          color: white;
-        }
-      }
-    }
-    .pop-content-1 {
-      height: 970rpx;
-    }
-    .pop-content-2 {
-      margin-top: 10rpx;
-      height: 1040rpx;
-      .title {
-        margin: 56rpx 0 46rpx 0;
-      }
-      /deep/ .btns-comp {
-        .btn-1 {
-          margin-bottom: 35rpx;
-          width: 542rpx;
-          height: 90rpx;
-          line-height: 90rpx;
-        }
-        .btn-1:nth-last-child(2) {
-          margin-top: 10rpx;
-          margin-bottom: 20rpx;
-        }
+    /deep/ .btns-comp {
+      .active {
+        background: @cl-3;
+        color: white;
       }
     }
   }
-  .pop-content-3 {
-    padding-left: 45rpx;
-    padding-right: 10rpx;
-    width: 600rpx !important;
-    padding-bottom: 45rpx;
-    .next {
-      margin-top: 50rpx;
-    }
+  .pop-1 {
+    height: 970rpx;
     .title {
-      margin: 34rpx 0 20rpx 0 !important;
-    }
-    .jump {
+      font-size: 40rpx;
       text-align: center;
+      margin: 89rpx 0 45rpx 0;
     }
-    .right {
-      width: 100%;
-      text-align: left !important;
+    .next {
+      margin: 70rpx 0 35rpx 0;
     }
     /deep/ .btns-comp {
-      width: 100%;
       .btn-1 {
-        display: inline;
+        margin-top: 40rpx;
+      }
+    }
+  }
+
+  .pop-2 {
+    height: 1040rpx;
+    .title {
+      font-size: 40rpx;
+      text-align: center;
+      margin: 56rpx 0 46rpx 0;
+    }
+    /deep/ .btns-comp {
+      .btn-1 {
+        margin-top: 25rpx;
+      }
+    }
+  }
+  .pop-3 {
+    height: 1040rpx;
+    .title:nth-of-type(1) {
+      margin: 34rpx 0 20rpx 0;
+    }
+    .title {
+      font-size: 32rpx;
+    }
+    .mechanism {
+      margin: 30rpx 0 20rpx 0;
+    }
+    .next {
+      margin: 78rpx 0 35rpx 0;
+    }
+    /deep/ .btns-comp {
+      .btn-1 {
+        display: initial;
         padding: 10rpx 31rpx;
-        margin-right: 21rpx;
+        margin-right: 15rpx;
+      }
+      .btn-1:nth-child(4n + 4) {
+        margin-right: 0;
       }
     }
   }
