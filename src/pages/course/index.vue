@@ -30,11 +30,16 @@
         </div>
         
         <div class="pop-comp">
-          <div class="pop-content flex-content-center">
+          <div v-if="page === 1" class="pop-content pop-content-1 flex-content-center ">
             <p class="title">你孩子现在几岁</p>
-            <p v-for="item of courseData.btns1" :key="item.id" class="btn-1">
-              {{item.label}}
-            </p>
+            <Btns @onBtnsClick="(e) => onBtnsClick(e, 1)" :data='btns1' />
+            <p class="btn-1 next">继续</p>
+            <p class='jump'>跳过此步骤</p>
+          </div>
+          <div v-if="page === 2" class="pop-content pop-content-2 flex-content-center">
+            <p class="title">您想要培养孩子哪些方面的好习惯？</p>
+            <Btns @onBtnsClick="(e) => onBtnsClick(e, 2)" :data='btns2' />
+            <p class="btn-1 next">继续</p>
             <p class='jump'>跳过此步骤</p>
           </div>
         </div>
@@ -46,7 +51,8 @@ import DateList from "../../components/dateList/dateList";
 import dataList from "../../components/dateList/list";
 import EditCard from "../../components/edit-card/edit-card";
 import editCardData from "../../components/edit-card/data.js";
-import courseData from "./data.js";
+import Btns from "../../components/btns/btns";
+import btnsData from "../../components/btns/data.js";
 
 export default {
   data() {
@@ -56,11 +62,12 @@ export default {
       hasAdd: false,
       // EditCard组件数据
       editCardData,
-      // Course页面数据
-      courseData
+      // 弹出哪个弹出框
+      page: 2,
+      ...btnsData
     };
   },
-  components: { DateList, EditCard },
+  components: { DateList, EditCard, Btns },
   mounted() {
     global.PUBLIC.util.setTitle("课程表");
   },
@@ -69,6 +76,21 @@ export default {
     /** 单击 + 号 */
     onShowAdd() {
       this.hasAdd = !this.hasAdd;
+    },
+    /** 单击节点
+     * @param {Object} node 单击节点属性
+     * @param {1 | 2} index 判断是哪个数据
+     * @memberOf Btns
+     */
+    onBtnsClick(node, index) {
+      switch (index) {
+        case 1:
+          this.btns1.selected = node.name;
+          break;
+        case 2:
+          this.btns2.selected = node.name;
+          break;
+      }
     }
   }
 };
@@ -87,8 +109,13 @@ export default {
       font-size: 24rpx;
       color: @cl-5;
     }
+    .next {
+      background: @cl-4;
+      color: white;
+      margin-top: 30rpx;
+      margin-bottom: 20rpx;
+    }
     .pop-content {
-      height: 970rpx;
       width: 632rpx;
       background: white;
       border-radius: 6rpx;
@@ -96,19 +123,35 @@ export default {
         font-size: 40rpx;
         color: @cl-1;
         margin: 89rpx 0 85rpx 0;
+        text-align: center;
       }
-      .btn-1 {
-        margin-bottom: 40rpx;
+      /deep/ .btns-comp {
+        .btn-1 {
+          margin-bottom: 40rpx;
+        }
+        .active {
+          background: @cl-3;
+          color: white;
+        }
       }
-      .btn-1:nth-of-type(2) {
-        background: @cl-3;
-        color: white;
+    }
+    .pop-content-1 {
+      height: 970rpx;
+    }
+    .pop-content-2 {
+      margin-top: 10rpx;
+      height: 1040rpx;
+      .title {
+        margin: 56rpx 0 46rpx 0;
       }
-      .btn-1:nth-last-child(2) {
-        background: @cl-4;
-        color: white;
-        margin-top: 30rpx;
-        margin-bottom: 20rpx;
+      /deep/ .btns-comp {
+        .btn-1 {
+          margin-bottom: 35rpx;
+        }
+        .btn-1:nth-last-child(2) {
+          margin-top: 10rpx;
+          margin-bottom: 20rpx;
+        }
       }
     }
   }
