@@ -13,7 +13,16 @@
   z-index: 499;
   display: flex;
   justify-content: center;
-  align-items: center;
+  .pop-content {
+    margin-top: 20rpx;
+  }
+  .icon-cross {
+    height: 75rpx;
+    width: 75rpx;
+    position: absolute;
+    right: 36rpx;
+    top: 0;
+  }
 }
 
 /** 按钮和input样式 */
@@ -35,4 +44,17 @@ input.btn-1 {
   text-align: left;
   padding: 0 25rpx;
   margin-top: 20rpx;
+}
+
+/** 选择时间 */
+
+.time-select {
+  position: relative;
+  .icon-right {
+    width: 16rpx;
+    height: 22rpx;
+    position: absolute;
+    right: 25rpx;
+    top: 37rpx;
+  }
 }

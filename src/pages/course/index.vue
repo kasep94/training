@@ -29,21 +29,22 @@
           </div>
         </div>
         
-        <div class="pop-comp">
+        <div v-if="page !== 5" class="pop-comp">
+          <i class="icon icon-cross" @click="onCross" />
           <div v-if="page === 1" class="pop-content pop-1 flex-content-center">
             <div class="pop-main">
               <p class="title">你孩子现在几岁</p>
               <Btns @onBtnsClick="(e) => onBtnsClick(e, 1)" :data='btns1' />
-              <p class="btn-1 next">继续</p>
-              <p class='jump'>跳过此步骤</p>
+              <p class="btn-1 next" @click="onNext">继续</p>
+              <p class='jump' @click="onJumpOver">跳过此步骤</p>
             </div>
           </div>
           <div v-if="page === 2" class="pop-content pop-1 pop-2 flex-content-center">
             <div class="pop-main">
               <p class="title">您想要培养孩子哪些方面的好习惯？</p>
               <Btns @onBtnsClick="(e) => onBtnsClick(e, 2)" :data='btns2' />
-              <p class="btn-1 next">继续</p>
-              <p class='jump'>跳过此步骤</p>
+              <p class="btn-1 next" @click="onNext">继续</p>
+              <p class='jump' @click="onJumpOver">跳过此步骤</p>
             </div>
           </div>
           <div v-if="page === 3" class="pop-content pop-3 flex-top-center">
@@ -58,17 +59,29 @@
               <p class='jump' @click="onJumpOver">跳过此步骤</p>
             </div>
           </div>
-          <!-- 
-          <div v-if="page === 3" class="pop-content pop-content-3">
-            <p class="title">您的孩子已经参加过的课程名称：</p>
-            <Btns @onBtnsClick="(e) => onBtnsClick(e, 3)" :data='btns3' />
-            <input class="btn-1" type="text" placeholder="其他（课程名称）"/>
-            <p class="title right">所属机构：</p>
-            <Btns @onBtnsClick="(e) => onBtnsClick(e, 4)" :data='btns4' />
-            <input class="btn-1" type="text" placeholder="其他（机构名称）"/>
-            <p class="btn-1 next" @click="onNext">继续</p>
-            <p class='jump' @click="onJumpOver">跳过此步骤</p>
-          </div> -->
+          <div v-if="page === 4" class="pop-content pop-4 flex-top-center">
+            <div class="pop-main">
+              <p class="title">您的孩子已经参加过的课程名称：</p>
+              <p class="active btn-1">英语</p>
+              <div class="time-select">
+                <input class="btn-1" type="text" placeholder="选择课程时间"/>
+                <i class="icon icon-right"/>
+              </div>
+              <p class="active btn-1">游泳</p>
+              <div class="time-select">
+                <input class="btn-1" type="text" placeholder="选择课程时间"/>
+                <i class="icon icon-right"/>
+              </div>
+              <p class="active btn-1">网球</p>
+              <div class="time-select">
+                <input class="btn-1" type="text" placeholder="选择课程时间"/>
+                <i class="icon icon-right"/>
+              </div>
+
+              <p class="btn-1 next" @click="onNext">制定专属的日程安排</p>
+              <p class='jump' @click="onJumpOver">跳过此步骤</p>
+            </div>
+          </div>
         </div>
     </div>
 </template>
@@ -90,7 +103,7 @@ export default {
       // EditCard组件数据
       editCardData,
       // 弹出哪个弹出框
-      page: 3,
+      page: 1,
       // btns组件数据
       ...btnsData
     };
@@ -101,6 +114,10 @@ export default {
   },
   computed: {},
   methods: {
+    /** 点击弹窗叉号 */
+    onCross() {
+      this.page = 5
+    },
     /** 单击继续 */
     onNext() {
       this.page += 1;
@@ -185,6 +202,10 @@ export default {
       background: @cl-4;
       color: white;
     }
+    .active {
+      background: @cl-3;
+      color: white;
+    }
     /deep/ .btns-comp {
       .active {
         background: @cl-3;
@@ -245,6 +266,26 @@ export default {
       .btn-1:nth-child(4n + 4) {
         margin-right: 0;
       }
+    }
+  }
+
+  .pop-4 {
+    height: 1040rpx;
+    .title {
+      font-size:32rpx;
+      margin: 34rpx 0 20rpx 0;
+    }
+    .time-select {
+      margin-bottom: 30rpx;
+    }
+    .next {
+      margin: 65rpx 0 35rpx 0;
+    }
+    .active {
+      margin-top: 40rpx;
+      display: initial;
+      padding: 10rpx 31rpx;
+      margin-right: 15rpx;
     }
   }
 
