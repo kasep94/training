@@ -28,6 +28,16 @@
             <EditCard :data='editCardData'/>
           </div>
         </div>
+        
+        <div class="pop-comp">
+          <div class="pop-content flex-content-center">
+            <p class="title">你孩子现在几岁</p>
+            <p v-for="item of courseData.btns1" :key="item.id" class="btn-1">
+              {{item.label}}
+            </p>
+            <p class='jump'>跳过此步骤</p>
+          </div>
+        </div>
     </div>
 </template>
 
@@ -36,6 +46,7 @@ import DateList from "../../components/dateList/dateList";
 import dataList from "../../components/dateList/list";
 import EditCard from "../../components/edit-card/edit-card";
 import editCardData from "../../components/edit-card/data.js";
+import courseData from "./data.js";
 
 export default {
   data() {
@@ -44,7 +55,9 @@ export default {
       // 是否显示add弹出窗
       hasAdd: false,
       // EditCard组件数据
-      editCardData
+      editCardData,
+      // Course页面数据
+      courseData
     };
   },
   components: { DateList, EditCard },
@@ -64,11 +77,42 @@ export default {
 <style scoped lang='less'>
 .course-page {
   /deep/ .flex-both:nth-of-type(1) {
-    border-color: #5592EE;
+    border-color: #5592ee;
   }
   /deep/ .flex-both:nth-of-type(3) {
     border-color: #52bcc5;
   }
+  .pop-comp {
+    .jump {
+      font-size: 24rpx;
+      color: @cl-5;
+    }
+    .pop-content {
+      height: 970rpx;
+      width: 632rpx;
+      background: white;
+      border-radius: 6rpx;
+      .title {
+        font-size: 40rpx;
+        color: @cl-1;
+        margin: 89rpx 0 85rpx 0;
+      }
+      .btn-1 {
+        margin-bottom: 40rpx;
+      }
+      .btn-1:nth-of-type(2) {
+        background: @cl-3;
+        color: white;
+      }
+      .btn-1:nth-last-child(2) {
+        background: @cl-4;
+        color: white;
+        margin-top: 30rpx;
+        margin-bottom: 20rpx;
+      }
+    }
+  }
+
   .header {
     width: 750rpx;
     height: 74rpx;

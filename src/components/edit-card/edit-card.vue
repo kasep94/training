@@ -44,7 +44,7 @@ export default {
     }
     .icon-0,
     .icon-1 {
-      height: 40rpx;
+      height: 60rpx;
       width: 40rpx;
     }
     .icon-2 {
@@ -56,7 +56,7 @@ export default {
     font-size: 24rpx;
     color: white;
     border-radius: 25rpx;
-    background: linear-gradient(#88b4f2, #507de0);
+    background: @cl-4;
     height: 50rpx;
     width: 122rpx;
     line-height: 50rpx;

@@ -24,9 +24,7 @@ export default {
 </script>
 
 <style lang='less'>
-@import './icon.less';
-@import './flex.less';
-@import './font.less';
+@import './style/style.less';
 
 .bt-border {
   border-bottom: 20rpx solid #f4f6f8;
