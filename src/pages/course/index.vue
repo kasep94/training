@@ -42,7 +42,7 @@
             <p class="btn-1 next">继续</p>
             <p class='jump'>跳过此步骤</p>
           </div>
-          <div v-if="page === 4" class="pop-content pop-content-3 flex-content-center">
+          <div v-if="page === 3" class="pop-content pop-content-3">
             <p class="title">您的孩子已经参加过的课程名称：</p>
             <Btns @onBtnsClick="(e) => onBtnsClick(e, 3)" :data='btns3' />
             <input class="btn-1" type="text" placeholder="其他（课程名称）"/>
@@ -152,12 +152,15 @@ export default {
     .jump {
       font-size: 24rpx;
       color: @cl-5;
+      width: 542rpx;
+      text-align: center;
     }
     .next {
       background: @cl-4;
       color: white;
       margin-top: 30rpx;
       margin-bottom: 20rpx;
+      width: 542rpx;
     }
     .pop-content {
       width: 632rpx;
@@ -172,6 +175,9 @@ export default {
       /deep/ .btns-comp {
         .btn-1 {
           margin-bottom: 40rpx;
+          width: 542rpx;
+          height: 90rpx;
+          line-height: 90rpx;
         }
         .active {
           background: @cl-3;
@@ -191,6 +197,9 @@ export default {
       /deep/ .btns-comp {
         .btn-1 {
           margin-bottom: 35rpx;
+          width: 542rpx;
+          height: 90rpx;
+          line-height: 90rpx;
         }
         .btn-1:nth-last-child(2) {
           margin-top: 10rpx;
@@ -200,7 +209,8 @@ export default {
     }
   }
   .pop-content-3 {
-    padding: 0 32rpx;
+    padding-left: 45rpx;
+    padding-right: 10rpx;
     width: 600rpx !important;
     padding-bottom: 45rpx;
     .next {
@@ -209,7 +219,9 @@ export default {
     .title {
       margin: 34rpx 0 20rpx 0 !important;
     }
-
+    .jump {
+      text-align: center;
+    }
     .right {
       width: 100%;
       text-align: left !important;
