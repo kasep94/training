@@ -7,10 +7,10 @@
  */
 <template>
   <div class="btns-comp">
-    <p v-for="item of data.data" 
+    <p v-for="item of data.data"
       @click="onNodeClick(item)" 
       :key="item.id" 
-      :class="['btn-1', item.name === data.selected ? 'active' : '']"
+      :class="['btn-1', !data.isMore && data.selected === item.name ? 'active' : '', data.isMore && item.selected ? 'active' : '' ]"
     >
       {{item.label}}
     </p>
@@ -23,6 +23,8 @@ export default {
     data: {
       type: Object
     }
+  },
+  created() {
   },
   methods: {
     /** 单击节点

@@ -42,6 +42,16 @@
             <p class="btn-1 next">继续</p>
             <p class='jump'>跳过此步骤</p>
           </div>
+          <div v-if="page === 4" class="pop-content pop-content-3 flex-content-center">
+            <p class="title">您的孩子已经参加过的课程名称：</p>
+            <Btns @onBtnsClick="(e) => onBtnsClick(e, 3)" :data='btns3' />
+            <input class="btn-1" type="text" placeholder="其他（课程名称）"/>
+            <p class="title right">所属机构：</p>
+            <Btns @onBtnsClick="(e) => onBtnsClick(e, 4)" :data='btns4' />
+            <input class="btn-1" type="text" placeholder="其他（机构名称）"/>
+            <p class="btn-1 next" @click="onNext">继续</p>
+            <p class='jump' @click="onJumpOver">跳过此步骤</p>
+          </div>
         </div>
     </div>
 </template>
@@ -63,7 +73,8 @@ export default {
       // EditCard组件数据
       editCardData,
       // 弹出哪个弹出框
-      page: 2,
+      page: 4,
+      // btns组件数据
       ...btnsData
     };
   },
@@ -73,22 +84,50 @@ export default {
   },
   computed: {},
   methods: {
+    /** 单击继续 */
+    onNext() {
+      this.page += 1;
+    },
+    /** 跳过此步骤 */
+    onJumpOver() {
+      this.page += 1;
+    },
     /** 单击 + 号 */
     onShowAdd() {
       this.hasAdd = !this.hasAdd;
     },
     /** 单击节点
      * @param {Object} node 单击节点属性
-     * @param {1 | 2} index 判断是哪个数据
+     * @param {1 | 2 | 3 |4} index 判断是哪个数据
      * @memberOf Btns
      */
     onBtnsClick(node, index) {
       switch (index) {
         case 1:
+          // 问题1
           this.btns1.selected = node.name;
           break;
         case 2:
+          // 问题2
           this.btns2.selected = node.name;
+          break;
+        case 3:
+          // 问题3
+          this.btns3.data.find((value, i) => {
+            if (value.name === node.name) {
+              value.selected = !value.selected;
+            }
+            return value.name === node.name;
+          });
+          break;
+        case 4:
+          // 问题4
+          this.btns4.data.find((value, i) => {
+            if (value.name === node.name) {
+              value.selected = !value.selected;
+            }
+            return value.name === node.name;
+          });
           break;
       }
     }
@@ -103,6 +142,11 @@ export default {
   }
   /deep/ .flex-both:nth-of-type(3) {
     border-color: #52bcc5;
+  }
+  input.btn-1 {
+    text-align: left;
+    padding: 0 25rpx;
+    margin-top: 20rpx;
   }
   .pop-comp {
     .jump {
@@ -152,6 +196,30 @@ export default {
           margin-top: 10rpx;
           margin-bottom: 20rpx;
         }
+      }
+    }
+  }
+  .pop-content-3 {
+    padding: 0 32rpx;
+    width: 600rpx !important;
+    padding-bottom: 45rpx;
+    .next {
+      margin-top: 50rpx;
+    }
+    .title {
+      margin: 34rpx 0 20rpx 0 !important;
+    }
+
+    .right {
+      width: 100%;
+      text-align: left !important;
+    }
+    /deep/ .btns-comp {
+      width: 100%;
+      .btn-1 {
+        display: inline;
+        padding: 10rpx 31rpx;
+        margin-right: 21rpx;
       }
     }
   }

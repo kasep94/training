@@ -45,7 +45,86 @@ const btns2 = {
   ]
 }
 
+const btns3 = {
+  isMore: true,
+  data: [
+    {
+      label: '英语',
+      name: 'english',
+      selected: false
+    },
+    {
+      label: '奥数',
+      name: 'olympus',
+      selected: false
+    },
+    {
+      label: '音乐',
+      name: 'music',
+      selected: false
+    },
+    {
+      label: '游泳',
+      name: 'swim',
+      selected: false
+    },
+    {
+      label: '语文',
+      name: 'language',
+      selected: false
+    },
+    {
+      label: '篮球',
+      name: 'basketball',
+      selected: false
+    },
+    {
+      label: '网球',
+      name: 'tennis',
+      selected: false
+    },
+    {
+      label: '美术',
+      name: 'art',
+      selected: false
+    },
+    {
+      label: '足球',
+      name: 'football',
+      selected: false
+    },
+    {
+      label: '羽毛球',
+      name: 'badminton',
+      selected: false
+    },
+  ]
+}
+
+const btns4 = {
+  isMore: true,
+  data: [
+    {
+      label: '学而思',
+      name: 's',
+      selected: false
+    },
+    {
+      label: '新东方',
+      name: 'x',
+      selected: false
+    },
+    {
+      label: '昂立教育',
+      name: 'o',
+      selected: false
+    },
+  ]
+}
+
 export default {
   btns1,
-  btns2
+  btns2,
+  btns3,
+  btns4,
 }
