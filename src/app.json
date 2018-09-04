@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/course-add/main",
     "pages/course/main",
     "pages/evaluation/main",
     "pages/product-evaluation/main",
