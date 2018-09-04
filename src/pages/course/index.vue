@@ -10,9 +10,14 @@
           <span class="cl-b-black">18~19学年 第1周</span>
           <i class="icon icon-down" />
           <div class="add-div">
-            <img @click="onShowAdd" class="add" src="../../../static/images/all/add.png" />
+            <img 
+              @click="onShowAdd" 
+              class="add" 
+              v-if="config.localUrl" 
+              :src="config.localUrl + 'add.png'" 
+            />
             <div v-if="hasAdd">
-              <p>添加课程</p>
+              <p @click="onJumpCourseAdd">添加课程</p>
               <p>修改课程</p>
             </div>
           </div>
@@ -22,7 +27,7 @@
           <div class="content">
             <div class="top flex-both">
               <span class="col-black flex-left-center"><i class="icon icon-calendar" />习惯养成计划</span>
-              <span class="cl-b-gray ">添加其他习惯 ></span>
+              <span @click="onJumpAddHabit" class="cl-b-gray flex-left-center">添加其他习惯<i class="icon icon-more" /></span>
             </div>
             <p class="col-black">可根据孩子实际时间安排拖移模块，养成良好习惯。</p>
             <EditCard :data='editCardData'/>
@@ -93,17 +98,20 @@ import EditCard from "../../components/edit-card/edit-card";
 import editCardData from "../../components/edit-card/data.js";
 import Btns from "../../components/btns/btns";
 import btnsData from "../../components/btns/data.js";
+import config from "../../public/config.js";
 
 export default {
   data() {
     return {
+      // 图片地址
+      config,
       dataList,
       // 是否显示add弹出窗
       hasAdd: false,
       // EditCard组件数据
       editCardData,
       // 弹出哪个弹出框
-      page: 1,
+      page: 5,
       // btns组件数据
       ...btnsData
     };
@@ -116,7 +124,7 @@ export default {
   methods: {
     /** 点击弹窗叉号 */
     onCross() {
-      this.page = 5
+      this.page = 5;
     },
     /** 单击继续 */
     onNext() {
@@ -128,7 +136,18 @@ export default {
     },
     /** 单击 + 号 */
     onShowAdd() {
-      this.hasAdd = !this.hasAdd;
+      setTimeout(() => {
+        this.hasAdd = !this.hasAdd;
+      })
+    },
+    /** 跳转到添加习惯页面 */
+    onJumpAddHabit() {
+      global.PUBLIC.util.jumpNavigateTo("add-habit/main");
+    },
+    /** 跳转到添加课程 */
+    onJumpCourseAdd() {
+      this.hasAdd = false;
+      global.PUBLIC.util.jumpNavigateTo("course-add/main");
     },
     /** 单击节点
      * @param {Object} node 单击节点属性
@@ -272,7 +291,7 @@ export default {
   .pop-4 {
     height: 1040rpx;
     .title {
-      font-size:32rpx;
+      font-size: 32rpx;
       margin: 34rpx 0 20rpx 0;
     }
     .time-select {

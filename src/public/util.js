@@ -59,7 +59,7 @@ const util = (() => {
    */
   function jumpNavigateTo(url, success = null, fail = null, complete = null) {
     wx.navigateTo({
-      url,
+      url: '../' + url,
       success, fail, complete
     })
   }

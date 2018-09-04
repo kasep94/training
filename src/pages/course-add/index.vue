@@ -2,7 +2,7 @@
  * 文档作者: kasepa94
  * 创建时间：2018年09月04日
  * 修改时间：2018年09月04日
- * 描述信息：编辑课程页面
+ * 描述信息：添加课程页面
  */
 <template>
     <div class="course-add-page flex-content-center">
@@ -29,13 +29,25 @@
                     <i class="icon icon-right"/>
                 </div>
             </div>
-            <p class="btn-1 add-course">添加课程</p>
+
+            <Picker />
+            
+
+            <!-- <p class="btn-1 add-course">添加课程</p> -->
         </div>
     </div>
 </template>
 
 <script>
+import Picker from '../../components/picker/picker'
+
 export default {
+  data() {
+    return {
+      time: '12:01',
+    };
+  },
+  components: {Picker},
   computed: {},
   methods: {}
 };

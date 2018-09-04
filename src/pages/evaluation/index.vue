@@ -53,8 +53,7 @@ export default {
      * @memberof ViewList
      */
     onViewListClick(node) {
-      console.log(node)
-      global.PUBLIC.util.jumpNavigateTo('../product-evaluation/main')
+      global.PUBLIC.util.jumpNavigateTo('product-evaluation/main')
     }
   }
 };

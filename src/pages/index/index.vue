@@ -39,7 +39,7 @@ export default {
 
   methods: {
     bindViewTap () {
-      const url = '../logs/main'
+      const url = 'logs/main'
       wx.navigateTo({ url })
     },
     getUserInfo () {
