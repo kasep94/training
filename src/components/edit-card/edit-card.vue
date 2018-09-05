@@ -13,7 +13,7 @@
         <img :class="'icon icon-' + i" :src="item.icon" />
         <span class="col-big-black">{{item.info}}</span>
       </p>
-      <p class="edit">编辑</p>
+      <p @click="onEdit(item)" class="edit">编辑</p>
     </div>
   </div>
 </template>
@@ -24,6 +24,14 @@ export default {
     // 渲染数据
     data: {
       type: Array
+    }
+  },
+  methods: {
+    /** 点击编辑
+     * @param {Object} node 节点属性
+     */
+    onEdit(node) {
+      this.$emit('onEdit', node)
     }
   }
 };

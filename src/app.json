@@ -1,7 +1,8 @@
 {
   "pages": [
-    "pages/course-add/main",
     "pages/course/main",
+    "pages/edit-habit/main",
+    "pages/course-add/main",
     "pages/add-habit/main",
     "pages/evaluation/main",
     "pages/product-evaluation/main",

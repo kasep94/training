@@ -6,7 +6,7 @@ const data = [
     id: '10001'
   },
   {
-    info: '做家务 3次/周',
+    info: '自己整理玩具',
     name: 'housework',
     icon: 'https://okcdn.apiweixin.top/asserts/img/ic3.jpg',
     id: '10002'

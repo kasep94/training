@@ -18,7 +18,7 @@
             />
             <div v-if="hasAdd">
               <p @click="onJumpCourseAdd">添加课程</p>
-              <p>修改课程</p>
+              <p>导出表单</p>
             </div>
           </div>
         </div>
@@ -30,7 +30,7 @@
               <span @click="onJumpAddHabit" class="cl-b-gray flex-left-center">添加其他习惯<i class="icon icon-more" /></span>
             </div>
             <p class="col-black">可根据孩子实际时间安排拖移模块，养成良好习惯。</p>
-            <EditCard :data='editCardData'/>
+            <EditCard @onEdit='onJumpEdit' :data='editCardData'/>
           </div>
         </div>
         
@@ -139,6 +139,10 @@ export default {
       setTimeout(() => {
         this.hasAdd = !this.hasAdd;
       })
+    },
+    /** 跳转到习惯详情编辑页面 */
+    onJumpEdit() {
+      global.PUBLIC.util.jumpNavigateTo("edit-habit/main");
     },
     /** 跳转到添加习惯页面 */
     onJumpAddHabit() {

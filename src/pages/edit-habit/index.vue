@@ -1,39 +1,26 @@
 /**
  * 文档作者: kasepa94
- * 创建时间：2018年09月04日
- * 修改时间：2018年09月04日
- * 描述信息：添加课程页面
+ * 创建时间：2018年09月05日
+ * 修改时间：2018年09月05日
+ * 描述信息：习惯详情编辑页面
  */
 <template>
     <div class="course-add-page flex-content-center">
         <div class="content">
             <div class="label-inp">
-                <p><i class="icon icon-book" />课程名称</p>
-                <input class="btn-1" type="text" placeholder="填写课程名称" />
+                <p><i class="icon icon-book" />书籍名称</p>
+                <input class="btn-1" type="text" placeholder="填写书籍名称" />
             </div>
             <div class="label-inp">
-                <p><i class="icon icon-mechanism" />机构名称</p>
-                <input class="btn-1" type="text" placeholder="填写机构名称" />
-            </div>
-            <div class="label-inp">
-                <p><i class="icon icon-time" />上课时间</p>
+                <p><i class="icon icon-time" />选择时间</p>
                 <div class="time-select" v-for="(item, i) of timeArr" :key="i">
                     <input class="btn-1" disabled type="text" :placeholder="item[0] + '  ' + item[1] + ':' + item[2] + '~' + item[3] + ':' + item[4]"/>
                     <i @click='onRemove(i)' class="icon icon-delete"/>
                 </div>
-                <Picker @onTimePicker='onSelectTime' info='选择课程时间' type='time' />
-            </div>
-            <div class="label-inp">
-                <p><i class="icon icon-address" />上课地点</p>
-                <div class="time-select">
-                    <input class="btn-1" type="text" placeholder="填写课程地点"/>
-                </div>
+                <Picker @onTimePicker='onSelectTime' info='添加时间' type='time' />
             </div>
 
-            
-            
-
-            <p class="btn-1 add-course">添加课程</p>
+            <p class="btn-1 add-course">保  存</p>
         </div>
     </div>
 </template>

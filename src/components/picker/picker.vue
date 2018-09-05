@@ -3,7 +3,7 @@
     <picker v-if="type === 'time'" mode="multiSelector" @change="bindTimePickerChange" :value="timeIndex" :range="timeArray">
       <view class="picker">
         <div class="time-select">
-            <input disabled class="btn-2" type="text" placeholder="选择课程时间"/>
+            <input disabled class="btn-2" type="text" :placeholder="info"/>
         </div>
       </view>
     </picker>
@@ -18,6 +18,9 @@ export default {
     // {'time'}判断哪种选择器
     type: {
       type: String 
+    },
+    info: {
+      type: String
     }
   },
   data() {
