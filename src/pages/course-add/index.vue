@@ -17,39 +17,55 @@
             </div>
             <div class="label-inp">
                 <p><i class="icon icon-time" />上课时间</p>
-                <div class="time-select">
-                    <input class="btn-1" type="text" placeholder="选择课程时间"/>
-                    <i class="icon icon-right"/>
+                <div class="time-select" v-for="(item, i) of timeArr" :key="i">
+                    <input class="btn-1" disabled type="text" :placeholder="item[0] + '  ' + item[1] + ':' + item[2] + '~' + item[3] + ':' + item[4]"/>
+                    <i @click='onRemove(i)' class="icon icon-delete"/>
                 </div>
+                <Picker @onTimePicker='onSelectTime' type='time' />
             </div>
             <div class="label-inp">
                 <p><i class="icon icon-address" />上课地点</p>
                 <div class="time-select">
-                    <input class="btn-1" type="text" placeholder="选择课程时间"/>
-                    <i class="icon icon-right"/>
+                    <input class="btn-1" type="text" placeholder="填写课程地点"/>
                 </div>
             </div>
 
-            <Picker />
+            
             
 
-            <!-- <p class="btn-1 add-course">添加课程</p> -->
+            <p class="btn-1 add-course">添加课程</p>
         </div>
     </div>
 </template>
 
 <script>
-import Picker from '../../components/picker/picker'
+import Picker from "../../components/picker/picker";
 
 export default {
   data() {
     return {
-      time: '12:01',
+      time: "12:01",
+      // 选中的时间
+      timeArr: []
     };
   },
-  components: {Picker},
+  components: { Picker },
   computed: {},
-  methods: {}
+  methods: {
+    /** 删除选中的日期 */
+    onRemove(index) {
+        this.timeArr.splice(index, 1)
+        // console.log(index)
+        // console.log(this.timeArr)
+    },
+    /** 获取日期选择的数据
+     * @param {Array} data 选择的数据
+     * @memberof Picker
+     */
+    onSelectTime(data) {
+      this.timeArr.push(data);
+    }
+  }
 };
 </script>
 

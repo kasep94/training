@@ -1,14 +1,10 @@
 <template>
   <view class="section">
-    <view class="section__title">多列选择器</view>
-    <picker mode="multiSelector" @change="bindMultiPickerChange" :value="multiIndex" :range="multiArray">
+    <picker v-if="type === 'time'" mode="multiSelector" @change="bindTimePickerChange" :value="timeIndex" :range="timeArray">
       <view class="picker">
-        当前选择：{{multiArray[0][multiIndex[0]]}}，{{multiArray[1][multiIndex[1]]}}，{{multiArray[2][multiIndex[2]]}}
-      </view>
-    </picker>
-    <picker mode="multiSelector" @change="bindMultiPickerChange" :value="multiIndex" :range="multiArray">
-      <view class="picker">
-        添加日期：{{multiArray[0][multiIndex[0]]}}，{{multiArray[1][multiIndex[1]]}}，{{multiArray[2][multiIndex[2]]}}
+        <div class="time-select">
+            <input disabled class="btn-2" type="text" placeholder="选择课程时间"/>
+        </div>
       </view>
     </picker>
   </view>
@@ -18,10 +14,16 @@
 import data from "./data.js";
 
 export default {
+  props: {
+    // {'time'}判断哪种选择器
+    type: {
+      type: String 
+    }
+  },
   data() {
     return {
-      multiIndex: [0, 0, 0],
-      multiArray: [[], [], []]
+      timeIndex: [0, 0, 0, 0, 0],
+      timeArray: [[], [], [], [], []]
     };
   },
   created() {
@@ -36,11 +38,16 @@ export default {
     for (let y = 0; y < hour; y++) {
       date[2].push(y < 10 ? `0${y}` :y);
     }
-    this.multiArray = date;
+    date[3] = date[1]
+    date[4] = date[2]
+    this.timeArray = date;
   },
   methods: {
-    bindMultiPickerChange: function(e) {
-      console.log("picker发送选择改变，携带值为", e.mp.detail.value);
+    bindTimePickerChange: function(e) {
+      const arr = e.mp.detail.value;
+      const {timeArray} = this
+      const select = [timeArray[0][arr[0]], timeArray[1][arr[1]], timeArray[2][arr[2]], timeArray[3][arr[3]], timeArray[4][arr[4]]]
+      this.$emit('onTimePicker', select)
     }
   }
 };
