@@ -13,8 +13,8 @@
             <img 
               @click="onShowAdd" 
               class="add" 
-              v-if="config.localUrl" 
-              :src="config.localUrl + 'add.png'" 
+              v-if="config.onlineUrl" 
+              :src="config.onlineUrl + 'ic6.jpg'" 
             />
             <div v-if="hasAdd">
               <p @click="onJumpCourseAdd">添加课程</p>
