@@ -14,7 +14,7 @@
                 v-for="item of data" 
                 :key="item.name"
                 @click="onClick(item)"
-            >{{item.label}}</span>
+            >{{item.config_name}}</span>
         </div>
         
     </div>

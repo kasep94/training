@@ -8,7 +8,7 @@
 <template>
   <div class="sort-list-comp">
     <ul v-for="(item, i) of data" :key="i">
-      <li>{{item.label}}<img src="../../../static/images/evaluation/down.png"/></li>
+      <li @click="onNodeClick(item)">{{item.label}}<i :class="['icon icon-down', item.isShow ? 'up' : 'down']"/></li>
       <li v-if="item.data" v-for="(child, index) of item.data" :key="index">
         {{child.label}}
       </li>
@@ -21,8 +21,22 @@ export default {
     // 父节点
     data: {
       type: Object
-    },
+    }
   },
+  methods: {
+    /** 单击节点
+     * @param {Object} node 节点属性
+     */
+    onNodeClick(node) {
+      this.data.find(value => {
+        const keep = value.isShow
+        if (value.isShow) value.isShow = false
+        return keep
+      })
+      node.isShow = !node.isShow;
+      this.$emit('onSortClick', node)
+    }
+  }
 };
 </script>
 <style scoped>
@@ -38,10 +52,18 @@ li {
   font-weight: 400;
   color: rgba(103, 120, 151, 1);
 }
-img {
+.icon {
   width: 16rpx;
   height: 13rpx;
-  margin: 0 57rpx 0 5rpx;
+  margin: 0 37rpx 0 5rpx;
+}
+.up {
+  transform: rotate(180deg);
+  transition: 0.5s;
+}
+.down {
+  transform: rotate(0deg);
+  transition: 0.5s;
 }
 </style>
 

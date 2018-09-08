@@ -97,6 +97,12 @@ export default {
       scrollXData
     };
   },
+  onLoad(option) {
+    const {dp_code} = option
+    global.PUBLIC.util.httpGet('/merchantDetail', {dp_code}).then(res => {
+      console.log(JSON.stringify(res.data.items))
+    })
+  },
   methods: {}
 };
 </script>

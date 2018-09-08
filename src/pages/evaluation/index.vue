@@ -10,67 +10,130 @@
             <img class="search" src="../../../static/images/evaluation/search.png" />
             <input placeholder="搜索内容" type="text"/>
         </div>
-        <SelectedList title='年龄:' v-on:onNodeClick='onSelectedClick' :data='data.selectedData1' />
-        <SelectedList title='科目:' v-on:onNodeClick='onSelectedClick' :data='data.selectedData2' />
-        <SortList :data='data.sortData' />
+        <SelectedList title='年龄:' v-on:onNodeClick="(node) => onSelectedClick('suit_crowds', node)" :data='data.selectedData1' />
+        <SelectedList title='科目:' v-on:onNodeClick="(node) => onSelectedClick('config_name', node)" :data='subject' />
+        <SortList @onSortClick='onSortClick' :data='sortData' />
         <ViewList @onViewList='onViewListClick' :data='viewListData' />
     </div>
 </template>
 
 <script>
-import SelectedList from '../../components/selectedList/selectedList'
-import SortList from '../../components/sortList/sortList'
-import ViewList from '../../components/view-list/view-list'
-// import viewListData from '../../components/view-list/data.js'
-import data from './data.js'
-import config from '../../public/config.js'
+import SelectedList from "../../components/selectedList/selectedList";
+import SortList from "../../components/sortList/sortList";
+import sortData from "../../components/sortList/data.js";
+import ViewList from "../../components/view-list/view-list";
+import data from "./data.js";
+import config from "../../public/config.js";
 
 export default {
   data() {
     return {
+      // 静态数据
       data,
+      // 列表数据
       viewListData: [],
-    }
+      // 科目数据
+      subject: null,
+      // 获取列表请求参数
+      params: {},
+      // 排序数据
+      sortData,
+      // 页面
+      page: 1
+    };
   },
   created() {
-    global.PUBLIC.util.httpGet('/assess/search').then(res => {
-      this.viewListData = res.data.map(value => {
-        if (value.head_pic){
-          value.head_pic = config.url + value.head_pic
-        }
-        if (value.detail.lola) {
-          const lolaArr = value.detail.lola.split(',')
-          global.PUBLIC.util.calDistance(lolaArr[1], lolaArr[0]).then(res => {
-            value.detail.lola = res
-          })
-        }
-        return value
-      })
+    // 获取搜索头
+    global.PUBLIC.util.httpGet("/merchantsTemplate").then(res => {
+      this.subject = res.data.items;
     });
+    this.getList();
   },
-  mounted() {
-    global.PUBLIC.util.setTitle("测评");
-  },
+  mounted() {},
   components: {
-      SelectedList,
-      SortList,
-      ViewList,
+    SelectedList,
+    SortList,
+    ViewList
   },
   computed: {},
+  /** 下拉刷新 */
+  onPullDownRefresh() {
+    this.page = 1;
+    wx.showNavigationBarLoading(); //在标题栏中显示加载
+    this.getList().then(res => {
+      wx.hideNavigationBarLoading(); //完成停止加载
+      wx.stopPullDownRefresh(); //停止下拉刷新
+    });
+  },
+  /** 上拉加载，拉到底部触发 */
+  onReachBottom() {
+    // 到这底部在这里需要做什么事情
+    this.getList();
+  },
   methods: {
+    /** 组件通信
+     * @param {Object} node 节点属性
+     * @memberof SortList
+     */
+    onSortClick(node) {
+      this.params.evironment = 0;
+      this.params.teaching = 0;
+      this.params.effect = 0;
+      this.params[node.name] = 1;
+      this.getList();
+    },
+    /** 获取列表数据 */
+    getList() {
+      return new Promise(resolve => {
+        if (this.page !== null) {
+          global.PUBLIC.util
+            .httpGet("/assess/search", { ...this.params, page: this.page })
+            .then(res => {
+              this.page =
+                Object.prototype.toString.call(res.data) === "[object Object]"
+                  ? null
+                  : this.page + 1;
+              const data = res.data.map(value => {
+                if (value.head_pic) {
+                  value.head_pic = config.url + value.head_pic;
+                }
+                if (value.detail.lola) {
+                  const lolaArr = value.detail.lola.split(",");
+                  global.PUBLIC.util
+                    .calDistance(lolaArr[1], lolaArr[0])
+                    .then(res => {
+                      value.detail.lola = res;
+                    });
+                }
+                return value;
+              });
+              console.log(res.data);
+              console.log(this.page);
+              this.viewListData =
+                this.page === 2 ? data : this.viewListData.concat(data);
+              resolve(true);
+            });
+        }
+      });
+    },
     /** 子组件传值
+     * @param {'suit_crowds' | 'config_name'} name 判断是哪个点击事件
      * @param {Object} 节点属性
      * @memberof SelectedList
      */
-    onSelectedClick(node) {
-      console.log(node)
+    onSelectedClick(name, node) {
+      this.params[name] = node.config_name;
+      this.page = 1;
+      this.getList();
     },
     /** 子组件传值
      * @param {Object} 节点属性
      * @memberof ViewList
      */
     onViewListClick(node) {
-      global.PUBLIC.util.jumpNavigateTo('product-evaluation/main')
+      global.PUBLIC.util.jumpNavigateTo(
+        `product-evaluation/main?dp_code=${node.dp_code}`
+      );
     }
   }
 };

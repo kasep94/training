@@ -22,7 +22,7 @@ const util = (() => {
     return new Promise((resolve, reject) => {
       wx.request({
         url: `${ip + url}`,
-        data: body,
+        data: {...body, page_size: 10},
         method: 'GET',
         header: {
           "content-type": "application/json"
