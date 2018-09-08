@@ -1,31 +1,14 @@
 const data = [{
-    image: 'https://img.jinse.com/1108815_small.png',
-    score: 4,
-    title: '标题',
-    distance: '350m',
+    head_pic: '/2018/08/31/92240201/1535687078581114.jpg',
+    org_score: 40,
+    org_name: '标题',
+    detail: {
+      "addr":"定西路1277号长峰大厦103室(宣化路)",
+      // "lola":"121.42777560236938,31.221732263307837",
+      lola: '200m'
+    }, 
     id: 1
   },
-  {
-    image: 'https://img.jinse.com/1108815_small.png',
-    score: 5,
-    title: '标题',
-    distance: '350m',
-    id: 2,
-  },
-  {
-    image: 'https://img.jinse.com/1108815_small.png',
-    score: 5,
-    title: '标题',
-    distance: '350m',
-    id: 3
-  },
-  {
-    image: 'https://img.jinse.com/1108815_small.png',
-    score: 5,
-    title: '标题',
-    distance: '350m',
-    id: 4
-  }
 ]
 
 export default data

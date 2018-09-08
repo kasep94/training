@@ -8,17 +8,17 @@
 <template>
   <div class="view-list-comp">
     <div class="content" v-for="item of data" @click="onClick(item)" :key="item.id">
-      <img class="image" :src="item.image"/>
+      <img class="image" :src="item.head_pic"/>
       <div class="left-main">
-        <p class="title">{{item.title}}</p>
+        <p class="title">{{item.org_name}}</p>
         <div class="flex-left-center">
           <p class="score">综合评分</p>
-          <Star :data='item.score'/>
+          <Star :data='item.org_score/10'/>
         </div>
         
         <div class="flex-both score">
-          <p>地区</p>
-          <p>{{item.distance}}</p>
+          <p>{{item.detail.addr}}</p>
+          <p>{{item.detail.lola}}</p>
         </div>
       </div>
     </div>
@@ -27,6 +27,7 @@
 
 <script>
 import Star from "../star/star";
+
 export default {
   props: {
     data: {
@@ -46,7 +47,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang='less'>
 .view-list-comp {
   padding: 0 30rpx;
 }
@@ -62,6 +63,10 @@ export default {
 .score {
   font-size: 22rpx;
   color: #677897;
+  p:nth-of-type(2) {
+    width: 100rpx;
+    text-align: right;
+  }
 }
 .score:nth-of-type(1) {
   margin-right: 25rpx;

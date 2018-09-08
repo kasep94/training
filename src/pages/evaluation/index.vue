@@ -21,15 +21,32 @@
 import SelectedList from '../../components/selectedList/selectedList'
 import SortList from '../../components/sortList/sortList'
 import ViewList from '../../components/view-list/view-list'
-import viewListData from '../../components/view-list/data.js'
+// import viewListData from '../../components/view-list/data.js'
 import data from './data.js'
+import config from '../../public/config.js'
 
 export default {
   data() {
     return {
       data,
-      viewListData,
+      viewListData: [],
     }
+  },
+  created() {
+    global.PUBLIC.util.httpGet('/assess/search').then(res => {
+      this.viewListData = res.data.map(value => {
+        if (value.head_pic){
+          value.head_pic = config.url + value.head_pic
+        }
+        if (value.detail.lola) {
+          const lolaArr = value.detail.lola.split(',')
+          global.PUBLIC.util.calDistance(lolaArr[1], lolaArr[0]).then(res => {
+            value.detail.lola = res
+          })
+        }
+        return value
+      })
+    });
   },
   mounted() {
     global.PUBLIC.util.setTitle("测评");
