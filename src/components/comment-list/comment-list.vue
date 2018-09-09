@@ -16,12 +16,15 @@
       <div v-for="v of data" class="flex-left" :key="v.id">
         <img class="avatar" :src="v.img"/>
         <div class="right">
-          <p class="cl-gray">{{v.user}}</p>
-          <p class="gray">{{v.time}}</p>
-          <p class="cl-black">{{v.content}}</p>
+          <p class="cl-gray">{{v.nick_name}}</p>
+          <p class="gray">{{v.create_time}}</p>
+          <p class="cl-black">{{v.cnt}}</p>
       </div>
-        
       </div>
+    </div>
+    <div class="footer flex-content-center" @click="onMore">
+      <p>查看更多评论</p>
+      <i class="icon icon-bottom" />
     </div>
   </div>
 </template>
@@ -35,7 +38,13 @@ export default {
     },
     // 评论内容
     data: {
-      type: Object
+      type: Array
+    }
+  },
+  methods: {
+    /** 单击查看更多评论 */
+    onMore() {
+      this.$emit('onMore')
     }
   }
 };
@@ -71,6 +80,19 @@ export default {
     .right {
       width: 600rpx;
       margin-left: 20rpx;
+    }
+  }
+  .footer {
+    p {
+      font-size: 22rpx;
+      color: @cl-5;
+      margin-top: 20rpx;
+      margin-bottom: 10rpx;
+    }
+    .icon {
+      height: 14rpx;
+      width: 27rpx;
+      margin-bottom: 27rpx;
     }
   }
 }

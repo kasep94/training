@@ -7,12 +7,15 @@
  */
 <template>
 <div class="data-list-comp">
-  <div :class="['content', {second: index !== 0}]" v-for="(item, index) of data" :key='index'>
+  <scroll-view scroll-x >
+    <div :class="['content', {second: index !== 0}]" v-for="(item, index) of data" :key='index'>
     <div v-for="(value, i) of item" 
       :class="['box', {active: index >= 1 && i >=1 && value}]"  :key="i">
       <span >{{value}}</span>
     </div>
   </div>
+  </scroll-view>
+  
 </div>
   
 </template>
@@ -28,7 +31,7 @@ export default {
 <style scoped lang='less'>
 .data-list-comp {
   .content {
-    width: 750px;
+    width: 500px;
     display: flex;
     font-size: 20rpx;
     height: 152rpx;

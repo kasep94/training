@@ -8,7 +8,7 @@
 <template>
   <div class="view-list-comp">
     <div class="content" v-for="item of data" @click="onClick(item)" :key="item.id">
-      <img class="image" :src="item.head_pic"/>
+      <img class="image" :src="item.head_pic_more"/>
       <div class="left-main">
         <p class="title">{{item.org_name}}</p>
         <div class="flex-left-center">

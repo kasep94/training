@@ -5,9 +5,9 @@
  * 描述信息：单个产品测评
  */
 <template>
-    <div class="product-evaluation-page">
+    <div v-if="details" class="product-evaluation-page">
         <swiper interval='3000' autoplay=false indicatorDots=false duration=1000>
-            <block v-for="item in imgUrls" :key='item'>
+            <block  v-for="item in details.detail_img_more" :key='item'>
               <swiper-item>
                   <img :src="item" class="slide-image" width="355" height="150"/>
               </swiper-item>
@@ -15,42 +15,42 @@
         </swiper>
         <div class="header bt-border">
             <div class="top">
-                <p>{{details.name}}</p>
+                <p>{{details.org_name}}</p>
                 <div class="flex-left-center">
-                  <Star :data='details.score' />
-                    <p class="price">{{details.price}}/课时</p>
+                  <Star :data='details.org_score/10' />
+                    <p class="price">{{price || 0}}元/课时</p>
                 </div>
                 <div class="flex-both">
-                    <p class="gray">{{details.mechanism}} | {{details.time}}完成装修</p>
-                    <p class="gray">{{details.area}} | 距您{{details.distance}}</p>
+                    <p class="gray">所属机构 | {{details.update_time}}完成装修</p>
+                    <p class="gray">{{details.addr}} | 距您{{details.detail.lola}}</p>
                 </div>
             </div>
             <div class="center">
                 <p class="cl-black">敲课评价</p>
-                <p class="cl-gray">效果: {{details.effect}} | 师资: {{details.teacher}} | 环境: {{details.environment}}</p>
+                <p class="cl-gray">效果: {{details.the_effect}} | 师资: {{details.teach_quality}} | 环境: {{details.environment}}</p>
             </div>
             <div class="flex-both footer">
-                <p class="cl-black flex-left-center"><img src="../../../static/images/product-evaluation/address.png" /> <span>{{details.address}}</span></p>
+                <p class="cl-black flex-left-center"><img src="../../../static/images/product-evaluation/address.png" /> <span>{{details.detail.addr}}</span></p>
                 <img src="../../../static/images/product-evaluation/phone.png" />
             </div>
         </div>
         <div class="introduction bt-border">
             <div class="title flex-end">
                 <p class="cl-b-black">机构介绍</p>
-                <p class="cl-gray">{{details.details}}</p>
+                <p class="cl-gray">{{details.detail.addr}}</p>
             </div>
-            <p class="cl-gray">{{details.content}}</p>
+            <p class="cl-gray">{{details.service}}</p>
         </div>
         <div class="div-2 bt-border">
             <p class="cl-b-black">机构环境</p>
             <scroll-view scroll-x class="div-2-main scroll-div">
-                <view class="scroll-child" v-for="(url, i) of details.imgs" :key="i" ><img :src="url" /></view>
+                <view class="scroll-child"  v-for="(url, i) of details.detail_img_more" :key="i" ><img :src="url" /></view>
             </scroll-view> 
         </div>
         <div class="div-3 bt-border">
             <p class="cl-b-black">老师介绍</p>
             <div class="main">
-                <div v-for="v of details.introduction" :key="v.id">
+                <div v-for="v of introduction" :key="v.id">
                     <img :src="v.img" />
                     <p class="cl-black">{{v.name}}</p>
                     <p class="cl-gray">{{v.position}}</p>
@@ -61,7 +61,8 @@
             <p class="cl-b-black">用户评论</p>
             <CommentList 
               :selected='commentListData.selected' 
-              :data='commentListData.data'
+              @onMore='onMoreComment'
+              :data='commentList'
             />
         </div>
         <div class="div-5 top-border">
@@ -72,38 +73,105 @@
 </template>
 
 <script>
-import data from "./data.js";
+// import data from "./data.js";
 import CommentList from "../../components/comment-list/comment-list";
 import commentListData from "../../components/comment-list/data.js";
 import ScrollX from "../../components/scroll-x/scroll-x";
 import scrollXData from "../../components/scroll-x/data.js";
-import Star from '../../components/star/star'
+import Star from "../../components/star/star";
+import service from "../evaluation/service.js";
 
 export default {
   components: { CommentList, ScrollX, Star },
   computed: {},
   data() {
     return {
-      imgUrls: [
-        "http://img02.tooopen.com/images/20150928/tooopen_sy_143912755726.jpg",
-        "http://img06.tooopen.com/images/20160818/tooopen_sy_175866434296.jpg",
-        "http://img06.tooopen.com/images/20160818/tooopen_sy_175833047715.jpg"
-      ],
+      // 点评的Code
+      dp_code: null,
+      // 评论页码
+      page: 1,
       // 详情数据
-      ...data,
+      details: null,
       // CommentList数据
       commentListData,
+      // 评论数据
+      commentList: null,
       // scroll-x数据
-      scrollXData
+      scrollXData,
+      // 课程价格
+      price: 0,
+      // 老师介绍
+      introduction: [
+        {
+          name: "姓名",
+          position: "高级老师",
+          img: "https://img.jinse.com/1108815_small.png",
+          id: 100
+        },
+        {
+          name: "姓名",
+          position: "高级老师",
+          img: "https://img.jinse.com/1108815_small.png",
+          id: 101
+        },
+        {
+          name: "姓名",
+          position: "高级老师",
+          img: "https://img.jinse.com/1108815_small.png",
+          id: 102
+        }
+      ]
     };
   },
   onLoad(option) {
-    const {dp_code} = option
-    global.PUBLIC.util.httpGet('/merchantDetail', {dp_code}).then(res => {
-      console.log(JSON.stringify(res.data.items))
-    })
+    const { dp_code } = option;
+    this.dp_code = dp_code;
+    // 获取详情数据
+    global.PUBLIC.util.httpGet("/merchantDetail", { dp_code }).then(res => {
+      this.details = { ...res.data.items[0], ...service.getData() };
+    });
+    // 获取课程数据
+    global.PUBLIC.util.httpGet("/course", { dp_code }).then(res => {
+      // 获取course_id
+      const course_id = res.data.items[0].id;
+      global.PUBLIC.util.httpGet(`/courseDetail/${course_id}`, {}).then(res => {
+        this.price = res.data.origin_price;
+      });
+    });
+    this.getCommint();
   },
-  methods: {}
+  methods: {
+    /** 获取评论数据 */
+    getCommint() {
+      if (this.page !== null) {
+        const { dp_code, page } = this;
+        global.PUBLIC.util
+          .httpGet("/merchantCommit", {
+            dp_code,
+            page,
+            page_size: page === 1 ? 2 : 10
+          })
+          .then(res => {
+            this.page =
+              res.data.items.length === 0
+                ? null
+                : page + 1;
+            const data = res.data.items.map(value => {
+              value.create_time = value.create_time.substr(0, 10);
+              return value;
+            });
+            this.commentList =
+              page === 1 ? data : this.commentList.concat(data);
+          });
+      }
+    },
+    /** 组件通信 查看更多评论
+     * @memberof CommentList
+     */
+    onMoreComment() {
+      this.getCommint();
+    }
+  }
 };
 </script>
 

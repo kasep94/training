@@ -117,6 +117,16 @@ export default {
     };
   },
   components: { DateList, EditCard, Btns },
+  created() {
+    global.PUBLIC.util
+      .httpGet("/schedule/trainee/2", {
+        start: "2018-09-01",
+        end: "2018-09-07"
+      })
+      .then(res => {
+        // console.log(JSON.stringify(res.data))
+      });
+  },
   mounted() {
     global.PUBLIC.util.setTitle("课程表");
   },
@@ -138,7 +148,7 @@ export default {
     onShowAdd() {
       setTimeout(() => {
         this.hasAdd = !this.hasAdd;
-      })
+      });
     },
     /** 跳转到习惯详情编辑页面 */
     onJumpEdit() {

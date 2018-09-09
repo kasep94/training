@@ -24,6 +24,7 @@ import sortData from "../../components/sortList/data.js";
 import ViewList from "../../components/view-list/view-list";
 import data from "./data.js";
 import config from "../../public/config.js";
+import service from './service.js'
 
 export default {
   data() {
@@ -94,9 +95,6 @@ export default {
                   ? null
                   : this.page + 1;
               const data = res.data.map(value => {
-                if (value.head_pic) {
-                  value.head_pic = config.url + value.head_pic;
-                }
                 if (value.detail.lola) {
                   const lolaArr = value.detail.lola.split(",");
                   global.PUBLIC.util
@@ -107,8 +105,6 @@ export default {
                 }
                 return value;
               });
-              console.log(res.data);
-              console.log(this.page);
               this.viewListData =
                 this.page === 2 ? data : this.viewListData.concat(data);
               resolve(true);
@@ -131,6 +127,7 @@ export default {
      * @memberof ViewList
      */
     onViewListClick(node) {
+      service.setData(node)
       global.PUBLIC.util.jumpNavigateTo(
         `product-evaluation/main?dp_code=${node.dp_code}`
       );

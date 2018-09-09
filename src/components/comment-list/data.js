@@ -22,20 +22,12 @@ const data = {
   ],
   data: [{
       img: 'https://img.jinse.com/1110017_small.png',
-      user: '用户名',
-      time: '2018年1月',
-      content: '用户评论内容用户评论内容用户评论内容用户评论内容用户评论内容用户评论内容用户评论内容',
+      nick_name: '用户名',
+      create_time: '2018-08-13 19:24:16',
+      cnt: '用户评论内容用户评论内容用户评论内容用户评论内容用户评论内容用户评论内容用户评论内容',
       id: 98,
       level: 1
     },
-    {
-      img: 'https://img.jinse.com/1110017_small.png',
-      user: '用户名',
-      time: '2018年1月',
-      content: '用户评论内容用户评论内容用户评论内容用户评论内容用户评论内容用户评论内容用户评论内容',
-      id: 99,
-      level: 1
-    }
   ]
 }
 
