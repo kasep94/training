@@ -11,7 +11,7 @@
       <view class="scroll-child" v-for="item of data" :key="item.id">
         <img class="content" :src="item.img" />
         <p class="cl-black">{{item.name}}</p>
-        <div class="flex">
+        <div class="flex" v-if="item.score">
           <Star :data='item.score' />
         </div>
       </view>

@@ -329,6 +329,7 @@ export default {
     background: rgba(199, 220, 242, 1);
     box-shadow: 0px 4px 10px 0px rgba(142, 167, 199, 0.05);
     position: relative;
+    z-index: 1;
     .icon-down {
       width: 18rpx;
       height: 13rpx;

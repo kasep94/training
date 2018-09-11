@@ -1,12 +1,12 @@
 {
   "pages": [
-    "pages/evaluation/main",
+    "pages/home/main",
     "pages/course/main",
+    "pages/evaluation/main",
     "pages/edit-habit/main",
     "pages/course-add/main",
     "pages/add-habit/main",
     "pages/product-evaluation/main",
-    "pages/home/main",
     "pages/mine/main"
   ],
   "window": {
