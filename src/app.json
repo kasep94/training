@@ -1,13 +1,13 @@
 {
   "pages": [
+    "pages/mine/main",
     "pages/home/main",
     "pages/course/main",
     "pages/evaluation/main",
     "pages/edit-habit/main",
     "pages/course-add/main",
     "pages/add-habit/main",
-    "pages/product-evaluation/main",
-    "pages/mine/main"
+    "pages/product-evaluation/main"
   ],
   "window": {
     "backgroundTextStyle": "light",

@@ -45,7 +45,7 @@
       <div class="box">
         <div class="flex-both">
           <div class="flex-left-center">
-             <i class="icon icon-calendar" />
+            <i class="icon icon-calendar" />
             <span class="title">习惯养成</span>
             <span class="cl-b-gray">2018年8月15日 |  周三</span>
           </div>
