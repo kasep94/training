@@ -124,7 +124,7 @@ export default {
         end: "2018-09-07"
       })
       .then(res => {
-        // console.log(JSON.stringify(res.data))
+        console.log(JSON.stringify(res.data))
       });
   },
   mounted() {

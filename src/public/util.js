@@ -10,6 +10,38 @@ const util = (() => {
   // 小程序经纬度
   let wxDistamce = null;
 
+  /** 获取年月日星期等数据
+   * @param {Date} date 
+   */
+  function getDate(date = new Date()) {
+    const show_day = new Array('星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六');
+    const time = date;
+    // 年份
+    const year = time.getFullYear();
+    // 月份
+    const month = time.getMonth() + 1;
+    // 一个月中的某天
+    const day = time.getDate();
+    // 星期几
+    const week = show_day[time.getDay()];
+    // 小时
+    const hour = time.getHours();
+    // 分
+    const minutes = time.getMinutes();
+    // 秒
+    const second = time.getSeconds();
+    return {
+      week,
+      year,
+      month,
+      day,
+      hour,
+      minutes,
+      second,
+      calendar: `${year}年${month}月${day}日`,
+    }
+  }
+
   /**
    * @param {String} url 请求地址
    * @param {Object<method: string, data: Object>} params 请求参数和传给服务器的数据
@@ -22,7 +54,10 @@ const util = (() => {
     return new Promise((resolve, reject) => {
       wx.request({
         url: `${ip + url}`,
-        data: {page_size: 10, ...body},
+        data: {
+          page_size: 10,
+          ...body
+        },
         method: 'GET',
         header: {
           "content-type": "application/json"
@@ -145,7 +180,8 @@ const util = (() => {
     httpGet,
     jumpNavigateTo,
     getLocation,
-    calDistance
+    calDistance,
+    getDate,
   }
 })()
 

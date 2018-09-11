@@ -26,7 +26,7 @@
           <div class="flex-left-center">
             <img src="../../../static/images/all/schedule.png" />
             <span class="title">日程安排</span>
-            <span class="cl-b-gray">2018年8月15日 |  周三</span>
+            <span class="cl-b-gray">{{date.calendar}} | {{date.week}}</span>
           </div>
           <span class="cl-b-gray">查看课程表<i class="icon icon-more" /></span>
         </div>
@@ -47,7 +47,7 @@
           <div class="flex-left-center">
             <i class="icon icon-calendar" />
             <span class="title">习惯养成</span>
-            <span class="cl-b-gray">2018年8月15日 |  周三</span>
+            <span class="cl-b-gray">{{date.calendar}} | {{date.week}}</span>
           </div>
           <span class="gray"><i class="icon icon-more" /></span>
         </div>
@@ -93,7 +93,7 @@ export default {
   data() {
     return {
       ...data,
-
+      date: global.PUBLIC.util.getDate(),
       indicatorDots: false,
       autoplay: false,
       interval: 5000,
