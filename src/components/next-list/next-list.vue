@@ -1,8 +1,15 @@
+/**
+ * 文档作者: kasepa94
+ * 创建时间：2018年09月11日
+ * 修改时间：2018年09月11日
+ * 描述信息：下一页列表
+ * 影响模块：mine
+ */
 <template>
   <div class="list-comp">
     <div class="flex-both" v-for="item of data" :key="item.name">
       <div class="flex-left-center">
-        <img :src="'../../../static/images/all/' + item.name + '.png'" />
+        <img :src="config.onlineUrl + item.name + '.png'" />
         <span>{{item.label}}</span>
       </div>
       <i class="icon icon-more" />
@@ -12,7 +19,14 @@
 </template>
 
 <script>
+import config from '../../public/config.js'
+
 export default {
+  data() {
+    return {
+      config
+    }
+  },
   props: {
     data: {
       type: Array
