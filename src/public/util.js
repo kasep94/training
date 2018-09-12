@@ -10,6 +10,57 @@ const util = (() => {
   // 小程序经纬度
   let wxDistamce = null;
 
+  /** 计算是否是闰年
+   * @param {number} year 年份
+   */
+  function isLeapYear(year) {
+    if ((year % 4 === 0 && year % 100 !== 0) || (year % 100 === 0 && year % 400 === 0)) {
+      // 闰年
+      return 29
+    } else {
+      // 不是闰年
+      return 28
+    }
+  }
+
+  /** 计算本周星期和星期 */
+  function jumpWeek(date = new Date()) {
+    const time = date;
+    const show_day1 = new Array('周日', '周一', '周二', '周三', '周四', '周五', '周六');
+    // 年份
+    let year = time.getFullYear();
+    // 一年中每月的天数
+    const dayCountOfMonth = [31, isLeapYear(year), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    // 一个月中的某天
+    let day = time.getDate();
+    // 星期
+    let weekNum = time.getDay()
+    // 月份
+    let month = time.getMonth() + 1;
+    const arr = []
+    for (let i = 0; i < 7; i++) {
+      if (weekNum === 7) weekNum = 0;
+      // 获取当月天数
+      const dayCount = dayCountOfMonth[month - 1]
+      if (day > dayCount) {
+        day = 0
+        month += 1
+        if (month > 12) {
+          month = 1
+          year += 1
+        }
+      }
+
+      arr.push({
+        week: show_day1[weekNum],
+        day: `${year}-${month < 10 ? '0' + month : month}-${day < 10 ? '0' + day : day}`
+      })
+      day++;
+      weekNum++;
+    }
+    return arr
+  }
+
   /** 获取年月日星期等数据
    * @param {Date} date 
    */
@@ -22,14 +73,21 @@ const util = (() => {
     const month = time.getMonth() + 1;
     // 一个月中的某天
     const day = time.getDate();
+    // 星期
+    const weekNum = time.getDay()
     // 星期几
-    const week = show_day[time.getDay()];
+    const week = show_day[weekNum];
     // 小时
     const hour = time.getHours();
     // 分
     const minutes = time.getMinutes();
     // 秒
     const second = time.getSeconds();
+    // 一年中每月的天数
+    const dayCountOfMonth = [31, isLeapYear(year), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+    // 本周星期和星期
+    const thisWeek = jumpWeek()
     return {
       week,
       year,
@@ -39,6 +97,8 @@ const util = (() => {
       minutes,
       second,
       calendar: `${year}年${month}月${day}日`,
+      dayCountOfMonth,
+      thisWeek
     }
   }
 

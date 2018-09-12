@@ -9,11 +9,14 @@
 <div class="data-list-comp">
   <scroll-view scroll-x >
     <div :class="['content', {second: index !== 0}]" v-for="(item, index) of data" :key='index'>
-    <div v-for="(value, i) of item" 
-      :class="['box', {active: index >= 1 && i >=1 && value}]"  :key="i">
-      <span >{{value}}</span>
+      <div v-for="(value, i) of item"
+        @click='onDateList(value)'
+        :class="['box', {active: index >= 1 && i >=1 && value}]"
+        :key="i">
+        <span v-if="index === 0 || i === 0">{{value}}</span>
+        <p v-else-if='value'><span>{{value.start_hour}}~{{value.end_hour + '\n'}}</span><span>{{value.lesson.item_name}}</span></p>
+      </div>
     </div>
-  </div>
   </scroll-view>
   
 </div>
@@ -23,8 +26,18 @@
 <script>
 export default {
   props: [
-    "data" // Object
+    "data" // Array
   ],
+  methods: {
+    /** 节点属性
+     * @param {Object} node 节点属性
+     */
+    onDateList(node) {
+      if (node) {
+        this.$emit("onNodeClick", node);
+      }
+    }
+  }
 };
 </script>
 
@@ -66,15 +79,34 @@ export default {
     width: 50rpx;
     overflow: auto;
   }
-  .active {
-    border: 1rpx solid red;
-    border-top-width: 4px;
-    z-index: 1;
+  .content:nth-of-type(2) .active {
+    border: 1rpx solid @cl-10;
+    border-top: 4rpx solid @cl-11;
+    background-color: @cl-10;
+    z-index: 2;
+  }
+  .content:nth-of-type(3) .active {
+    border: 1rpx solid @cl-12;
+    border-top: 4rpx solid @cl-13;
+    background-color: @cl-12;
+    z-index: 2;
+  }
+  .content:nth-of-type(4) .active {
+    border: 1rpx solid @cl-14;
+    border-top: 4rpx solid @cl-15;
+    background-color: @cl-14;
+    z-index: 2;
   }
   .active span {
     display: block;
-    width: 99rpx !important;
-    margin: 14rpx 0 0 18rpx;
+    width: 110rpx !important;
+    margin: 0 0 0 6rpx;
+  }
+  .active {
+    overflow: auto;
+    span:nth-of-type(1) {
+      margin-top: 14rpx;
+    }
   }
   .second span:nth-of-type(1),
   .content .box:nth-of-type(1) span {

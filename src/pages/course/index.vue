@@ -22,7 +22,7 @@
             </div>
           </div>
         </div>
-        <DateList :data='dataList' />
+        <DateList :data='dataList' @onNodeClick='onDateList' />
         <div class="footer flex-center">
           <div class="content">
             <div class="top flex-both">
@@ -33,7 +33,22 @@
             <EditCard @onEdit='onJumpEdit' :data='editCardData'/>
           </div>
         </div>
-        
+        <div v-if="hasShowEdit" @click="onWin" class="pop-comp">
+          <div class="pop-content pop-edit flex-content-center">
+            <div class="main flex-content-center">
+              <div @click="onContent" v-for="item in saveData.lessons" :key="item.id">
+                <div class="flex-both">
+                  <p>
+                    <span>{{item.start_hour}}~{{item.end_hour}}</span>
+                    <span>{{item.lesson.item_name}}</span>
+                  </p>
+                  <span class="edit" @click="onPopEdit">编辑</span>
+                </div>
+                <p class="cl-gray">{{item.lesson.class_content}}</p>
+              </div>  
+            </div>
+          </div>
+        </div>
         <div v-if="page !== 5" class="pop-comp">
           <i class="icon icon-cross" @click="onCross" />
           <div v-if="page === 1" class="pop-content pop-1 flex-content-center">
@@ -92,20 +107,21 @@
 </template>
 
 <script>
-import DateList from "../../components/dateList/dateList";
-import dataList from "../../components/dateList/list";
+import DateList from "../../components/date-list/date-list";
+import dataList from "../../components/date-list/list";
 import EditCard from "../../components/edit-card/edit-card";
 import editCardData from "../../components/edit-card/data.js";
 import Btns from "../../components/btns/btns";
 import btnsData from "../../components/btns/data.js";
 import config from "../../public/config.js";
+import service from "./service.js";
 
 export default {
   data() {
     return {
       // 图片地址
       config,
-      dataList,
+      ...dataList,
       // 是否显示add弹出窗
       hasAdd: false,
       // EditCard组件数据
@@ -113,25 +129,105 @@ export default {
       // 弹出哪个弹出框
       page: 5,
       // btns组件数据
-      ...btnsData
+      ...btnsData,
+      // 是否显示课程表编辑的弹窗 {0 | 1 | 2}
+      hasShowEdit: 0,
+      // 保存当天数据
+      saveData: null
     };
   },
   components: { DateList, EditCard, Btns },
   created() {
-    global.PUBLIC.util
-      .httpGet("/schedule/trainee/2", {
-        start: "2018-09-01",
-        end: "2018-09-07"
-      })
-      .then(res => {
-        console.log(JSON.stringify(res.data))
-      });
+    this.initCourse();
   },
   mounted() {
     global.PUBLIC.util.setTitle("课程表");
   },
   computed: {},
   methods: {
+    /** 单击课程表节点
+     * @param {Object} node 节点属性
+     * @memberof DateList
+     */
+    onDateList(node) {
+      const data = this.apiData.find(value => {
+        return value.day === node.day;
+      });
+      this.saveData = data;
+      this.hasShowEdit = 1;
+      service.setData(data);
+    },
+    /** 课程表数据 */
+    initCourse() {
+      const date = global.PUBLIC.util.getDate().thisWeek;
+      this.dataList[0] = [];
+      const month = new Date().getMonth() + 1;
+      this.dataList[0].push(month + "月");
+      this.dataList[0].push(
+        ...date.map(value => {
+          return `${value.week}${value.day.split("-")[2]}日`;
+        })
+      );
+
+      this.apiData[0].day = "2018-09-14";
+      this.apiData.forEach(value => {
+        let index = 0;
+        date.find((time, i) => {
+          // 获取索引
+          if (time.day === value.day) {
+            index = i;
+          }
+          return time.day === value.day;
+        });
+        value.lessons.map(child => {
+          const hour = Number(child.start_hour.split(":")[0]);
+          // hour <= 12 上午, hour <= 18 下午 否则晚上
+          const y = hour <= 12 ? 1 : hour <= 18 ? 2 : 3;
+          // 保存day值
+          child.day = value.day;
+          this.dataList[y][index + 1] = child;
+        });
+      });
+      /* global.PUBLIC.util
+        .httpGet("/schedule/trainee/2", {
+          start: "2018-09-01",
+          end: "2018-09-07"
+          // start: date[0].day,
+          // end: date[6].day
+        })
+        .then(res => {
+          res.data[0].day = "2018-09-14";
+          res.data.forEach(value => {
+            let index = 0;
+            date.find((time, i) => {
+              // 获取索引
+              if (time.day === value.day) {
+                index = i;
+              }
+              return time.day === value.day;
+            });
+            const arr = [];
+            arr.length = 7;
+            const setArr = arr.fill("", 0, 7);
+            value.lessons.map(value => {
+              const hour = Number(value.start_hour.split(":")[0])
+              if (hour <= 12) {
+                console.log(setArr)
+                // 上午
+                this.dataList[1] = setArr;
+                this.dataList[1][i] = '123'
+                console.log(this.dataList)
+              } else if (hour <= 6) {
+                // 下午
+                this.dataList[2] = setArr[i] = "123";
+              } else {
+                // 晚上
+                this.dataList[3] = setArr[i] = "123";
+              }
+            });
+          });
+        }); */
+    },
     /** 点击弹窗叉号 */
     onCross() {
       this.page = 5;
@@ -163,9 +259,22 @@ export default {
       this.hasAdd = false;
       global.PUBLIC.util.jumpNavigateTo("course-add/main");
     },
+    /** 全局单击事件 */
+    onWin() {
+      this.hasShowEdit = this.hasShowEdit === 2 ? 1 : 0;
+    },
+    /** 单击弹窗内容弹框不消失 */
+    onContent() {
+      this.hasShowEdit = 2;
+    },
+    /** 单击弹窗编辑 */
+    onPopEdit() {
+      this.hasShowEdit = 0;
+      global.PUBLIC.util.jumpNavigateTo("edit-course/main");
+    },
     /** 单击节点
      * @param {Object} node 单击节点属性
-     * @param {1 | 2 | 3 |4} index 判断是哪个数据
+     * @param {1 | 2 | 3 | 4} index 判断是哪个数据
      * @memberOf Btns
      */
     onBtnsClick(node, index) {
@@ -243,6 +352,37 @@ export default {
       .active {
         background: @cl-3;
         color: white;
+      }
+    }
+  }
+  .pop-edit {
+    background-color: transparent;
+    margin-top: 150rpx;
+    .main {
+      width: 503rpx;
+      background: white;
+      border-radius: 6rpx;
+      > div {
+        background: white;
+        width: 433rpx;
+        padding: 25rpx 0;
+      }
+      > div:nth-of-type(1) {
+        border-bottom: 1rpx dashed @cl-5;
+      }
+      span {
+        font-size: 30rpx;
+        display: block;
+      }
+      .edit {
+        background: @cl-4;
+        color: white;
+        height: 50rpx;
+        line-height: 50rpx;
+        width: 122rpx;
+        text-align: center;
+        border-radius: 25rpx;
+        font-size: 24rpx; 
       }
     }
   }
