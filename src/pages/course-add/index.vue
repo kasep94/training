@@ -44,7 +44,7 @@ import Picker from "../../components/picker/picker";
 export default {
   data() {
     return {
-      time: "12:01",
+      // time: "12:01",
       // 选中的时间
       timeArr: []
     };

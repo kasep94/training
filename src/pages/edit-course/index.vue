@@ -5,19 +5,82 @@
  * 描述信息：复制的demo
  */
 <template>
-    <div class="home_page">
-        <p>编辑课程</p>
+    <div class="edit-course-page flex-content-center">
+        <div class="content">
+            <div class="label-inp">
+                <p><i class="icon icon-book" />课程名称</p>
+                <input class="btn-1" type="text" placeholder="填写书籍名称" />
+            </div>
+
+            <div class="label-inp">
+                <p><i class="icon icon-book" />机构名称</p>
+                <input class="btn-1" type="text" placeholder="填写书籍名称" />
+            </div>
+            <div class="label-inp">
+                <p><i class="icon icon-book" />上课时间</p>
+                <Picker @onTimePicker='onSelectTime' cls='1' :info="time ? time : '选择上课时间'" type='time' />
+            </div>
+            <div class="label-inp">
+                <p><i class="icon icon-book" />上课地点</p>
+                <input class="btn-1" type="text" placeholder="填写书籍名称" />
+            </div>
+
+            <p class="btn-1 add-course">保  存</p>
+        </div>
     </div>
 </template>
 
 <script>
+import Picker from "../../components/picker/picker";
+
 export default {
-  computed: {
+  data() {
+    return {
+      // 选中的时间
+      time: null
+    };
   },
+  components: { Picker },
+  computed: {},
   methods: {
+    /** 获取日期选择的数据
+     * @param {Array} data 选择的数据
+     * @memberof Picker
+     */
+    onSelectTime(data) {
+      const item = data;
+      this.time =
+        item[0] +
+        "  " +
+        item[1] +
+        ":" +
+        item[2] +
+        "~" +
+        item[3] +
+        ":" +
+        item[4];
+    }
   }
-}
+};
 </script>
 
-<style>
+<style lang='less' scoped>
+.edit-course-page {
+  .content {
+    width: 690rpx;
+  }
+  .label-inp {
+    margin-top: 40rpx;
+  }
+  .icon-address {
+    height: 35rpx;
+  }
+  .add-course {
+    background: @cl-4;
+    color: white;
+    margin: 0 auto;
+    width: 542rpx;
+    margin-top: 188rpx;
+  }
+}
 </style>
