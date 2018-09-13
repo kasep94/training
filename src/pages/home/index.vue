@@ -134,7 +134,7 @@ export default {
     padding-bottom: 26rpx;
     width: 690rpx;
     margin-left: 30rpx;
-    border-left: 3rpx solid black;
+    border-left: 3rpx solid #EDF0F7;
     .left {
       width: 163rpx;
       height: 36rpx;

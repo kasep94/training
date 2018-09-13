@@ -6,7 +6,7 @@ const dataList = [
   ['晚上', '', '', '', '', '', '', '']
 ]
 
-const apiData = [{
+/* const apiData = [{
   "lessons": [{
     "merchant": {
       "service": "特色主题活动 零基础教学 咖啡甜点休闲 私人订制曲目 交通便利快捷 学习氛围轻松",
@@ -73,6 +73,7 @@ const apiData = [{
       "class_law": "每天",
       "create_time": "2018-08-31 11:39:49",
       "class_start_time": "随到随学",
+      "sub_info": "肇嘉浜路288号鼎新大楼1001(9、12号线嘉善路地铁站5号口马路对面)",
       "origin_price": "5180.00",
       "id": 4
     },
@@ -143,6 +144,7 @@ const apiData = [{
       "class_law": "每天",
       "create_time": "2018-08-31 11:39:49",
       "class_start_time": "随到随学",
+      "sub_info": "肇嘉浜路288号鼎新大楼1001(9、12号线嘉善路地铁站5号口马路对面)",
       "origin_price": "5180.00",
       "id": 4
     },
@@ -163,15 +165,19 @@ const apiData = [{
     "start_hour": "18:30",
     "end_hour": "19:30",
     "course": null,
-    "schedule_id": 3,
+    "schedule_id": 4,
     "week_day": 1,
-    "lesson": null,
+    "lesson": {
+      "item_name": "读书",
+      "sub_info": "<时间简史>"
+    },
     "day": "2018-09-04"
   }],
-  "day": "2018-09-04"
-}]
+  "day": "2018-09-14"
+}] */
+
 
 export default {
   dataList,
-  apiData
+  // apiData
 }

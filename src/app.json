@@ -19,8 +19,9 @@
   },
   "tabBar": {
     "color": "rgba(164,172,184,1)",
-    "selectedColor": "rgba(46,60,80,1)",
+    "selectedColor": "#2E3C50",
     "borderStyle": "rgba(255,255,255,1)",
+    "backgroundColor": "rgba(255,255,255,1)",
     "list": [
       {
         "selectedIconPath": "static/images/icon/home_s.png",

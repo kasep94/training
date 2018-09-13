@@ -7,8 +7,8 @@
 <template>
     <div class="course-page">
         <div class="flex-center header">
-          <span class="cl-b-black">18~19学年 第1周</span>
-          <i class="icon icon-down" />
+          <span class="cl-b-black">18~19学年 本周</span>
+          <!-- <i class="icon icon-down" /> -->
           <div class="add-div">
             <img 
               @click="onShowAdd" 
@@ -44,7 +44,7 @@
                   </p>
                   <span class="edit" @click="onPopEdit">编辑</span>
                 </div>
-                <p class="cl-gray">{{item.lesson ? item.lesson.class_content : item.describr}}</p>
+                <p class="cl-gray">{{item.lesson ? item.lesson.sub_info : item.describr}}</p>
               </div>  
             </div>
           </div>
@@ -131,7 +131,9 @@ export default {
       hasShowEdit: 0,
       // 保存当天数据
       saveData: null,
-      onlineUrl: process.env.onlineUrl
+      onlineUrl: process.env.onlineUrl,
+      // 获取接口数据
+      apiData: null
     };
   },
   components: { DateList, EditCard, Btns },
@@ -157,39 +159,7 @@ export default {
     },
     /** 课程表数据 */
     initCourse() {
-      const date = global.PUBLIC.util.getDate().thisWeek;
-      this.dataList[0] = [];
-      const month = new Date().getMonth() + 1;
-      this.dataList[0].push(month + "月");
-      this.dataList[0].push(
-        ...date.map(value => {
-          return `${value.week}${value.day.split("-")[2]}日`;
-        })
-      );
-
-      this.apiData[0].day = "2018-09-14";
-      this.apiData.forEach(value => {
-        let index = 0;
-        date.find((time, i) => {
-          // 获取索引
-          if (time.day === value.day) {
-            index = i;
-          }
-          return time.day === value.day;
-        });
-        value.lessons.map(child => {
-          const hour = Number(child.start_hour.split(":")[0]);
-          // hour <= 12 上午, hour <= 18 下午 否则晚上
-          const y = hour <= 12 ? 1 : hour <= 17 ? 2 : 3;
-          // 保存day值
-          child.day = value.day;
-          if (typeof this.dataList[y][index + 1] === 'string') {
-            this.dataList[y][index + 1] = []
-          }
-          this.dataList[y][index + 1].push(child);
-        });
-      });
-      /* global.PUBLIC.util
+      global.PUBLIC.util
         .httpGet("/schedule/trainee/2", {
           start: "2018-09-01",
           end: "2018-09-07"
@@ -198,6 +168,17 @@ export default {
         })
         .then(res => {
           res.data[0].day = "2018-09-14";
+          this.apiData = res.data;
+          const date = global.PUBLIC.util.getDate().thisWeek;
+          this.dataList[0] = [];
+          const month = new Date().getMonth() + 1;
+          this.dataList[0].push(month + "月");
+          this.dataList[0].push(
+            ...date.map(value => {
+              return `${value.week}${value.day.split("-")[2]}日`;
+            })
+          );
+
           res.data.forEach(value => {
             let index = 0;
             date.find((time, i) => {
@@ -207,27 +188,19 @@ export default {
               }
               return time.day === value.day;
             });
-            const arr = [];
-            arr.length = 7;
-            const setArr = arr.fill("", 0, 7);
-            value.lessons.map(value => {
-              const hour = Number(value.start_hour.split(":")[0])
-              if (hour <= 12) {
-                console.log(setArr)
-                // 上午
-                this.dataList[1] = setArr;
-                this.dataList[1][i] = '123'
-                console.log(this.dataList)
-              } else if (hour <= 6) {
-                // 下午
-                this.dataList[2] = setArr[i] = "123";
-              } else {
-                // 晚上
-                this.dataList[3] = setArr[i] = "123";
+            value.lessons.map(child => {
+              const hour = Number(child.start_hour.split(":")[0]);
+              // hour <= 12 上午, hour <= 18 下午 否则晚上
+              const y = hour <= 12 ? 1 : hour <= 17 ? 2 : 3;
+              // 保存day值
+              child.day = value.day;
+              if (typeof this.dataList[y][index + 1] === "string") {
+                this.dataList[y][index + 1] = [];
               }
+              this.dataList[y][index + 1].push(child);
             });
           });
-        }); */
+        });
     },
     /** 点击弹窗叉号 */
     onCross() {
@@ -386,7 +359,7 @@ export default {
         width: 122rpx;
         text-align: center;
         border-radius: 25rpx;
-        font-size: 24rpx; 
+        font-size: 24rpx;
       }
     }
   }
