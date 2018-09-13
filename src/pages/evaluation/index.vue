@@ -129,7 +129,7 @@ export default {
     onViewListClick(node) {
       service.setData(node)
       global.PUBLIC.util.jumpNavigateTo(
-        `product-evaluation/main?dp_code=${node.dp_code}`
+        `institutional-products/main?dp_code=${node.dp_code}`
       );
     }
   }

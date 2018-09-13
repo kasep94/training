@@ -124,19 +124,15 @@ export default {
     };
   },
   onLoad(option) {
-    const { dp_code } = option;
+    const { dp_code, course_id } = option;
     this.dp_code = dp_code;
     // 获取详情数据
     global.PUBLIC.util.httpGet("/merchantDetail", { dp_code }).then(res => {
       this.details = { ...res.data.items[0], ...service.getData() };
     });
     // 获取课程数据
-    global.PUBLIC.util.httpGet("/course", { dp_code }).then(res => {
-      // 获取course_id
-      const course_id = res.data.items[0].id;
-      global.PUBLIC.util.httpGet(`/courseDetail/${course_id}`, {}).then(res => {
-        this.price = res.data.origin_price;
-      });
+    global.PUBLIC.util.httpGet(`/courseDetail/${course_id}`, {}).then(res => {
+      this.price = res.data.origin_price;
     });
     this.getCommint();
   },
