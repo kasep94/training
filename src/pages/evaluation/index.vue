@@ -77,6 +77,7 @@ export default {
      * @memberof SortList
      */
     onSortClick(node) {
+      this.page = 1;
       this.params.evironment = 0;
       this.params.teaching = 0;
       this.params.effect = 0;
