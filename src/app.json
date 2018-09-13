@@ -18,9 +18,9 @@
     "navigationBarTextStyle": "black"
   },
   "tabBar": {
-    "color": "#595959",
-    "selectedColor": "#595959",
-    "borderStyle": "white",
+    "color": "rgba(164,172,184,1)",
+    "selectedColor": "rgba(46,60,80,1)",
+    "borderStyle": "rgba(255,255,255,1)",
     "list": [
       {
         "selectedIconPath": "static/images/icon/home_s.png",
