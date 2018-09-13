@@ -14,7 +14,7 @@
     </header>
     <div class="main">
       <div v-for="v of data" class="flex-left" :key="v.id">
-        <img class="avatar" :src="v.img || config.onlineUrl + 'mrtx/avatar.png'"/>
+        <img class="avatar" :src="v.img || onlineUrl + 'mrtx/avatar.png'"/>
         <div class="right">
           <p class="cl-gray">{{v.nick_name}}</p>
           <p class="gray">{{v.create_time}}</p>
@@ -30,13 +30,12 @@
 </template>
 
 <script>
-import config from "../../public/config.js";
 
 export default {
   data() {
     return {
-      config
-    };
+      onlineUrl: process.env.onlineUrl
+    }
   },
   props: {
     // 头部选择

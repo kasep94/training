@@ -8,7 +8,7 @@
 <template>
   <div class="view-list-comp">
     <div class="content" v-for="item of data" @click="onClick(item)" :key="item.id">
-      <img class="image" :src="item.head_pic_more || config.onlineUrl + 'mrtx/back1.png'"/>
+      <img class="image" :src="item.head_pic_more || onlineUrl + 'mrtx/back1.png'"/>
       <div class="left-main">
         <p class="title">{{item.org_name}}</p>
         <div class="flex-left-center">
@@ -27,20 +27,19 @@
 
 <script>
 import Star from "../star/star";
-import config from '../../public/config.js'
 
 export default {
+  data() {
+    return {
+      onlineUrl: process.env.onlineUrl
+    }
+  },
   props: {
     data: {
       type: Array
     }
   },
   components: { Star },
-  data() {
-    return {
-      config
-    };
-  },
   methods: {
     /** 单击的节点属性 */
     onClick(node) {

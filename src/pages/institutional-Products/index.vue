@@ -8,7 +8,7 @@
     <div class="institutional-products-page">
         <header class="bt-border flex-center">
             <div class="main flex">
-                <img :src="institutionalInfo.head_pic_more" />
+                <img v-if="onlineUrl" :src="institutionalInfo.head_pic_more || onlineUrl + 'mrtx/back.png'" />
                 <div class="flex-both">
                     <div>
                         <p class="title">{{institutionalInfo.org_name}}</p>
@@ -20,11 +20,11 @@
             </div>
             
         </header>
-        <div class="content bt-border">
+        <div v-if="hasIntroduction" class="content bt-border">
             <p class="col">课程介绍</p>
             <div v-for="item of listData" @click="onListClick(item)" :key="item.id" class="flex-center main">
                 <div class="flex-left-center">
-                    <img class="back" :src="item.detail.head_pic_more || '../../../static/images/all/back.png'"/>
+                    <img class="back" v-if="onlineUrl" :src="item.detail.head_pic_more || onlineUrl + 'mrtx/back1.png'"/>
                     <div class="right">
                         <p class="type-name">{{item.detail.product_name}}</p>
                         <p class="gray">{{item.detail.learning_objective}}</p>
@@ -56,7 +56,10 @@ export default {
       // 列表数据
       listData: null,
       // 底部移动的数据
-      scrollXData
+      scrollXData,
+      // 是否有课程介绍
+      hasIntroduction: false,
+      onlineUrl: process.env.onlineUrl
     };
   },
   onLoad(option) {
@@ -66,6 +69,8 @@ export default {
     // 获取课程数据
     global.PUBLIC.util.httpGet(`/merchant/${dp_code}/course`, {}).then(res => {
       this.listData = res.data;
+      this.hasIntroduction =
+        Object.prototype.toString.call(res.data) === "[object Array]";
     });
     // 获取课程数据
     /* global.PUBLIC.util.httpGet("/course", { dp_code }).then(res => {

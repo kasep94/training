@@ -13,8 +13,7 @@
             <img 
               @click="onShowAdd" 
               class="add" 
-              v-if="config.onlineUrl" 
-              :src="config.onlineUrl + 'ic6.jpg'" 
+              :src="onlineUrl + 'ic6.jpg'" 
             />
             <div v-if="hasAdd">
               <p @click="onJumpCourseAdd">添加课程</p>
@@ -113,14 +112,11 @@ import EditCard from "../../components/edit-card/edit-card";
 import editCardData from "../../components/edit-card/data.js";
 import Btns from "../../components/btns/btns";
 import btnsData from "../../components/btns/data.js";
-import config from "../../public/config.js";
 import service from "./service.js";
 
 export default {
   data() {
     return {
-      // 图片地址
-      config,
       ...dataList,
       // 是否显示add弹出窗
       hasAdd: false,
@@ -133,7 +129,8 @@ export default {
       // 是否显示课程表编辑的弹窗 {0 | 1 | 2}
       hasShowEdit: 0,
       // 保存当天数据
-      saveData: null
+      saveData: null,
+      onlineUrl: process.env.onlineUrl
     };
   },
   components: { DateList, EditCard, Btns },

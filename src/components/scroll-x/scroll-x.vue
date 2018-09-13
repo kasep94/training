@@ -9,7 +9,7 @@
   <div>
     <scroll-view scroll-x class="div-2-main scroll-div">
       <view class="scroll-child" v-for="item of data" :key="item.id">
-        <img class="content" :src="item.img" />
+        <img class="content" :src="item.img || onlineUrl + 'mrtx/back1.png'" />
         <p class="cl-black">{{item.name}}</p>
         <div class="flex" v-if="item.score">
           <Star :data='item.score' />
@@ -22,7 +22,13 @@
 
 <script>
 import Star from '../star/star'
+
 export default {
+  data() {
+    return {
+      onlineUrl: process.env.onlineUrl
+    }
+  },
   props: {
     data: {
       type: Array

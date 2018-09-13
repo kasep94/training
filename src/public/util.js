@@ -6,7 +6,7 @@
  */
 
 const util = (() => {
-  const ip = 'https://api.check-check.cn/api';
+  const ip = process.env.ip;
   // 小程序经纬度
   let wxDistamce = null;
 

@@ -16,7 +16,7 @@
         </swiper>
         <div class="flex">
           <div v-for="item in imgIcon" class="flex-content-center content" :key="item.id">
-            <img :src="config.onlineUrl + item.name + '.png'" />
+            <img :src="onlineUrl + item.name + '.png'" />
             <p>{{item.label}}</p>
           </div>
         </div>
@@ -86,7 +86,6 @@
 <script>
 import data from "./data.js";
 import ScrollX from "../../components/scroll-x/scroll-x";
-import config from '../../public/config.js'
 
 export default {
   components: {ScrollX},
@@ -98,7 +97,7 @@ export default {
       autoplay: false,
       interval: 5000,
       duration: 1000,
-      config,
+      onlineUrl: process.env.onlineUrl
     };
   },
   computed: {},

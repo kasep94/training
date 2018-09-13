@@ -1,6 +1,4 @@
-import config from '../../public/config'
-
-const url = config.onlineUrl
+const url = process.env.onlineUrl
 
 const data = [{
     // 节点名

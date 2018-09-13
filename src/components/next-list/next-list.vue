@@ -9,7 +9,7 @@
   <div class="list-comp">
     <div class="flex-both" v-for="item of data" :key="item.name">
       <div class="flex-left-center">
-        <img :src="config.onlineUrl + item.name + '.png'" />
+        <img :src="onlineUrl + item.name + '.png'" />
         <span>{{item.label}}</span>
       </div>
       <i class="icon icon-more" />
@@ -19,12 +19,11 @@
 </template>
 
 <script>
-import config from '../../public/config.js'
 
 export default {
   data() {
     return {
-      config
+      onlineUrl: process.env.onlineUrl
     }
   },
   props: {
