@@ -14,8 +14,11 @@
         :class="['box', {active: index >= 1 && i >=1 && value}]"
         :key="i">
         <div v-if="value" v-for="(v, z) of value" :key="z">
-          <span v-if="index === 0 || i === 0">{{v}}</span>
-          <p v-else-if='value'><span>{{v.start_hour}}~{{v.end_hour + '\n'}}</span><span>{{v.lesson ? v.lesson.item_name : v.habit.name}}</span></p>
+          <span :class="['date', z !== 0 ? 'hide' : '']" v-if="index === 0 || i === 0">{{z===0 ? value : ''}}</span>
+          <p v-else-if='value'>
+            <span>{{v.start_hour}}~{{v.end_hour + '\n'}}</span>
+            <span>{{v.lesson ? v.lesson.item_name : v.habit.name}}</span>
+          </p>
         </div>
         
       </div>
@@ -32,7 +35,7 @@ export default {
     "data" // Array
   ],
   created() {
-    console.log(this.data)
+    console.log(this.data);
   },
   methods: {
     /** 节点属性
@@ -60,12 +63,15 @@ export default {
     box-shadow: 0px 4px 10px 0px rgba(142, 167, 199, 0.05);
     font-size: 22rpx;
     height: 88rpx;
+    .box {
+      border-color: rgba(245, 247, 249, 1);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
   }
-  .content:nth-of-type(1) .box {
-    border-color: rgba(245, 247, 249, 1);
-  }
-  .content:nth-of-type(1) .box,
   .box:nth-of-type(1) {
+    width: 80rpx;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -76,14 +82,13 @@ export default {
     width: 134rpx;
     margin-top: -1rpx;
     margin-right: -1rpx;
-  }
-  .box:nth-of-type(1) {
-    width: 80rpx;
-  }
-  .box span {
-    word-break: break-all;
-    width: 50rpx;
-    overflow: auto;
+    .date {
+      display: block;
+      width:50rpx;
+    }
+    .hide {
+      display: none;
+    }
   }
   .content:nth-of-type(2) .active {
     border: 1rpx solid @cl-10;
