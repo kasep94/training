@@ -8,7 +8,29 @@ const dataList = [
 
 const apiData = [{
   "lessons": [{
+    "merchant": {
+      "service": "特色主题活动 零基础教学 咖啡甜点休闲 私人订制曲目 交通便利快捷 学习氛围轻松",
+      "lola": "121.46697024649929,31.2094706851405",
+      "has_hybrid_property": true,
+      "addr": "肇嘉浜路288号鼎新大楼1001(9、12号线嘉善路地铁站5号口马路对面)",
+      "certificate": 1,
+      "phone": "4001764607",
+      "delete_by_id": null,
+      "teach_quality": "9.1",
+      "the_effect": "9.1",
+      "longitude": 121.46697024649929,
+      "environment": "9.1",
+      "detail_img": "/2018/08/31/22912047/1535686785142517.jpg$/2018/08/31/22912047/1535686785416867.jpg$/2018/08/31/22912047/1535686785573664.jpg$/2018/08/31/22912047/1535686785767358.jpg$/2018/08/31/22912047/1535686785899421.jpg$/2018/08/31/22912047/1535686786022503.jpg$/2018/08/31/22912047/1535686786152535.jpg$/2018/08/31/22912047/1535686786421384.jpg$/2018/08/31/22912047/1535686786664428.jpg",
+      "create_time": "2018-08-31 11:39:46",
+      "query_in": null,
+      "latitude": 31.2094706851405,
+      "update_time": "2018-08-31 11:39:46",
+      "id": 1,
+      "detail_img_more": ["http://img.weyoo-inc.com/2018/08/31/22912047/1535686785142517.jpg", "http://img.weyoo-inc.com/2018/08/31/22912047/1535686785416867.jpg", "http://img.weyoo-inc.com/2018/08/31/22912047/1535686785573664.jpg", "http://img.weyoo-inc.com/2018/08/31/22912047/1535686785767358.jpg", "http://img.weyoo-inc.com/2018/08/31/22912047/1535686785899421.jpg", "http://img.weyoo-inc.com/2018/08/31/22912047/1535686786022503.jpg", "http://img.weyoo-inc.com/2018/08/31/22912047/1535686786152535.jpg", "http://img.weyoo-inc.com/2018/08/31/22912047/1535686786421384.jpg", "http://img.weyoo-inc.com/2018/08/31/22912047/1535686786664428.jpg"],
+      "dp_code": 22912047
+    },
     "trainee_id": 2,
+    "habit": null,
     "start_hour": "12:00",
     "end_hour": "13:00",
     "course": {
@@ -56,7 +78,29 @@ const apiData = [{
     },
     "day": "2018-09-04"
   }, {
+    "merchant": {
+      "service": "特色主题活动 零基础教学 咖啡甜点休闲 私人订制曲目 交通便利快捷 学习氛围轻松",
+      "lola": "121.46697024649929,31.2094706851405",
+      "has_hybrid_property": true,
+      "addr": "肇嘉浜路288号鼎新大楼1001(9、12号线嘉善路地铁站5号口马路对面)",
+      "certificate": 1,
+      "phone": "4001764607",
+      "delete_by_id": null,
+      "teach_quality": "9.1",
+      "the_effect": "9.1",
+      "longitude": 121.46697024649929,
+      "environment": "9.1",
+      "detail_img": "/2018/08/31/22912047/1535686785142517.jpg$/2018/08/31/22912047/1535686785416867.jpg$/2018/08/31/22912047/1535686785573664.jpg$/2018/08/31/22912047/1535686785767358.jpg$/2018/08/31/22912047/1535686785899421.jpg$/2018/08/31/22912047/1535686786022503.jpg$/2018/08/31/22912047/1535686786152535.jpg$/2018/08/31/22912047/1535686786421384.jpg$/2018/08/31/22912047/1535686786664428.jpg",
+      "create_time": "2018-08-31 11:39:46",
+      "query_in": null,
+      "latitude": 31.2094706851405,
+      "update_time": "2018-08-31 11:39:46",
+      "id": 1,
+      "detail_img_more": ["http://img.weyoo-inc.com/2018/08/31/22912047/1535686785142517.jpg", "http://img.weyoo-inc.com/2018/08/31/22912047/1535686785416867.jpg", "http://img.weyoo-inc.com/2018/08/31/22912047/1535686785573664.jpg", "http://img.weyoo-inc.com/2018/08/31/22912047/1535686785767358.jpg", "http://img.weyoo-inc.com/2018/08/31/22912047/1535686785899421.jpg", "http://img.weyoo-inc.com/2018/08/31/22912047/1535686786022503.jpg", "http://img.weyoo-inc.com/2018/08/31/22912047/1535686786152535.jpg", "http://img.weyoo-inc.com/2018/08/31/22912047/1535686786421384.jpg", "http://img.weyoo-inc.com/2018/08/31/22912047/1535686786664428.jpg"],
+      "dp_code": 22912047
+    },
     "trainee_id": 2,
+    "habit": null,
     "start_hour": "14:00",
     "end_hour": "15:00",
     "course": {
@@ -102,6 +146,26 @@ const apiData = [{
       "origin_price": "5180.00",
       "id": 4
     },
+    "day": "2018-09-04"
+  }, {
+    "merchant": null,
+    "trainee_id": 2,
+    "habit": {
+      "remark": {
+        "icon": "https://okcdn.apiweixin.top/asserts/img/xgyc/1.png"
+      },
+      "name": "每天阅读绘本30分钟",
+      "describe": null,
+      "key": "reading.drawing.30min.day",
+      "type": "leaning",
+      "id": 1
+    },
+    "start_hour": "18:30",
+    "end_hour": "19:30",
+    "course": null,
+    "schedule_id": 3,
+    "week_day": 1,
+    "lesson": null,
     "day": "2018-09-04"
   }],
   "day": "2018-09-04"

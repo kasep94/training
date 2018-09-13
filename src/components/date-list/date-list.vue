@@ -13,8 +13,11 @@
         @click='onDateList(value)'
         :class="['box', {active: index >= 1 && i >=1 && value}]"
         :key="i">
-        <span v-if="index === 0 || i === 0">{{value}}</span>
-        <p v-else-if='value'><span>{{value.start_hour}}~{{value.end_hour + '\n'}}</span><span>{{value.lesson.item_name}}</span></p>
+        <div v-if="value" v-for="(v, z) of value" :key="z">
+          <span v-if="index === 0 || i === 0">{{v}}</span>
+          <p v-else-if='value'><span>{{v.start_hour}}~{{v.end_hour + '\n'}}</span><span>{{v.lesson ? v.lesson.item_name : v.habit.name}}</span></p>
+        </div>
+        
       </div>
     </div>
   </scroll-view>
@@ -28,6 +31,9 @@ export default {
   props: [
     "data" // Array
   ],
+  created() {
+    console.log(this.data)
+  },
   methods: {
     /** 节点属性
      * @param {Object} node 节点属性

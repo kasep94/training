@@ -13,6 +13,7 @@
             <img 
               @click="onShowAdd" 
               class="add" 
+              v-if="onlineUrl"
               :src="onlineUrl + 'ic6.jpg'" 
             />
             <div v-if="hasAdd">
@@ -39,11 +40,11 @@
                 <div class="flex-both">
                   <p>
                     <span>{{item.start_hour}}~{{item.end_hour}}</span>
-                    <span>{{item.lesson.item_name}}</span>
+                    <span>{{item.lesson ? item.lesson.item_name : item.habit.name}}</span>
                   </p>
                   <span class="edit" @click="onPopEdit">编辑</span>
                 </div>
-                <p class="cl-gray">{{item.lesson.class_content}}</p>
+                <p class="cl-gray">{{item.lesson ? item.lesson.class_content : item.describr}}</p>
               </div>  
             </div>
           </div>
@@ -148,7 +149,7 @@ export default {
      */
     onDateList(node) {
       const data = this.apiData.find(value => {
-        return value.day === node.day;
+        return value.day === node[0].day;
       });
       this.saveData = data;
       this.hasShowEdit = 1;
@@ -179,10 +180,13 @@ export default {
         value.lessons.map(child => {
           const hour = Number(child.start_hour.split(":")[0]);
           // hour <= 12 上午, hour <= 18 下午 否则晚上
-          const y = hour <= 12 ? 1 : hour <= 18 ? 2 : 3;
+          const y = hour <= 12 ? 1 : hour <= 17 ? 2 : 3;
           // 保存day值
           child.day = value.day;
-          this.dataList[y][index + 1] = child;
+          if (typeof this.dataList[y][index + 1] === 'string') {
+            this.dataList[y][index + 1] = []
+          }
+          this.dataList[y][index + 1].push(child);
         });
       });
       /* global.PUBLIC.util
@@ -364,8 +368,11 @@ export default {
         width: 433rpx;
         padding: 25rpx 0;
       }
-      > div:nth-of-type(1) {
+      > div {
         border-bottom: 1rpx dashed @cl-5;
+      }
+      div:last-child {
+        border-bottom: none;
       }
       span {
         font-size: 30rpx;

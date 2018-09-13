@@ -1,8 +1,8 @@
 {
   "pages": [
+    "pages/course/main",
     "pages/evaluation/main",
     "pages/institutional-products/main",
-    "pages/course/main",
     "pages/edit-course/main",
     "pages/home/main",
     "pages/mine/main",
