@@ -68,7 +68,7 @@
             />
         </div>
         <div class="div-5 top-border">
-            <p class="cl-b-black">机构环境</p>
+            <p class="cl-b-black">你可能感兴趣的机构</p>
             <ScrollX :data='scrollXData'/>
         </div>
     </div>
@@ -109,17 +109,12 @@ export default {
   onLoad(option) {
     const { dp_code, course_id } = option;
     this.dp_code = dp_code;
-    // 获取详情数据
-    global.PUBLIC.util.httpGet("/merchantDetail", { dp_code }).then(res => {
-      this.details = { ...res.data.items[0], ...service.getData() };
-    });
     // 获取课程数据
     global.PUBLIC.util.httpGet(`/courseDetail/${course_id}`, {}).then(res => {
+      console.log(res);
       this.price = res.data.origin_price;
-    });
-    // 获取师资
-    global.PUBLIC.util.httpGet("/teacher", { dp_code }).then(res => {
-      this.introduction = res.data.items
+      this.introduction = res.data.teachers;
+      this.details = { ...res.data.merchant_detail, ...service.getData() };
     });
     this.getCommint();
   },
@@ -138,10 +133,7 @@ export default {
             page_size: page === 1 ? 2 : 10
           })
           .then(res => {
-            this.page =
-              res.data.items.length === 0
-                ? null
-                : page + 1;
+            this.page = res.data.items.length === 0 ? null : page + 1;
             const data = res.data.items.map(value => {
               value.create_time = value.create_time.substr(0, 10);
               return value;
