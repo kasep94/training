@@ -77,6 +77,9 @@ export default {
       this.listData = res.data.items;
     }); */
   },
+  mounted() {
+    global.PUBLIC.util.setTitle("机构产品");
+  },
   computed: {},
   methods: {
     /** 单击列表

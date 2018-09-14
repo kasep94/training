@@ -136,6 +136,9 @@ export default {
     });
     this.getCommint();
   },
+  mounted() {
+    global.PUBLIC.util.setTitle("产品测评");
+  },
   methods: {
     /** 获取评论数据 */
     getCommint() {

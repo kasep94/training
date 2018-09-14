@@ -100,6 +100,9 @@ export default {
       onlineUrl: process.env.onlineUrl
     };
   },
+  mounted() {
+    global.PUBLIC.util.setTitle("首页");
+  },
   computed: {},
   methods: {}
 };

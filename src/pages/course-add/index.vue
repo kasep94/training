@@ -50,6 +50,9 @@ export default {
     };
   },
   components: { Picker },
+  mounted() {
+    global.PUBLIC.util.setTitle("添加课程");
+  },
   computed: {},
   methods: {
     /** 删除选中的日期 */

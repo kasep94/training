@@ -36,6 +36,9 @@ export default {
       timeArr: []
     };
   },
+  mounted() {
+    global.PUBLIC.util.setTitle("习惯详情编辑");
+  },
   components: { Picker },
   computed: {},
   methods: {

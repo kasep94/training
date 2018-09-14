@@ -45,6 +45,9 @@ export default {
     };
   },
   components: { Picker },
+  mounted() {
+    global.PUBLIC.util.setTitle("编辑课程");
+  },
   computed: {},
   methods: {
     /** 删除选中的日期 */
