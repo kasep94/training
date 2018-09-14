@@ -153,23 +153,20 @@ export default {
       const data = this.apiData.find(value => {
         return value.day === node[0].day;
       });
+      // console.log(data)
       this.saveData = data;
       this.hasShowEdit = 1;
       service.setData(data);
     },
     /** 课程表数据 */
     initCourse() {
+      const date = global.PUBLIC.util.getDate().thisWeek;
       global.PUBLIC.util
         .httpGet("/schedule/trainee/2", {
-          start: "2018-09-01",
-          end: "2018-09-07"
-          // start: date[0].day,
-          // end: date[6].day
+          start: date[0].day,
+          end: date[6].day
         })
         .then(res => {
-          res.data[0].day = "2018-09-14";
-          this.apiData = res.data;
-          const date = global.PUBLIC.util.getDate().thisWeek;
           this.dataList[0] = [];
           const month = new Date().getMonth() + 1;
           this.dataList[0].push(month + "月");
@@ -178,6 +175,7 @@ export default {
               return `${value.week}${value.day.split("-")[2]}日`;
             })
           );
+          this.apiData = res.data;
 
           res.data.forEach(value => {
             let index = 0;

@@ -8,7 +8,8 @@
     <div class="home_page">
         <div class='header flex-center'>
             <img class="search" src="../../../static/images/evaluation/search.png" />
-            <input placeholder="搜索内容" type="text"/>
+            <input placeholder="搜索内容" type="text" v-model="inputVal"/>
+            <span @click="onSearch">搜索</span>
         </div>
         <SelectedList title='年龄:' v-on:onNodeClick="(node) => onSelectedClick('suit_crowds', node)" :data='data.selectedData1' />
         <SelectedList title='科目:' v-on:onNodeClick="(node) => onSelectedClick('config_name', node)" :data='subject' />
@@ -24,7 +25,7 @@ import sortData from "../../components/sortList/data.js";
 import ViewList from "../../components/view-list/view-list";
 import data from "./data.js";
 import config from "../../public/config.js";
-import service from './service.js'
+import service from "./service.js";
 
 export default {
   data() {
@@ -40,7 +41,9 @@ export default {
       // 排序数据
       sortData,
       // 页面
-      page: 1
+      page: 1,
+      // 输入都搜索内容
+      inputVal: null
     };
   },
   created() {
@@ -72,6 +75,13 @@ export default {
     this.getList();
   },
   methods: {
+    // 单击搜索
+    onSearch() {
+      if (this.inputVal) {
+        this.page = 1;
+        this.getList(this.inputVal);
+      }
+    },
     /** 组件通信
      * @param {Object} node 节点属性
      * @memberof SortList
@@ -84,17 +94,31 @@ export default {
       this.params[node.name] = 1;
       this.getList();
     },
-    /** 获取列表数据 */
-    getList() {
+    /** 获取列表数据
+     * @param {string} query 搜索的内容
+     */
+    getList(query = "") {
       return new Promise(resolve => {
         if (this.page !== null) {
           global.PUBLIC.util
-            .httpGet("/assess/search", { ...this.params, page: this.page })
+            .httpGet("/assess/search", {
+              ...this.params,
+              page: this.page,
+              query
+            })
             .then(res => {
-              this.page =
+              if (
                 Object.prototype.toString.call(res.data) === "[object Object]"
-                  ? null
-                  : this.page + 1;
+              ) {
+                wx.showToast({
+                  title: "搜索不到内容",
+                  icon: "none",
+                  duration: 2000
+                });
+                this.page = query ? 1 : null
+              } else {
+                this.page += 1
+              }
               const data = res.data.map(value => {
                 if (value.detail.lola) {
                   const lolaArr = value.detail.lola.split(",");
@@ -128,7 +152,7 @@ export default {
      * @memberof ViewList
      */
     onViewListClick(node) {
-      service.setData(node)
+      service.setData(node);
       global.PUBLIC.util.jumpNavigateTo(
         `institutional-products/main?dp_code=${node.dp_code}`
       );
@@ -137,19 +161,25 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang='less'>
 .header {
   position: relative;
   height: 115rpx;
   width: 750rpx;
   border-bottom: 1px solid rgba(229, 232, 240, 1);
 }
-.header input {
-  width: 610rpx;
-  height: 60rpx;
-  background: rgba(245, 247, 249, 1);
-  border-radius: 100rpx;
-  padding-left: 80rpx;
+.header {
+  input {
+    width: 510rpx;
+    height: 60rpx;
+    background: rgba(245, 247, 249, 1);
+    border-radius: 100rpx;
+    padding-left: 80rpx;
+  }
+  span {
+    font-size: 26rpx;
+    margin-left: 20rpx;
+  }
 }
 .search {
   height: 37rpx;

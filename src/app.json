@@ -1,10 +1,10 @@
 {
   "pages": [
     "pages/evaluation/main",
+    "pages/home/main",
     "pages/course/main",
     "pages/institutional-products/main",
     "pages/edit-course/main",
-    "pages/home/main",
     "pages/mine/main",
     "pages/edit-habit/main",
     "pages/course-add/main",

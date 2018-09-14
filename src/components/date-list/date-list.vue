@@ -35,7 +35,6 @@ export default {
     "data" // Array
   ],
   created() {
-    console.log(this.data);
   },
   methods: {
     /** 节点属性
