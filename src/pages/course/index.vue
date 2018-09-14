@@ -42,7 +42,7 @@
                     <span>{{item.start_hour}}~{{item.end_hour}}</span>
                     <span>{{item.lesson ? item.lesson.item_name : item.habit.name}}</span>
                   </p>
-                  <span class="edit" @click="onPopEdit">编辑</span>
+                  <span class="edit" @click="onPopEdit(item)">编辑</span>
                 </div>
                 <p class="cl-gray">{{item.lesson ? item.lesson.sub_info : item.describr}}</p>
               </div>  
@@ -241,10 +241,12 @@ export default {
     onContent() {
       this.hasShowEdit = 2;
     },
-    /** 单击弹窗编辑 */
-    onPopEdit() {
+    /** 单击弹窗编辑
+     * @param {Object} node 节点属性
+     */
+    onPopEdit(node) {
       this.hasShowEdit = 0;
-      global.PUBLIC.util.jumpNavigateTo("edit-course/main");
+      global.PUBLIC.util.jumpNavigateTo(node.lesson.hasOwnProperty('price') ? "edit-course/main" : 'edit-habit/main');
     },
     /** 单击节点
      * @param {Object} node 单击节点属性

@@ -1,7 +1,7 @@
 {
   "pages": [
-    "pages/course/main",
     "pages/evaluation/main",
+    "pages/course/main",
     "pages/institutional-products/main",
     "pages/edit-course/main",
     "pages/home/main",

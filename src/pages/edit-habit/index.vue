@@ -8,8 +8,8 @@
     <div class="course-add-page flex-content-center">
         <div class="content">
             <div class="label-inp">
-                <p><i class="icon icon-book" />书籍名称</p>
-                <input class="btn-1" type="text" placeholder="填写书籍名称" />
+                <p><i class="icon icon-book" />详情描述</p>
+                <input class="btn-1" type="text" placeholder="请填写详情描述" />
             </div>
             <div class="label-inp">
                 <p><i class="icon icon-time" />选择时间</p>

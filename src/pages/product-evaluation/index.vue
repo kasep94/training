@@ -49,13 +49,15 @@
         </div>
         <div class="div-3 bt-border">
             <p class="cl-b-black">老师介绍</p>
-            <div class="main">
-                <div v-for="v of introduction" :key="v.id">
-                    <img :src="v.img" />
-                    <p class="cl-black">{{v.name}}</p>
-                    <p class="cl-gray">{{v.position}}</p>
-                </div>
-            </div>
+            <scroll-view scroll-x class="div-2-main scroll-div">
+              <div class="main">
+                  <div v-for="v of introduction" :key="v.id">
+                      <img :src="v.head_pic_more" />
+                      <p class="cl-black">{{v.name}}</p>
+                      <p class="cl-gray">{{v.worke_years}}</p>
+                  </div>
+              </div>
+            </scroll-view>
         </div>
         <div class="div-4">
             <p class="cl-b-black">用户评论</p>
@@ -101,26 +103,7 @@ export default {
       // 课程价格
       price: 0,
       // 老师介绍
-      introduction: [
-        {
-          name: "姓名",
-          position: "高级老师",
-          img: "https://img.jinse.com/1108815_small.png",
-          id: 100
-        },
-        {
-          name: "姓名",
-          position: "高级老师",
-          img: "https://img.jinse.com/1108815_small.png",
-          id: 101
-        },
-        {
-          name: "姓名",
-          position: "高级老师",
-          img: "https://img.jinse.com/1108815_small.png",
-          id: 102
-        }
-      ]
+      introduction: null
     };
   },
   onLoad(option) {
@@ -133,6 +116,10 @@ export default {
     // 获取课程数据
     global.PUBLIC.util.httpGet(`/courseDetail/${course_id}`, {}).then(res => {
       this.price = res.data.origin_price;
+    });
+    // 获取师资
+    global.PUBLIC.util.httpGet("/teacher", { dp_code }).then(res => {
+      this.introduction = res.data.items
     });
     this.getCommint();
   },
@@ -257,16 +244,23 @@ export default {
     }
   }
   .div-3 {
-    padding: 30rpx;
+    padding: 30rpx 0;
     padding-bottom: 48rpx;
+    .cl-b-black {
+      margin-left: 30rpx;
+    }
     .main {
       display: flex;
       width: 120rpx;
+      // margin: 0 30rpx;
       div {
         margin-left: 48rpx;
       }
       div:nth-of-type(1) {
-        margin: 0;
+        margin-left: 30rpx;
+      }
+      div:last-child {
+        padding-right: 30rpx;
       }
       img {
         height: 120rpx;
