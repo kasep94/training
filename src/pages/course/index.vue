@@ -110,7 +110,7 @@
 import DateList from "../../components/date-list/date-list";
 import dataList from "../../components/date-list/list";
 import EditCard from "../../components/edit-card/edit-card";
-import editCardData from "../../components/edit-card/data.js";
+// import editCardData from "../../components/edit-card/data.js";
 import Btns from "../../components/btns/btns";
 import btnsData from "../../components/btns/data.js";
 import service from "./service.js";
@@ -122,7 +122,7 @@ export default {
       // 是否显示add弹出窗
       hasAdd: false,
       // EditCard组件数据
-      editCardData,
+      editCardData: null,
       // 弹出哪个弹出框
       page: 5,
       // btns组件数据
@@ -139,6 +139,17 @@ export default {
   components: { DateList, EditCard, Btns },
   created() {
     this.initCourse();
+    global.PUBLIC.util
+      .httpGet("/habit/user", {
+        login_id: 1
+      })
+      .then(res => {
+        this.editCardData = res.data.items.map(v => {
+          v.info = v.habit.name;
+          v.icon = v.habit.remark.icon;
+          return v;
+        });
+      });
   },
   mounted() {
     global.PUBLIC.util.setTitle("课程表");
@@ -244,7 +255,11 @@ export default {
      */
     onPopEdit(node) {
       this.hasShowEdit = 0;
-      global.PUBLIC.util.jumpNavigateTo(node.lesson.hasOwnProperty('price') ? "edit-course/main" : 'edit-habit/main');
+      global.PUBLIC.util.jumpNavigateTo(
+        node.lesson.hasOwnProperty("price")
+          ? "edit-course/main"
+          : "edit-habit/main"
+      );
     },
     /** 单击节点
      * @param {Object} node 单击节点属性
