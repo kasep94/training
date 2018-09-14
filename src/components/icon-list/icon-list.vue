@@ -25,7 +25,7 @@
                   <p class="habit">{{child.label}}</p>
               </div>
               <div class="flex-left-center">
-                  <span @click="addHabit(child)" class="add">{{child.hasAdd ? '已添加' : '添加'}}</span>
+                  <span @click="addHabit(child)" :class="['add', child.attached ? 'sel' : '']">{{child.attached ? '已添加' : '添加'}}</span>
               </div>
           </div>
           <items :data='item.children'></items>
@@ -64,7 +64,10 @@ export default {
      * @param {Object} childNode 子节点节点数据
      */
     addHabit(childNode) {
-      childNode.hasAdd = !childNode.hasAdd
+      // childNode.attached = !childNode.attached
+      if (!childNode.attached) {
+        global.PUBLIC.util.jumpNavigateTo("edit-habit/main");
+      }
     }
   }
 };
@@ -111,6 +114,9 @@ export default {
     .expand {
       font-size: 26rpx;
       color: @cl-5;
+    }
+    .sel {
+      background: #DDE2F0;
     }
   }
   .icon-list-child {

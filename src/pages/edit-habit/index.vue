@@ -20,7 +20,7 @@
                 <Picker @onTimePicker='onSelectTime' info='添加时间' type='time' />
             </div>
 
-            <p class="btn-1 add-course">保  存</p>
+            <p @click="onSubmit" class="btn-1 add-course">保  存</p>
         </div>
     </div>
 </template>
@@ -44,9 +44,9 @@ export default {
   methods: {
     /** 删除选中的日期 */
     onRemove(index) {
-        this.timeArr.splice(index, 1)
-        // console.log(index)
-        // console.log(this.timeArr)
+      this.timeArr.splice(index, 1);
+      // console.log(index)
+      // console.log(this.timeArr)
     },
     /** 获取日期选择的数据
      * @param {Array} data 选择的数据
@@ -54,6 +54,18 @@ export default {
      */
     onSelectTime(data) {
       this.timeArr.push(data);
+    },
+    /** 单机保存 */
+    onSubmit() {
+      /* global.PUBLIC.util
+        .httpGet("/habit/meta", {
+          type,
+          login_id: 1,
+          page_size: 100
+        })
+        .then(res => {
+          console.log(res)
+        }); */
     }
   }
 };

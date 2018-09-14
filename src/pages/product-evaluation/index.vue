@@ -177,7 +177,6 @@ export default {
           .httpGet("/merchantCommit", {
             dp_code,
             page,
-            page_size: 10,
             ">score": arr[0],
             "<score": arr[1]
           })

@@ -1,10 +1,10 @@
-const url = process.env.onlineUrl
+const url = '../../../static/images/all/'
 
 const data = [{
     // 节点名
     label: '学习习惯',
     // 唯一标识
-    id: 'study',
+    id: 'learning',
     // 图标
     icon: url + 'study-habit.png',
     // 二级节点
@@ -12,13 +12,13 @@ const data = [{
   },
   {
     label: '生活习惯',
-    id: 'life',
+    id: 'living',
     icon: url + 'life-habit.png',
     children: [],
   },
   {
     label: '交友习惯',
-    id: 'friends',
+    id: 'friend',
     icon: url + 'friends-habit.png',
     children: [],
   },
@@ -30,7 +30,7 @@ const data = [{
   },
   {
     label: '行为习惯',
-    id: 'behavior',
+    id: 'behave',
     icon: url + 'behavior-habit.png',
     children: [],
   }
@@ -44,7 +44,7 @@ const children = [{
   // 图标
   icon: url + 'every.png',
   // 判断是否已添加
-  hasAdd: false,
+  attached: false,
 }]
 
 export default {
