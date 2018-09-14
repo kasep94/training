@@ -8,7 +8,7 @@
 <template>
   <div class="comment-list-comp">
     <header>
-      <p class="gray" v-for="(item, i) of selected" :key="i">
+      <p @click="onSelected(item)" class="gray" v-for="(item, i) of selected" :key="i">
         {{item.label}}{{item.num ? '(' + item.num + ')' : ''}}
       </p>
     </header>
@@ -22,7 +22,7 @@
       </div>
       </div>
     </div>
-    <div class="footer flex-content-center" @click="onMore">
+    <div v-if="hasMore" class="footer flex-content-center" @click="onMore">
       <p>查看更多评论</p>
       <i class="icon icon-bottom" />
     </div>
@@ -45,12 +45,22 @@ export default {
     // 评论内容
     data: {
       type: Array
+    },
+    // 是否有更多按钮
+    hasMore: {
+      type: Number
     }
   },
   methods: {
     /** 单击查看更多评论 */
     onMore() {
       this.$emit("onMore");
+    },
+    /** 单击好评
+     * @param {Object} node 节点属性
+     */
+    onSelected(node) {
+      this.$emit('onSelected', node)
     }
   }
 };

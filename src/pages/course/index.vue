@@ -187,7 +187,7 @@ export default {
               return time.day === value.day;
             });
             value.lessons.map(child => {
-              const hour = Number(child.start_hour.split(":")[0]);
+              const hour = Number(child.end_hour.split(":")[0]);
               // hour <= 12 上午, hour <= 18 下午 否则晚上
               const y = hour <= 12 ? 1 : hour <= 17 ? 2 : 3;
               // 保存day值

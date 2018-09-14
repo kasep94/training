@@ -2,22 +2,23 @@ const data = {
   selected: [
     {
       label: '全部',
+      type: 1,
+      num: 0
     },
     {
       label: '好评',
-      num: 4
+      type: 2,
+      num: 0
     },
     {
-      label: '全部',
+      label: '中评',
+      type: 3,
+      num: 0
     },
     {
-      label: '好评'
-    },
-    {
-      label: '全部',
-    },
-    {
-      label: '好评'
+      label: '差评',
+      type: 4,
+      num: 0
     },
   ],
   data: [{

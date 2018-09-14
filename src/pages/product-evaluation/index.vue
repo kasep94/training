@@ -62,8 +62,10 @@
         <div class="div-4">
             <p class="cl-b-black">用户评论</p>
             <CommentList 
-              :selected='commentListData.selected' 
+              :selected='commentListData.selected'
+              :hasMore='page'
               @onMore='onMoreComment'
+              @onSelected='onCommentSelected'
               :data='commentList'
             />
         </div>
@@ -103,7 +105,9 @@ export default {
       // 课程价格
       price: 0,
       // 老师介绍
-      introduction: null
+      introduction: null,
+      // 评论 1:全部评论 2: 好评 3:中评 4:差评
+      type: 1
     };
   },
   onLoad(option) {
@@ -111,11 +115,35 @@ export default {
     this.dp_code = dp_code;
     // 获取课程数据
     global.PUBLIC.util.httpGet(`/courseDetail/${course_id}`, {}).then(res => {
-      console.log(res);
       this.price = res.data.origin_price;
       this.introduction = res.data.teachers;
       this.details = { ...res.data.merchant_detail, ...service.getData() };
     });
+    // 获取评论数量
+    global.PUBLIC.util
+      .httpGet(`/merchantCommit/${dp_code}/category`, {})
+      .then(res => {
+        for (const i in res.data) {
+          const num = Number(res.data[i]) || 0;
+          this.commentListData.selected[0].num += num;
+          switch (i) {
+            case "50":
+              // 好评数
+              this.commentListData.selected[1].num = num;
+              break;
+            case "40":
+            case "30":
+              // 中评数
+              this.commentListData.selected[2].num += num;
+              break;
+            case "20":
+            case "10":
+              // 差评数
+              this.commentListData.selected[3].num += num;
+              break;
+          }
+        }
+      });
     this.getCommint();
   },
   mounted() {
@@ -125,15 +153,36 @@ export default {
     /** 获取评论数据 */
     getCommint() {
       if (this.page !== null) {
-        const { dp_code, page } = this;
+        const { dp_code, page, type } = this;
+        let arr = [];
+        switch (type) {
+          case 1:
+            // 全部
+            arr = [0, 51];
+            break;
+          case 2:
+            // 好评
+            arr = [40, 51];
+            break;
+          case 3:
+            // 中评
+            arr = [29, 41];
+            break;
+          case 4:
+            // 差评
+            arr = [0, 30];
+            break;
+        }
         global.PUBLIC.util
           .httpGet("/merchantCommit", {
             dp_code,
             page,
-            page_size: page === 1 ? 2 : 10
+            page_size: 10,
+            ">score": arr[0],
+            "<score": arr[1]
           })
           .then(res => {
-            this.page = res.data.items.length === 0 ? null : page + 1;
+            this.page = res.data.items.length === 0 || res.data.items.length !== 10 ? null : page + 1;
             const data = res.data.items.map(value => {
               value.create_time = value.create_time.substr(0, 10);
               return value;
@@ -147,6 +196,15 @@ export default {
      * @memberof CommentList
      */
     onMoreComment() {
+      this.getCommint();
+    },
+    /** 单击好评
+     * @param {Object} node 节点属性
+     * @memberof CommentList
+     */
+    onCommentSelected(node) {
+      this.type = node.type;
+      this.page = 1;
       this.getCommint();
     }
   }
