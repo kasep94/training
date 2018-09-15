@@ -40,11 +40,11 @@
                 <div class="flex-both">
                   <p>
                     <span>{{item.start_hour}}~{{item.end_hour}}</span>
-                    <span>{{item.schedule.type === 'habit' ? item.schedule.habit_lib.name : item.schedule.title}}</span>
+                    <span>{{item.schedule.title}}</span>
                   </p>
                   <span class="edit" @click="onPopEdit(item)">编辑</span>
                 </div>
-                <p class="cl-gray">{{item.schedule.type === 'habit' ? item.schedule.habit.describe : item.schedule.describe}}</p>
+                <p class="cl-gray">{{item.schedule.describe}}</p>
               </div>  
             </div>
           </div>
@@ -255,9 +255,7 @@ export default {
     onPopEdit(node) {
       this.hasShowEdit = 0;
       global.PUBLIC.util.jumpNavigateTo(
-        node.lesson.hasOwnProperty("price")
-          ? "edit-course/main"
-          : "edit-habit/main"
+        node.schedule.type === "habit" ? "edit-habit/main" : "edit-course/main"
       );
     },
     /** 单击节点

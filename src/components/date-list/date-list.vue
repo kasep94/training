@@ -17,7 +17,7 @@
           <span :class="['date', z !== 0 ? 'hide' : '']" v-if="index === 0 || i === 0">{{z===0 ? value : ''}}</span>
           <p v-else-if='value'>
             <span>{{v.start_hour}}~{{v.end_hour + '\n'}}</span>
-            <span>{{v.schedule.type === 'habit' ? v.schedule.habit_lib.name : v.schedule.title}}</span>
+            <span>{{v.schedule.title}}</span>
           </p>
         </div>
         
