@@ -36,15 +36,15 @@
         <div v-if="hasShowEdit" @click="onWin" class="pop-comp">
           <div class="pop-content pop-edit flex-content-center">
             <div class="main flex-content-center">
-              <div @click="onContent" v-for="item in saveData.lessons" :key="item.id">
+              <div @click="onContent" v-for="item in saveData.schedules" :key="item.id">
                 <div class="flex-both">
                   <p>
                     <span>{{item.start_hour}}~{{item.end_hour}}</span>
-                    <span>{{item.lesson ? item.lesson.item_name : item.habit.name}}</span>
+                    <span>{{item.schedule.type === 'habit' ? item.schedule.habit_lib.name : item.schedule.title}}</span>
                   </p>
                   <span class="edit" @click="onPopEdit(item)">编辑</span>
                 </div>
-                <p class="cl-gray">{{item.lesson ? item.lesson.sub_info : item.describr}}</p>
+                <p class="cl-gray">{{item.schedule.type === 'habit' ? item.schedule.habit.describe : item.schedule.describe}}</p>
               </div>  
             </div>
           </div>
@@ -164,7 +164,6 @@ export default {
       const data = this.apiData.find(value => {
         return value.day === node[0].day;
       });
-      // console.log(data)
       this.saveData = data;
       this.hasShowEdit = 1;
       service.setData(data);
@@ -197,7 +196,7 @@ export default {
               }
               return time.day === value.day;
             });
-            value.lessons.map(child => {
+            value.schedules.map(child => {
               const hour = Number(child.end_hour.split(":")[0]);
               // hour <= 12 上午, hour <= 18 下午 否则晚上
               const y = hour <= 12 ? 1 : hour <= 17 ? 2 : 3;

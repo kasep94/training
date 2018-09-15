@@ -47,13 +47,13 @@ export default {
     margin-top: 30rpx;
     border-left: 8rpx solid #fd6d69;
     .icon {
-      margin-left: 26rpx;
+      margin-left: 36rpx;
       margin-right: 25rpx;
     }
     .icon-0,
     .icon-1 {
-      height: 80rpx;
-      width: 80rpx;
+      height: 60rpx;
+      width: 40rpx;
     }
     .icon-2 {
       height: 79rpx;
