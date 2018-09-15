@@ -103,6 +103,56 @@ const util = (() => {
   }
 
   /**
+   * @param {'post' | 'put'} method
+   * @param {String} url 请求地址
+   * @param {Object<method: string, data: Object>} params 请求参数和传给服务器的数据
+   * @param {Boolean} showError 是否显示错误信息
+   */
+  function httpOther(method, url = '', body = {}, showError = true) {
+    wx.showLoading({
+      title: '加载中',
+    })
+    return new Promise((resolve, reject) => {
+      wx.request({
+        url: `${ip + url}`,
+        data: {
+          page_size: 10,
+          ...body
+        },
+        method: method,
+        header: {
+          "content-type": "application/json"
+        },
+        success: res => {
+          wx.hideLoading()
+          if (showError) {
+            if (res.statusCode < 200 || res.statusCode > 300) {
+              wx.showToast({
+                title: '服务器异常',
+                icon: 'none',
+                duration: 2000
+              })
+              return reject(res.data || {});
+            }
+          }
+
+          return resolve(res.data || {});
+        },
+        fail: res => {
+          wx.hideLoading()
+          if (showError) {
+            wx.showToast({
+              title: '服务器异常',
+              icon: 'none',
+              duration: 2000
+            })
+          }
+        }
+      });
+    });
+  }
+
+  /**
    * @param {String} url 请求地址
    * @param {Object<method: string, data: Object>} params 请求参数和传给服务器的数据
    * @param {Boolean} showError 是否显示错误信息
@@ -237,6 +287,7 @@ const util = (() => {
 
   return {
     setTitle,
+    httpOther,
     httpGet,
     jumpNavigateTo,
     getLocation,

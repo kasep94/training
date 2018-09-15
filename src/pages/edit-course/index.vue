@@ -9,12 +9,12 @@
         <div class="content">
             <div class="label-inp">
                 <p><i class="icon icon-book" />课程名称</p>
-                <input class="btn-1" type="text" placeholder="填写书籍名称" />
+                <input class="btn-1" type="text" v-model="data.name" placeholder="填写书籍名称" />
             </div>
 
             <div class="label-inp">
                 <p><i class="icon icon-book" />机构名称</p>
-                <input class="btn-1" type="text" placeholder="填写书籍名称" />
+                <input class="btn-1" type="text" v-model="data.describe" placeholder="填写书籍名称" />
             </div>
             <div class="label-inp">
                 <p><i class="icon icon-time" />上课时间</p>
@@ -36,13 +36,21 @@
 
 <script>
 import Picker from "../../components/picker/picker";
+import service from "../course/service.js";
 
 export default {
   data() {
     return {
       // 选中的时间
-      timeArr: []
+      timeArr: [],
+      // course页面带过来到参数
+      data: {},
     };
+  },
+  onLoad(option) {
+    if (option.hasOwnProperty("hasData")) {
+      this.data = service.getData();
+    }
   },
   components: { Picker },
   mounted() {

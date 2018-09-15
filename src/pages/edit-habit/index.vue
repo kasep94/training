@@ -9,7 +9,7 @@
         <div class="content">
             <div class="label-inp">
                 <p><i class="icon icon-book" />详情描述</p>
-                <input class="btn-1" type="text" placeholder="请填写详情描述" />
+                <input class="btn-1" type="text" v-model="data.describe" placeholder="请填写详情描述" />
             </div>
             <div class="label-inp">
                 <p><i class="icon icon-time" />选择时间</p>
@@ -27,14 +27,44 @@
 
 <script>
 import Picker from "../../components/picker/picker";
+import service from "../course/service.js";
 
 export default {
   data() {
     return {
-      // time: "12:01",
       // 选中的时间
-      timeArr: []
+      timeArr: [],
+      // course页面带过来到参数
+      data: {}
     };
+  },
+  onLoad(option) {
+    if (option.hasOwnProperty("hasData")) {
+      this.data = service.getData();
+      console.log(this.data)
+      this.data.rules.map(value => {
+        const week = value.rule;
+        const end = week.end.split(":");
+        const start = week.start.split(":");
+        const weeks = [
+          "星期一",
+          "星期二",
+          "星期三",
+          "星期四",
+          "星期五",
+          "星期六",
+          "星期日"
+        ];
+        if (week.day === "*") {
+          // 每天
+          weeks.forEach(w => {
+            this.timeArr.push([w, ...end, ...start]);
+          });
+        } else {
+          this.timeArr.push([weeks[Number(week.day)], ...end, ...start]);
+        }
+      });
+    }
   },
   mounted() {
     global.PUBLIC.util.setTitle("习惯详情编辑");
@@ -45,27 +75,27 @@ export default {
     /** 删除选中的日期 */
     onRemove(index) {
       this.timeArr.splice(index, 1);
-      // console.log(index)
-      // console.log(this.timeArr)
     },
     /** 获取日期选择的数据
      * @param {Array} data 选择的数据
      * @memberof Picker
      */
     onSelectTime(data) {
+      console.log(data);
       this.timeArr.push(data);
     },
     /** 单机保存 */
     onSubmit() {
-      /* global.PUBLIC.util
-        .httpGet("/habit/meta", {
-          type,
-          login_id: 1,
-          page_size: 100
+      console.log(this.data.describe);
+      const {describe} = this.data
+      // 修改习惯备注
+      global.PUBLIC.util
+        .httpOther("PUT" ,`/habit/user/${this.data.id}`, {
+          describe
         })
         .then(res => {
-          console.log(res)
-        }); */
+          console.log(res);
+        });
     }
   }
 };

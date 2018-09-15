@@ -141,7 +141,7 @@ export default {
     this.initCourse();
     global.PUBLIC.util
       .httpGet("/habit/user", {
-        login_id: 1
+        trainee_id: 2
       })
       .then(res => {
         this.editCardData = res.data.items.map(v => {
@@ -166,7 +166,7 @@ export default {
       });
       this.saveData = data;
       this.hasShowEdit = 1;
-      service.setData(data);
+      // service.setData(data);
     },
     /** 课程表数据 */
     initCourse() {
@@ -228,9 +228,14 @@ export default {
         this.hasAdd = !this.hasAdd;
       });
     },
-    /** 跳转到习惯详情编辑页面 */
-    onJumpEdit() {
-      global.PUBLIC.util.jumpNavigateTo("edit-habit/main");
+    /** 跳转到习惯详情编辑页面
+     * @memberof EditCard
+     */
+    onJumpEdit(node) {
+      service.setData(node);
+      global.PUBLIC.util.jumpNavigateTo(
+        'edit-habit/main?hasData=ture'
+      );
     },
     /** 跳转到添加习惯页面 */
     onJumpAddHabit() {
@@ -254,8 +259,9 @@ export default {
      */
     onPopEdit(node) {
       this.hasShowEdit = 0;
+      service.setData(node);
       global.PUBLIC.util.jumpNavigateTo(
-        node.schedule.type === "habit" ? "edit-habit/main" : "edit-course/main"
+        node.schedule.type === "habit" ? "edit-habit/main?hasData=ture" : "edit-course/main?hasData=ture"
       );
     },
     /** 单击节点
@@ -497,7 +503,7 @@ export default {
     background-color: #f2f3f6;
 
     .content {
-      height: 580rpx;
+      min-height: 580rpx;
       width: 632rpx;
       padding: 35rpx 30rpx 80rpx 30rpx;
       background-color: white;
