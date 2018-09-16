@@ -42,8 +42,8 @@ export default {
   },
   onLoad(option) {
     this.hasEdit = option.hasOwnProperty("hasData");
+    this.data = service.getData();
     if (option.hasOwnProperty("hasData")) {
-      this.data = service.getData();
       if (option.hasData === "1") {
         // 习惯养成计划的编辑
         this.timeArr = global.PUBLIC.util.jumpApiDate(this.data.rules);
@@ -57,6 +57,8 @@ export default {
           this.timeArr = global.PUBLIC.util.jumpApiDate(items.rules);
         });
       }
+    } else {
+      this.timeArr = [];
     }
   },
   mounted() {
@@ -86,26 +88,41 @@ export default {
     /** 单机保存 */
     onSubmit() {
       const { describe } = this.data;
-      // 修改习惯备注
+      if (this.hasEdit) {
+        // 修改习惯备注
+        global.PUBLIC.util
+          .httpOther(
+            "PUT",
+            `/habit/user/${this.data.id || this.data.schedule.id}`,
+            {
+              describe
+            }
+          )
+          .then(res => {});
+      } else {
+        // 添加习惯备注
+        global.PUBLIC.util
+          .httpOther("POST", `/habit/user`, {
+            describe,
+            habit_id: this.data[0].habit_id,
+            trainee_id: this.data[0].trainee_id
+          })
+          .then(res => {});
+      }
       global.PUBLIC.util
-        .httpOther("PUT", `/habit/user/${this.data.id}`, {
-          describe
+        .httpOther("POST", `/rule/batch`, {
+          batch: global.PUBLIC.util.conversionDate(this.timeArr).map(v => {
+            return {
+              ...v,
+              type: "habit",
+              object_id: this.data.id,
+              trainee_id: this.data.trainee_id
+            };
+          })
         })
         .then(res => {
+          wx.navigateBack({ changed: true });
         });
-      this.timeArr.forEach(value => {
-        // 上传时间
-        global.PUBLIC.util
-          .httpOther("POST", `/rule`, {
-            type: "habit",
-            object_id: this.data.habit.id,
-            trainee_id: this.data.id,
-            ...global.PUBLIC.util.conversionDate(value)
-          })
-          .then(res => {
-            wx.navigateBack({ changed: true });
-          });
-      });
     }
   }
 };
@@ -113,6 +130,7 @@ export default {
 
 <style scoped lang='less'>
 .course-add-page {
+  padding-bottom: 30rpx;
   .content {
     width: 690rpx;
   }

@@ -23,7 +23,7 @@
           </div>
         </div>
         <DateList :data='dataList' @onNodeClick='onDateList' />
-        <div class="footer flex-center">
+        <div class="footer">
           <div class="content">
             <div class="top flex-both">
               <span class="col-black flex-left-center"><i class="icon icon-calendar" />习惯养成计划</span>
@@ -137,19 +137,12 @@ export default {
     };
   },
   components: { DateList, EditCard, Btns },
-  created() {
-    this.initCourse();
-    global.PUBLIC.util
-      .httpGet("/habit/user", {
-        trainee_id: 2
-      })
-      .then(res => {
-        this.editCardData = res.data.items.map(v => {
-          v.info = v.habit.name;
-          v.icon = v.habit.remark.icon;
-          return v;
-        });
-      });
+  onLoad() {
+    this.init();
+  },
+  /** 页面返回执行方法 */
+  onShow() {
+    this.init();
   },
   mounted() {
     global.PUBLIC.util.setTitle("课程表");
@@ -167,6 +160,21 @@ export default {
       this.saveData = data;
       this.hasShowEdit = 1;
       // service.setData(data);
+    },
+    /** 初始化 */
+    init() {
+      this.initCourse();
+      global.PUBLIC.util
+        .httpGet("/habit/user", {
+          trainee_id: 2
+        })
+        .then(res => {
+          this.editCardData = res.data.items.map(v => {
+            v.info = v.habit.name;
+            v.icon = v.habit.remark.icon;
+            return v;
+          });
+        });
     },
     /** 课程表数据 */
     initCourse() {
@@ -233,12 +241,11 @@ export default {
      */
     onJumpEdit(node) {
       service.setData(node);
-      global.PUBLIC.util.jumpNavigateTo(
-        'edit-habit/main?hasData=1'
-      );
+      global.PUBLIC.util.jumpNavigateTo("edit-habit/main?hasData=1");
     },
     /** 跳转到添加习惯页面 */
     onJumpAddHabit() {
+      service.setData(this.editCardData);
       global.PUBLIC.util.jumpNavigateTo("add-habit/main");
     },
     /** 跳转到添加课程 */
@@ -261,7 +268,9 @@ export default {
       this.hasShowEdit = 0;
       service.setData(node);
       global.PUBLIC.util.jumpNavigateTo(
-        node.schedule.type === "habit" ? "edit-habit/main?hasData=2" : "edit-course/main?hasData=2"
+        node.schedule.type !== "leaning"
+          ? "edit-habit/main?hasData=2"
+          : "edit-course/main?hasData=2"
       );
     },
     /** 单击节点
@@ -498,14 +507,16 @@ export default {
     }
   }
   .footer {
-    height: 810rpx;
+    min-height: 810rpx;
     width: 750rpx;
     background-color: #f2f3f6;
-
+    padding-top: 40rpx;
+    padding-bottom: 60rpx;
     .content {
       min-height: 580rpx;
+      margin: 0 auto;
       width: 632rpx;
-      padding: 35rpx 30rpx 80rpx 30rpx;
+      padding: 35rpx 30rpx 20rpx 30rpx;
       background-color: white;
       border-radius: 6rpx;
       .top {

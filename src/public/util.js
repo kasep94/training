@@ -104,23 +104,27 @@ const util = (() => {
 
   /** 转换日期
    * @param {Array} data 数据
-   * @return 调用接口数据
+   * @return {Array} 调用接口数据
    */
   function conversionDate(data) {
-    const weeks = [
-      "星期一",
-      "星期二",
-      "星期三",
-      "星期四",
-      "星期五",
-      "星期六",
-      "星期日"
-    ];
-    return {
-      day: weeks.indexOf(data[0]),
-      start: `${data[1]}:${data[2]}`,
-      end: `${data[3]}:${data[4]}`
-    }
+    const arr = []
+    data.forEach(v => {
+      const weeks = [
+        "星期一",
+        "星期二",
+        "星期三",
+        "星期四",
+        "星期五",
+        "星期六",
+        "星期日"
+      ];
+      arr.push({
+        day: weeks.indexOf(v[0]),
+        start: `${v[1]}:${v[2]}`,
+        end: `${v[3]}:${v[4]}`
+      })
+    })
+    return arr
   }
 
   /** 计算后台返回时间
@@ -151,7 +155,6 @@ const util = (() => {
         timeArr.push([weeks[Number(week.day)], ...start, ...end, value]);
       }
     });
-    console.log(timeArr)
     return timeArr
   }
 
@@ -321,20 +324,9 @@ const util = (() => {
           let sArr = String(s).split('.')[0];
           resolve(sArr > 1000 ? `${String(sArr/1000).split('.')[0]}km` : `${sArr}m`)
         }
-        // console.log(s)
       })
     })
 
-    /* var La1 = la1 * Math.PI / 180.0;
-    var La2 = la2 * Math.PI / 180.0;
-    var La3 = La1 - La2;
-    var Lb3 = lo1 * Math.PI / 180.0 - lo2 * Math.PI / 180.0;
-    var s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(La3 / 2), 2) + Math.cos(La1) * Math.cos(La2) * Math.pow(Math.sin(Lb3 / 2), 2)));
-    s = s * 6378.137; //地球半径
-    s = Math.round(s * 10000) / 10000;
-    console.log(s) */
-    // return s
-    // console.log("计算结果",s)
   }
 
 

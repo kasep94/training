@@ -18,17 +18,23 @@ export default {
   components: { IconList },
   data() {
     return {
-      iconListData
+      iconListData,
+      // 保存点击编辑都节点属性
+      saveNode: null
     };
+  },
+  /** 返回刷新页面 */
+  onShow() {
+    const node = this.saveNode;
+    if (node) {
+      node.children = [];
+      this.getHabitList(node.id, node);
+    }
   },
   mounted() {
     global.PUBLIC.util.setTitle("添加习惯");
   },
   computed: {},
-  /** 小程序组件销毁调用相应的接口 */
-  onUnload() {
-    // console.log("success");
-  },
   methods: {
     /** 组件通信
      * @param {Object} 节点属性
@@ -36,9 +42,10 @@ export default {
      */
     onLoadMore(node) {
       // 后面换成接口请求
-      if (node.children && node.children.length === 0)
+      if (node.children && node.children.length === 0) {
+        this.saveNode = node;
         this.getHabitList(node.id, node);
-        // node.children = this.iconListData.children;
+      }
     },
     /** 获取习惯列表接口数据
      * @param {'learning' | 'living' | 'friend' | 'health' | 'behave'} type 接口参数
@@ -53,11 +60,11 @@ export default {
         })
         .then(res => {
           const data = res.data.items.map(value => {
-            value.icon = value.remark.icon
-            value.label = value.name
-            return value
-          })
-          node.children = data
+            value.icon = value.remark.icon;
+            value.label = value.name;
+            return value;
+          });
+          node.children = data;
         });
     }
   }

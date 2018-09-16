@@ -29,7 +29,7 @@
                 <input class="btn-1" type="text" v-model="data.addr" placeholder="填写书籍名称" />
             </div>
 
-            <p class="btn-1 add-course">保  存</p>
+            <p @click="onSubmit" class="btn-1 add-course">保  存</p>
         </div>
     </div>
 </template>
@@ -44,33 +44,36 @@ export default {
       // 选中的时间
       timeArr: [],
       // course页面带过来到参数
-      data: {}
+      data: {},
+      // 判断是修改还是添加
+      hasEdit: false
     };
   },
   onLoad(option) {
+    this.data = service.getData();
+    this.hasEdit = option.hasOwnProperty("hasData")
     if (option.hasOwnProperty("hasData")) {
-      this.data = service.getData();
       if (option.hasData === "1") {
         // TODO
       } else {
         // 课程表弹出框的编辑TODO
-
         const { id } = this.data.schedule;
         // 获取课程数据
-        global.PUBLIC.util
-          .httpGet(`/lesson/user`, { id })
-          .then(res => {
-            const items = res.data.items[0];
-            // 地址
-            this.data.addr = items.merchant.addr;
-            // 课程名
-            this.data.name = items.class.item_name;
-            // 机构名称
-            this.data.merchantName = items.merchant.merchantName;
-            // 时间
-            this.timeArr = global.PUBLIC.util.jumpApiDate(items.rules);
-          });
+        global.PUBLIC.util.httpGet(`/lesson/user`, { id }).then(res => {
+          const items = res.data.items[0];
+          // 地址
+          this.data.addr = items.merchant.addr;
+          // 课程名
+          this.data.name = items.class.item_name;
+          // 机构名称
+          this.data.merchantName = items.merchant.merchantName;
+          // 时间
+          this.timeArr = global.PUBLIC.util.jumpApiDate(items.rules);
+        });
       }
+    } else {
+      this.data = {};
+      this.timeArr = [];
     }
   },
   components: { Picker },
@@ -96,6 +99,10 @@ export default {
      */
     onSelectTime(data) {
       this.timeArr.push(data);
+    },
+    /** 保存 */
+    onSubmit() {
+      console.log(this.data)
     }
   }
 };
@@ -103,6 +110,7 @@ export default {
 
 <style lang='less' scoped>
 .edit-course-page {
+  padding-bottom: 30rpx;
   .content {
     width: 690rpx;
   }
