@@ -21,8 +21,8 @@
                     <p class="price">{{price || 0}}元/课时</p>
                 </div>
                 <div class="flex-both">
-                    <p class="gray">所属机构 | {{details.update_time}}完成装修</p>
-                    <p class="gray">{{details.addr}} | 距您{{details.detail.lola}}</p>
+                    <p class="gray flex-left-center"><span class="nowrap">{{details.productName}}</span> | {{details.update_time}}完成装修</p>
+                    <p class="gray flex-left-center"><span class="nowrap">{{details.addr}}</span> | 距您{{details.detail.lola}}</p>
                 </div>
             </div>
             <div class="center">
@@ -117,7 +117,8 @@ export default {
     global.PUBLIC.util.httpGet(`/courseDetail/${course_id}`, {}).then(res => {
       this.price = res.data.origin_price;
       this.introduction = res.data.teachers;
-      this.details = { ...res.data.merchant_detail, ...service.getData() };
+      this.details = { ...res.data.course, ...res.data.merchant_detail, ...service.getData() };
+      this.details.update_time = this.details.update_time.substr(0, 7).replace('-', '.')
     });
     // 获取评论数量
     global.PUBLIC.util
@@ -219,12 +220,16 @@ export default {
     width: 750rpx;
     height: 318.6rpx;
   }
+  .nowrap {
+    width: 80px;
+    display: inline-block;
+  }
   .header {
     padding: 0 30rpx;
     .top {
       border-bottom: 1px solid #e5e8f0;
       padding: 30rpx 0;
-      .flex-left-center {
+      >.flex-left-center {
         margin: 11rpx 0 17rpx 0;
       }
     }

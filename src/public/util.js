@@ -102,6 +102,59 @@ const util = (() => {
     }
   }
 
+  /** 转换日期
+   * @param {Array} data 数据
+   * @return 调用接口数据
+   */
+  function conversionDate(data) {
+    const weeks = [
+      "星期一",
+      "星期二",
+      "星期三",
+      "星期四",
+      "星期五",
+      "星期六",
+      "星期日"
+    ];
+    return {
+      day: weeks.indexOf(data[0]),
+      start: `${data[1]}:${data[2]}`,
+      end: `${data[3]}:${data[4]}`
+    }
+  }
+
+  /** 计算后台返回时间
+   * @param {Array} data 接口返回参数
+   * @return 转换的数据
+   */
+  function jumpApiDate(data) {
+    const timeArr = []
+    data.map(value => {
+      const week = value.rule;
+      const end = week.end.split(":");
+      const start = week.start.split(":");
+      const weeks = [
+        "星期一",
+        "星期二",
+        "星期三",
+        "星期四",
+        "星期五",
+        "星期六",
+        "星期日"
+      ];
+      if (week.day === "*") {
+        // 每天
+        weeks.forEach(w => {
+          timeArr.push([w, ...start, ...end, value]);
+        });
+      } else {
+        timeArr.push([weeks[Number(week.day)], ...start, ...end, value]);
+      }
+    });
+    console.log(timeArr)
+    return timeArr
+  }
+
   /**
    * @param {'post' | 'put'} method
    * @param {String} url 请求地址
@@ -293,6 +346,8 @@ const util = (() => {
     getLocation,
     calDistance,
     getDate,
+    jumpApiDate,
+    conversionDate
   }
 })()
 

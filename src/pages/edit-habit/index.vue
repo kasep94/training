@@ -15,7 +15,7 @@
                 <p><i class="icon icon-time" />选择时间</p>
                 <div class="time-select" v-for="(item, i) of timeArr" :key="i">
                     <input class="btn-1" disabled type="text" :placeholder="item[0] + '  ' + item[1] + ':' + item[2] + '~' + item[3] + ':' + item[4]"/>
-                    <i @click='onRemove(i)' class="icon icon-delete"/>
+                    <i @click='onRemove(item, i)' class="icon icon-delete"/>
                 </div>
                 <Picker @onTimePicker='onSelectTime' info='添加时间' type='time' />
             </div>
@@ -35,35 +35,28 @@ export default {
       // 选中的时间
       timeArr: [],
       // course页面带过来到参数
-      data: {}
+      data: {},
+      // 判断是修改还是添加
+      hasEdit: false
     };
   },
   onLoad(option) {
+    this.hasEdit = option.hasOwnProperty("hasData");
     if (option.hasOwnProperty("hasData")) {
       this.data = service.getData();
-      console.log(this.data)
-      this.data.rules.map(value => {
-        const week = value.rule;
-        const end = week.end.split(":");
-        const start = week.start.split(":");
-        const weeks = [
-          "星期一",
-          "星期二",
-          "星期三",
-          "星期四",
-          "星期五",
-          "星期六",
-          "星期日"
-        ];
-        if (week.day === "*") {
-          // 每天
-          weeks.forEach(w => {
-            this.timeArr.push([w, ...end, ...start]);
-          });
-        } else {
-          this.timeArr.push([weeks[Number(week.day)], ...end, ...start]);
-        }
-      });
+      if (option.hasData === "1") {
+        // 习惯养成计划的编辑
+        this.timeArr = global.PUBLIC.util.jumpApiDate(this.data.rules);
+      } else {
+        // 课程表弹出框的编辑 TODO
+        this.data.describe = this.data.schedule.describe;
+        const { id } = this.data.schedule;
+        global.PUBLIC.util.httpGet(`/lesson/user`, { id }).then(res => {
+          const items = res.data.items[0];
+          // 时间
+          this.timeArr = global.PUBLIC.util.jumpApiDate(items.rules);
+        });
+      }
     }
   },
   mounted() {
@@ -72,30 +65,47 @@ export default {
   components: { Picker },
   computed: {},
   methods: {
-    /** 删除选中的日期 */
-    onRemove(index) {
-      this.timeArr.splice(index, 1);
+    /** 删除选中的日期
+     * @param {Array} node 节点属性
+     * @param {number} index 索引
+     */
+    onRemove(node, index) {
+      global.PUBLIC.util
+        .httpOther("DELETE", `/rule/${node[5].id}`, {})
+        .then(res => {
+          this.timeArr.splice(index, 1);
+        });
     },
     /** 获取日期选择的数据
      * @param {Array} data 选择的数据
      * @memberof Picker
      */
     onSelectTime(data) {
-      console.log(data);
       this.timeArr.push(data);
     },
     /** 单机保存 */
     onSubmit() {
-      console.log(this.data.describe);
-      const {describe} = this.data
+      const { describe } = this.data;
       // 修改习惯备注
       global.PUBLIC.util
-        .httpOther("PUT" ,`/habit/user/${this.data.id}`, {
+        .httpOther("PUT", `/habit/user/${this.data.id}`, {
           describe
         })
         .then(res => {
-          console.log(res);
         });
+      this.timeArr.forEach(value => {
+        // 上传时间
+        global.PUBLIC.util
+          .httpOther("POST", `/rule`, {
+            type: "habit",
+            object_id: this.data.habit.id,
+            trainee_id: this.data.id,
+            ...global.PUBLIC.util.conversionDate(value)
+          })
+          .then(res => {
+            wx.navigateBack({ changed: true });
+          });
+      });
     }
   }
 };

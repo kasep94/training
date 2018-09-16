@@ -234,7 +234,7 @@ export default {
     onJumpEdit(node) {
       service.setData(node);
       global.PUBLIC.util.jumpNavigateTo(
-        'edit-habit/main?hasData=ture'
+        'edit-habit/main?hasData=1'
       );
     },
     /** 跳转到添加习惯页面 */
@@ -261,7 +261,7 @@ export default {
       this.hasShowEdit = 0;
       service.setData(node);
       global.PUBLIC.util.jumpNavigateTo(
-        node.schedule.type === "habit" ? "edit-habit/main?hasData=ture" : "edit-course/main?hasData=ture"
+        node.schedule.type === "habit" ? "edit-habit/main?hasData=2" : "edit-course/main?hasData=2"
       );
     },
     /** 单击节点
