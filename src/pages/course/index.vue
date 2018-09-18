@@ -18,7 +18,7 @@
             />
             <div v-if="hasAdd">
               <p @click="onJumpCourseAdd">添加课程</p>
-              <p>导出表单</p>
+              <p @click="onScreenshot">导出表单</p>
             </div>
           </div>
         </div>
@@ -253,6 +253,15 @@ export default {
       this.hasAdd = false;
       global.PUBLIC.util.jumpNavigateTo("course-add/main");
     },
+    /** 单击导出课程表 */
+    onScreenshot() {
+      this.hasAdd = false;
+      wx.showToast({
+        title: "暂不支持该功能",
+        icon: "none",
+        duration: 2000
+      });
+    },
     /** 全局单击事件 */
     onWin() {
       this.hasShowEdit = this.hasShowEdit === 2 ? 1 : 0;
@@ -473,7 +482,7 @@ export default {
     background: rgba(199, 220, 242, 1);
     box-shadow: 0px 4px 10px 0px rgba(142, 167, 199, 0.05);
     position: relative;
-    z-index: 1;
+    z-index: 10;
     .icon-down {
       width: 18rpx;
       height: 13rpx;
@@ -501,8 +510,8 @@ export default {
         }
       }
       .add {
-        height: 50rpx;
-        width: 50rpx;
+        height: 60rpx;
+        width: 60rpx;
       }
     }
   }

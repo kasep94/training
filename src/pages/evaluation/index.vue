@@ -8,7 +8,7 @@
     <div class="home_page">
         <div class='header flex-center'>
             <img class="search" src="../../../static/images/evaluation/search.png" />
-            <input placeholder="搜索内容" type="text" v-model="inputVal"/>
+            <input bindinput="bindKeyInput" bindconfirm="searchinput" confirm-type="search" placeholder-style="color: #999; font-size: 26rpx" placeholder="搜索内容" type="text" v-model="inputVal"/>
             <span @click="onSearch">搜索</span>
         </div>
         <SelectedList title='年龄:' v-on:onNodeClick="(node) => onSelectedClick('suit_crowds', node)" :data='data.selectedData1' />
@@ -115,9 +115,9 @@ export default {
                   icon: "none",
                   duration: 2000
                 });
-                this.page = query ? 1 : null
+                this.page = query ? 1 : null;
               } else {
-                this.page += 1
+                this.page += 1;
               }
               const data = res.data.map(value => {
                 if (value.detail.lola) {
@@ -175,6 +175,7 @@ export default {
     background: rgba(245, 247, 249, 1);
     border-radius: 100rpx;
     padding-left: 80rpx;
+    font-size: 26rpx;
   }
   span {
     font-size: 26rpx;
@@ -182,10 +183,11 @@ export default {
   }
 }
 .search {
-  height: 37rpx;
-  width: 37rpx;
-  left: 60rpx;
+  height: 26rpx;
+  width: 26rpx;
+  left: 70rpx;
   position: absolute;
   z-index: 2;
+  top: 46rpx;
 }
 </style>

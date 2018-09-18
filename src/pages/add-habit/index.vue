@@ -55,7 +55,7 @@ export default {
       global.PUBLIC.util
         .httpGet("/habit/meta", {
           type,
-          login_id: 1,
+          trainee_id: 2,
           page_size: 100
         })
         .then(res => {

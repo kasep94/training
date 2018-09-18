@@ -36,17 +36,19 @@ export default {
       timeArr: [],
       // course页面带过来到参数
       data: {},
-      // 判断是修改还是添加
-      hasEdit: false
+      // 保存url search
+      hasDataNum: null
     };
   },
   onLoad(option) {
-    this.hasEdit = option.hasOwnProperty("hasData");
+    this.hasDataNum = option.hasData;
     this.data = service.getData();
-    if (option.hasOwnProperty("hasData")) {
-      if (option.hasData === "1") {
+    if (this.hasDataNum) {
+      if (this.hasDataNum === "1") {
         // 习惯养成计划的编辑
         this.timeArr = global.PUBLIC.util.jumpApiDate(this.data.rules);
+      } else if (this.hasDataNum === "2") {
+        // 添加习惯编辑
       } else {
         // 课程表弹出框的编辑 TODO
         this.data.describe = this.data.schedule.describe;
@@ -88,7 +90,7 @@ export default {
     /** 单机保存 */
     onSubmit() {
       const { describe } = this.data;
-      if (this.hasEdit) {
+      if (this.hasDataNum === "1") {
         // 修改习惯备注
         global.PUBLIC.util
           .httpOther(
@@ -99,13 +101,22 @@ export default {
             }
           )
           .then(res => {});
-      } else {
+      } else if (this.hasDataNum === "2") {
         // 添加习惯备注
         global.PUBLIC.util
           .httpOther("POST", `/habit/user`, {
             describe,
             habit_id: this.data[0].habit_id,
-            trainee_id: this.data[0].trainee_id
+            trainee_id: 2
+          })
+          .then(res => {});
+      } else {
+        // 添加习惯备注
+        global.PUBLIC.util
+          .httpOther("POST", `/habit/user`, {
+            describe,
+            habit_id: this.data.id,
+            trainee_id: 2
           })
           .then(res => {});
       }

@@ -60,7 +60,7 @@ p {
 }
 span {
   height: 37rpx;
-  padding: 0 30rpx;
+  padding: 0 35rpx;
   font-size: 26rpx;
   font-family: PingFangSC-Regular;
   font-weight: 400;

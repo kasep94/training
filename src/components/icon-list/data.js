@@ -1,4 +1,4 @@
-const url = '../../../static/images/all/'
+const url = process.env.onlineUrl + 'test/'
 
 const data = [{
     // 节点名

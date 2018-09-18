@@ -36,6 +36,8 @@
 </template>
 
 <script>
+import service from "../../pages/course/service.js";
+
 export default {
   props: {
     data: {
@@ -66,6 +68,7 @@ export default {
     addHabit(childNode) {
       // childNode.attached = !childNode.attached
       if (!childNode.attached) {
+        service.setData(childNode)
         global.PUBLIC.util.jumpNavigateTo("edit-habit/main");
       }
     }

@@ -68,6 +68,10 @@ export default {
 
 <style lang='less' scoped>
 .comment-list-comp {
+  .cl-black  {
+    line-height: 1.3;
+    text-align:justify;
+  }
   header {
     padding-bottom: 20rpx;
     padding: 0 30rpx;
