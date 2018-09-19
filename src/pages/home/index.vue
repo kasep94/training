@@ -15,7 +15,7 @@
           </block>
         </swiper>
         <div class="flex">
-          <div v-for="item in imgIcon" class="flex-content-center content" :key="item.id">
+          <div v-for="item in imgIcon" @click="onJumpPage(item)" class="flex-content-center content" :key="item.id">
             <img :src="onlineUrl + item.name + '.png'" />
             <p>{{item.label}}</p>
           </div>
@@ -104,7 +104,16 @@ export default {
     global.PUBLIC.util.setTitle("首页");
   },
   computed: {},
-  methods: {}
+  methods: {
+    onJumpPage(node) {
+      console.log(node)
+      switch (node.name) {
+        case 'h_perspective':
+          global.PUBLIC.util.jumpNavigateTo("perspective/main");
+          break;
+      }
+    }
+  }
 };
 </script>
 

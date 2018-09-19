@@ -6,11 +6,7 @@
  */
 <template>
     <div class="home_page">
-        <div class='header flex-center'>
-            <img class="search" src="../../../static/images/evaluation/search.png" />
-            <input bindinput="bindKeyInput" bindconfirm="searchinput" confirm-type="search" placeholder-style="color: #999; font-size: 26rpx" placeholder="搜索内容" type="text" v-model="inputVal"/>
-            <span @click="onSearch">搜索</span>
-        </div>
+        <Search @onSearch='onSearch'/>
         <SelectedList title='年龄:' v-on:onNodeClick="(node) => onSelectedClick('suit_crowds', node)" :data='data.selectedData1' />
         <SelectedList title='科目:' v-on:onNodeClick="(node) => onSelectedClick('config_name', node)" :data='subject' />
         <SortList @onSortClick='onSortClick' :data='sortData' />
@@ -26,6 +22,7 @@ import ViewList from "../../components/view-list/view-list";
 import data from "./data.js";
 import config from "../../public/config.js";
 import service from "./service.js";
+import Search from '../../components/search/search'
 
 export default {
   data() {
@@ -42,8 +39,6 @@ export default {
       sortData,
       // 页面
       page: 1,
-      // 输入都搜索内容
-      inputVal: null
     };
   },
   created() {
@@ -57,7 +52,8 @@ export default {
   components: {
     SelectedList,
     SortList,
-    ViewList
+    ViewList,
+    Search
   },
   computed: {},
   /** 下拉刷新 */
@@ -75,11 +71,14 @@ export default {
     this.getList();
   },
   methods: {
-    // 单击搜索
-    onSearch() {
-      if (this.inputVal) {
+    /** 输入框
+     * @param {String} value 输入都搜索内容
+     * @memberof Search
+     */
+    onSearch(value) {
+      if (value) {
         this.page = 1;
-        this.getList(this.inputVal);
+        this.getList(value);
       }
     },
     /** 组件通信
@@ -160,34 +159,3 @@ export default {
   }
 };
 </script>
-
-<style scoped lang='less'>
-.header {
-  position: relative;
-  height: 115rpx;
-  width: 750rpx;
-  border-bottom: 1px solid rgba(229, 232, 240, 1);
-}
-.header {
-  input {
-    width: 510rpx;
-    height: 60rpx;
-    background: rgba(245, 247, 249, 1);
-    border-radius: 100rpx;
-    padding-left: 80rpx;
-    font-size: 26rpx;
-  }
-  span {
-    font-size: 26rpx;
-    margin-left: 20rpx;
-  }
-}
-.search {
-  height: 26rpx;
-  width: 26rpx;
-  left: 70rpx;
-  position: absolute;
-  z-index: 2;
-  top: 46rpx;
-}
-</style>
