@@ -88,7 +88,7 @@ import data from "./data.js";
 import ScrollX from "../../components/scroll-x/scroll-x";
 
 export default {
-  components: {ScrollX},
+  components: { ScrollX },
   data() {
     return {
       ...data,
@@ -106,10 +106,22 @@ export default {
   computed: {},
   methods: {
     onJumpPage(node) {
-      console.log(node)
       switch (node.name) {
-        case 'h_perspective':
-          global.PUBLIC.util.jumpNavigateTo("perspective/main");
+        case "h_notice":
+          // 活动预告
+          global.PUBLIC.util.jumpNavigateTo("perspective/main?type=1");
+          break;
+        case "h_activity":
+          // 往期活动
+          global.PUBLIC.util.jumpNavigateTo("perspective/main?type=2");
+          break;
+        case "h_perspective":
+          // 教育视角
+          global.PUBLIC.util.jumpNavigateTo("perspective/main?type=3");
+          break;
+        case "h_share":
+          // 育儿分享
+          global.PUBLIC.util.jumpNavigateTo("perspective/main?type=4");
           break;
       }
     }
@@ -132,7 +144,7 @@ export default {
   }
 }
 .box {
-  >.flex-both {
+  > .flex-both {
     padding: 40rpx 31rpx;
     border-bottom: 1rpx solid @cl-6;
   }
@@ -146,7 +158,7 @@ export default {
     padding-bottom: 26rpx;
     width: 690rpx;
     margin-left: 30rpx;
-    border-left: 3rpx solid #EDF0F7;
+    border-left: 3rpx solid #edf0f7;
     .left {
       width: 163rpx;
       height: 36rpx;
@@ -193,7 +205,8 @@ export default {
     height: 48rpx;
     width: 40rpx;
   }
-  .icon-calendar, .icon-ranking {
+  .icon-calendar,
+  .icon-ranking {
     height: 40rpx;
     width: 40rpx;
   }

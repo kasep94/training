@@ -1,4 +1,14 @@
 const navbar1 = [{
+    label: '活动预告',
+    name: 'notice'
+  },
+  {
+    label: '往期活动',
+    name: 'past'
+  }
+]
+
+const navbar2 = [{
     label: '教育视角',
     name: 'perspective'
   },
@@ -8,6 +18,9 @@ const navbar1 = [{
   }
 ]
 
+
+
 module.exports = {
-  navbar1
+  navbar1,
+  navbar2
 }

@@ -10,10 +10,10 @@
     <div :style="{width: width + 'rpx'}" 
       v-for="(item, i) of data"
       @click="onSelect(item, i)"
-      :class="[i === index ? 'active' : '', 'flex-top-center']"
+      :class="[i == index ? 'active' : '', 'flex-top-center']"
       :key='item.id'>
       {{item.label}}
-      <span v-if="i === index" :style="{marginLeft: botLeft + 'rpx'}" class="bot" />
+      <span v-if="i == index" :style="{marginLeft: botLeft + 'rpx'}" class="bot" />
     </div>
   </div>
 </template>
@@ -29,14 +29,17 @@ export default {
     size: {
       type: String,
       default: "2"
+    },
+    // 选中第几个数组
+    index: {
+      type: String,
+      default: 0
     }
   },
   data() {
     return {
       // 宽度
       width: 750,
-      // 索引
-      index: 0,
       // 选中到线离左边距离
       botLeft: 0
     };
@@ -53,8 +56,7 @@ export default {
      * @param {Number} index 索引
      */
     onSelect(node, index) {
-      this.index = index;
-      this.$emit("onNodeClick", node);
+      this.$emit("onNodeClick", node, index);
     }
   }
 };
