@@ -9,7 +9,7 @@
   <div class="list-comp">
     <div class="flex-both" v-for="item of data" :key="item.name">
       <div class="flex-left-center">
-        <img :src="onlineUrl + item.name + '.png'" />
+        <img :class="item.name" :src="onlineUrl + item.name + '.png'" />
         <span>{{item.label}}</span>
       </div>
       <i class="icon icon-more" />
@@ -48,6 +48,14 @@ export default {
     height: 40rpx;
     width: 40rpx;
     margin-right: 30rpx;
+  }
+  .my_badge {
+    height: 45rpx;
+    width: 38rpx;
+  }
+  .my_collection, .my_participated {
+    height: 34rpx;
+    width: 38rpx;
   }
 }
 </style>

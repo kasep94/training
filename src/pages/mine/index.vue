@@ -18,7 +18,7 @@
                 </div>
             </div>
             <div class="flex-left-center bottom">
-                <div class="flex-center"><img src="../../../static/images/all/grade.png" />等级: Lv{{userInfo.level}}</div>
+                <div class="flex-center"><img class="img1" src="../../../static/images/all/grade.png" />等级: Lv{{userInfo.level}}</div>
                 <div class="flex-center"><img src="../../../static/images/all/integral.png" />积分: {{userInfo.integral}}</div>
             </div>
         </div>
@@ -77,9 +77,11 @@ export default {
       width: 375rpx;
       height: 50rpx;
     }
-
+    .img1 {
+      height: 35rpx !important;
+    }
     img {
-      height: 50rpx;
+      height: 40rpx;
       width: 40rpx;
       margin-right: 15rpx;
     }
