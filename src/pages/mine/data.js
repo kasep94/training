@@ -7,6 +7,15 @@ const userInfo = {
   integral: 30
 }
 
-export default {
-  userInfo
+const othterInfo = [{
+  name: '名字',
+  img: 'https://img.jinse.com/1110017_small.png',
+}, {
+  name: '名字',
+  img: 'https://img.jinse.com/1110017_small.png',
+}]
+
+module.exports = {
+  userInfo,
+  othterInfo
 }

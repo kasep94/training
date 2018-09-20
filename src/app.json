@@ -1,8 +1,8 @@
 {
   "pages": [
+    "pages/mine/main",
     "pages/add-user/main",
     "pages/course/main",
-    "pages/mine/main",
     "pages/home/main",
     "pages/perspective/main",
     "pages/evaluation/main",

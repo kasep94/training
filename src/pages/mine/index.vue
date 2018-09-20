@@ -8,7 +8,7 @@
     <div class="home_page">
         <div class="header">
             <div class="flex-left-center top">
-                <img :src="userInfo.img"/>
+                <img class="avatar1" @click="onAvatar" :src="userInfo.img"/>
                 <div class="header-content">
                     <p class="user-name">{{userInfo.name}}</p>
                     <div class="flex">
@@ -16,6 +16,16 @@
                         <span>(孩子) {{userInfo.grade}}</span>
                     </div>
                 </div>
+            </div>
+            <div v-if="hasPop" class="pop">
+              <div class="flex-left-center" v-for="item of othterInfo" :key="item.id">
+                <img class="other-img" :src="item.img"/>
+                <p class="other-name">{{item.name}}</p>
+              </div>
+              <div @click="onAdd" class="flex-left-center add">
+                <p class="other-add">+</p>
+                <p class="other-name">添加一个孩子信息</p>
+              </div>
             </div>
             <div class="flex-left-center bottom">
                 <div class="flex-center"><img class="img1" src="../../../static/images/all/grade.png" />等级: Lv{{userInfo.level}}</div>
@@ -41,7 +51,7 @@
 </template>
 
 <script>
-import data from "./data.js";
+import { userInfo, othterInfo } from "./data.js";
 import NextList from "../../components/next-list/next-list";
 import listData from "../../components/next-list/data.js";
 
@@ -49,18 +59,72 @@ export default {
   components: { NextList },
   data() {
     return {
-      ...data,
+      userInfo,
+      othterInfo,
       // 列表数据
-      ...listData
+      ...listData,
+      // 是否显示弹出框
+      hasPop: false,
     };
   },
   computed: {},
-  methods: {}
+  methods: {
+    /** 单击头像 */
+    onAvatar() {
+      this.hasPop = true;
+    },
+    /** 单击添加一个孩子信息 */
+    onAdd() {
+      this.hasPop = false;
+      global.PUBLIC.util.jumpNavigateTo("add-user/main");
+    }
+  }
 };
 </script>
 
 <style scoped lang='less'>
 .header {
+  position: relative;
+  .pop {
+    position: absolute;
+    background-color: @cl-17;
+    border-radius: 6rpx;
+    overflow: hidden;
+    bottom: -130rpx;
+    left: 30rpx;
+    .add {
+      height: 76rpx;
+      line-height: 76rpx;
+    }
+    .flex-left-center {
+      padding: 9rpx 25rpx;
+      border-bottom: 1px solid @cl-18;
+      .other-img {
+        height: 80rpx;
+        width: 80rpx;
+        border-radius: 100%;
+        margin-right: 15rpx;
+      }
+      .other-name {
+        font-size: 26rpx;
+        color: white;
+        .nowrap();
+        max-width: 240rpx;
+      }
+
+      .other-add {
+        font-size: 32rpx;
+        color: white;
+        font-weight: 500;
+        margin: 0 10rpx 5rpx 0;
+      }
+    }
+  }
+  img.avatar1 {
+    height: 122rpx;
+    width: 122rpx;
+    border-radius: 100%;
+  }
   .top {
     padding-left: 30rpx;
     border-bottom: 1rpx solid @cl-6;
@@ -98,11 +162,6 @@ export default {
       font-size: 28rpx;
       color: @cl-5;
     }
-  }
-  img {
-    height: 122rpx;
-    width: 122rpx;
-    border-radius: 100%;
   }
 }
 .progress {
