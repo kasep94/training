@@ -87,11 +87,11 @@ export default {
     onSelectTime(data) {
       this.timeArr.push(data);
     },
-    /** 单机保存 */
+    /** 单击保存 */
     onSubmit() {
       const { describe } = this.data;
       if (this.hasDataNum === "1") {
-        // 修改习惯备注
+        // 修改习惯
         global.PUBLIC.util
           .httpOther(
             "PUT",
@@ -102,11 +102,11 @@ export default {
           )
           .then(res => {});
       } else if (this.hasDataNum === "2") {
-        // 添加习惯备注
+        // 弹出框编辑习惯
         global.PUBLIC.util
           .httpOther("POST", `/habit/user`, {
             describe,
-            habit_id: this.data[0].habit_id,
+            habit_id: this.data.id,
             trainee_id: 2
           })
           .then(res => {});

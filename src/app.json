@@ -1,12 +1,13 @@
 {
   "pages": [
+    "pages/add-user/main",
+    "pages/course/main",
+    "pages/mine/main",
     "pages/home/main",
     "pages/perspective/main",
-    "pages/course/main",
     "pages/evaluation/main",
     "pages/institutional-products/main",
     "pages/edit-course/main",
-    "pages/mine/main",
     "pages/edit-habit/main",
     "pages/course-add/main",
     "pages/add-habit/main",
