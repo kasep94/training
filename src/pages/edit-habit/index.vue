@@ -48,16 +48,16 @@ export default {
         // 习惯养成计划的编辑
         this.timeArr = global.PUBLIC.util.jumpApiDate(this.data.rules);
       } else if (this.hasDataNum === "2") {
-        // 添加习惯编辑
-      } else {
         // 课程表弹出框的编辑 TODO
-        this.data.describe = this.data.schedule.describe;
         const { id } = this.data.schedule;
         global.PUBLIC.util.httpGet(`/lesson/user`, { id }).then(res => {
           const items = res.data.items[0];
+          this.data = items;
           // 时间
           this.timeArr = global.PUBLIC.util.jumpApiDate(items.rules);
         });
+      } else {
+        // 添加习惯编辑
       }
     } else {
       this.timeArr = [];

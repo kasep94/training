@@ -28,18 +28,21 @@
             <span class="title">日程安排</span>
             <span class="cl-b-gray">{{date.calendar}} | {{date.week}}</span>
           </div>
-          <span class="cl-b-gray">查看课程表<i class="icon icon-more" /></span>
+          <span @click='jumpCourse' class="cl-b-gray">查看课程表<i class="icon icon-more" /></span>
         </div>
-        <div class="content flex" v-for="item of content1" :key='item.id'>
+        <div v-if="content1.length > 0" class="content flex" v-for="item of content1" :key='item.id'>
           <span class="left">{{item.time}}</span>
           <div class="right">
             <p class="title-1">{{item.name}}</p>
             <p class="gray">{{item.addr}}</p>
           </div>
         </div>
-        <div class="footer flex-center">
-          <i class="icon icon-down-more"/>
+        <div v-if="content1.length === 0" class="none-div">
+          <p>今日无安排</p>
         </div>
+        <!-- <div class="footer flex-center" v-if="content1.length > 2">
+          <i class="icon icon-down-more"/>
+        </div> -->
       </div>
 
       <div class="box">
@@ -49,9 +52,9 @@
             <span class="title">习惯养成</span>
             <span class="cl-b-gray">{{date.calendar}} | {{date.week}}</span>
           </div>
-          <span class="gray"><i class="icon icon-more" /></span>
+          <span @click='jumpCourse' class="gray"><i class="icon icon-more" /></span>
         </div>
-        <div class="content flex" v-for="item of content2" :key='item.id'>
+        <div v-if="content2.length > 0" class="content flex" v-for="item of content2" :key='item.id'>
           <span class="left">{{item.time}}</span>
           <div class="right flex-both">
             <div>
@@ -61,9 +64,12 @@
             <p class="punch">打卡</p>
           </div>
         </div>
-        <div class="footer flex-center">
-          <i class="icon icon-down-more"/>
+        <div v-if="content2.length === 0" class="none-div">
+          <p>今日无安排</p>
         </div>
+        <!-- <div class="footer flex-center" v-if="content2.length > 0">
+          <i class="icon icon-down-more"/>
+        </div> -->
       </div>
 
       <div class="box">
@@ -84,14 +90,18 @@
 </template>
 
 <script>
-import data from "./data.js";
+import { imgIcon, imgUrls, content1, content2, scrollData } from "./data.js";
 import ScrollX from "../../components/scroll-x/scroll-x";
 
 export default {
   components: { ScrollX },
   data() {
     return {
-      ...data,
+      imgIcon,
+      imgUrls,
+      content1: [],
+      content2: [],
+      scrollData,
       date: global.PUBLIC.util.getDate(),
       indicatorDots: false,
       autoplay: false,
@@ -100,11 +110,46 @@ export default {
       onlineUrl: process.env.onlineUrl
     };
   },
+  created() {
+    global.PUBLIC.util
+      .httpGet("/schedule/trainee/2", {
+        start: this.date.calendar1,
+        end: "2018-09-29"
+      })
+      .then(res => {
+        if (Object.prototype.toString.call(res.data) === "[object Object]") {
+          this.content1 = [];
+          this.content2 = [];
+        } else {
+          res.data.forEach(value => {
+            const schedules = value.schedules[0];
+            if (schedules.schedule.type !== "leaning") {
+              this.content2.push({
+                time: `${schedules.start_hour}~${schedules.end_hour}`,
+                name: schedules.schedule.title,
+                addr: ""
+              });
+            } else {
+              this.content1.push({
+                time: `${schedules.start_hour}~${schedules.end_hour}`,
+                name: schedules.schedule.title,
+                addr: ""
+              });
+            }
+          });
+        }
+      });
+  },
   mounted() {
     global.PUBLIC.util.setTitle("首页");
   },
   computed: {},
   methods: {
+    /** 点击跳转到课程 */
+    jumpCourse() {
+      global.PUBLIC.util.jumpSwitchTab("course/main");
+    },
+    /** 点击4个bar */
     onJumpPage(node) {
       switch (node.name) {
         case "h_notice":
@@ -130,6 +175,12 @@ export default {
 </script>
 
 <style scoped lang='less'>
+.none-div {
+  font-size: 24rpx;
+  padding: 20rpx 30rpx;
+  // margin: 28rpx 0 26rpx 65rpx;
+  border-bottom: 20rpx solid @cl-8;
+}
 .header {
   border-bottom: 20rpx solid @cl-8;
   .content {
@@ -172,6 +223,7 @@ export default {
     }
     .right {
       .title-1 {
+        width: 370rpx;
         font-size: 26rpx;
         color: @cl-1;
         margin-bottom: 12rpx;
@@ -202,7 +254,7 @@ export default {
     color: @cl-1;
   }
   img {
-    height: 48rpx;
+    height: 40rpx;
     width: 40rpx;
   }
   .icon-calendar,

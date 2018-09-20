@@ -58,7 +58,7 @@ const scrollData = [
   },
 ]
 
-export default {
+module.exports = {
   imgIcon,
   imgUrls,
   content1,

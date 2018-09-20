@@ -97,6 +97,7 @@ const util = (() => {
       minutes,
       second,
       calendar: `${year}年${month}月${day}日`,
+      calendar1: `${year}-${month}-${day}`,
       dayCountOfMonth,
       thisWeek
     }
@@ -214,9 +215,9 @@ const util = (() => {
    * @param {Boolean} showError 是否显示错误信息
    */
   function httpGet(url = '', body = {}, showError = false) {
-    wx.showLoading({
+    /* wx.showLoading({
       title: '加载中',
-    })
+    }) */
     return new Promise((resolve, reject) => {
       wx.request({
         url: `${ip + url}`,
@@ -229,7 +230,7 @@ const util = (() => {
           "content-type": "application/json"
         },
         success: res => {
-          wx.hideLoading()
+          // wx.hideLoading()
           if (showError) {
             if (res.statusCode < 200 || res.statusCode > 300) {
               wx.showToast({
@@ -278,6 +279,15 @@ const util = (() => {
       success,
       fail,
       complete
+    })
+  }
+
+  /** 跳转到 tabBar 页面，并关闭其他所有非 tabBar 页面
+   * @param {String} url 
+   */
+  function jumpSwitchTab(url) {
+    wx.switchTab({
+      url: `../${url}`
     })
   }
 
@@ -339,7 +349,8 @@ const util = (() => {
     calDistance,
     getDate,
     jumpApiDate,
-    conversionDate
+    conversionDate,
+    jumpSwitchTab
   }
 })()
 

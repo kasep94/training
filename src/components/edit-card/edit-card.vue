@@ -49,15 +49,8 @@ export default {
     .icon {
       margin-left: 36rpx;
       margin-right: 25rpx;
-    }
-    .icon-0,
-    .icon-1 {
-      height: 60rpx;
-      width: 40rpx;
-    }
-    .icon-2 {
-      height: 79rpx;
-      width: 31rpx;
+      height: 80rpx;
+      width: 80rpx;
     }
   }
   .edit {

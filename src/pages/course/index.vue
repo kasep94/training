@@ -36,7 +36,7 @@
         <div v-if="hasShowEdit" @click="onWin" class="pop-comp">
           <div class="pop-content pop-edit flex-content-center">
             <div class="main flex-content-center">
-              <div @click="onContent" v-for="item in saveData.schedules" :key="item.id">
+              <div @click="onContent" v-for="(item, i) in saveData.schedules" :key="i">
                 <div class="flex-both">
                   <p>
                     <span>{{item.start_hour}}~{{item.end_hour}}</span>
@@ -123,7 +123,7 @@ export default {
       hasAdd: false,
       // EditCard组件数据
       editCardData: null,
-      // 弹出哪个弹出框
+      // 弹出哪个弹出框 {1|2|3|4|5}  等于5表示不弹出
       page: 5,
       // btns组件数据
       ...btnsData,
@@ -138,6 +138,7 @@ export default {
   },
   components: { DateList, EditCard, Btns },
   onLoad() {
+    this.page = Number(wx.getStorageSync('page')) || 1;
     this.init();
   },
   /** 页面返回执行方法 */
@@ -149,6 +150,15 @@ export default {
   },
   computed: {},
   methods: {
+    /** 缓存数据
+     * @param {String} value 保存的值
+     */
+    saveLocal(value) {
+      wx.setStorage({
+        key: "page",
+        data: String(value)
+      });
+    },
     /** 单击课程表节点
      * @param {Object} node 节点属性
      * @memberof DateList
@@ -221,14 +231,17 @@ export default {
     /** 点击弹窗叉号 */
     onCross() {
       this.page = 5;
+      this.saveLocal(this.page)
     },
     /** 单击继续 */
     onNext() {
       this.page += 1;
+      this.saveLocal(this.page)
     },
     /** 跳过此步骤 */
     onJumpOver() {
       this.page += 1;
+      this.saveLocal(this.page)
     },
     /** 单击 + 号 */
     onShowAdd() {
