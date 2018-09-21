@@ -43,6 +43,7 @@ export default {
   onLoad(option) {
     this.hasDataNum = option.hasData;
     this.data = service.getData();
+    console.log(this.data, this.hasDataNum)
     if (this.hasDataNum) {
       if (this.hasDataNum === "1") {
         // 习惯养成计划的编辑
@@ -90,19 +91,8 @@ export default {
     /** 单击保存 */
     onSubmit() {
       const { describe } = this.data;
-      if (this.hasDataNum === "1") {
-        // 更新框编辑习惯
-        global.PUBLIC.util
-          .httpOther(
-            "PUT",
-            `/habit/user/${this.data.id || this.data.schedule.id}`,
-            {
-              describe
-            }
-          )
-          .then(res => {});
-      } else if (this.hasDataNum === "2") {
-        // 弹出框更新框编辑习惯
+      if (this.hasDataNum === "1" || this.hasDataNum === "2") {
+        // 更新框编辑习惯 | 弹出框更新框编辑习惯
         global.PUBLIC.util
           .httpOther(
             "PUT",
