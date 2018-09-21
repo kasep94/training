@@ -44,7 +44,7 @@
             </div>
           </div>
           <div class="footer-bottom">
-            <NextList :data="mine2" />
+            <NextList @onNodeClick='onNextList' :data="mine2" />
           </div>
         </div>
     </div>
@@ -64,7 +64,7 @@ export default {
       // 列表数据
       ...listData,
       // 是否显示弹出框
-      hasPop: false,
+      hasPop: false
     };
   },
   computed: {},
@@ -77,6 +77,39 @@ export default {
     onAdd() {
       this.hasPop = false;
       global.PUBLIC.util.jumpNavigateTo("add-user/main");
+    },
+    /** 单击下一页
+     * @param {Object} node 节点属性
+     * @memberof NextList
+     */
+    onNextList(node) {
+      wx.showToast({
+        title: "页面待完善",
+        icon: "none",
+        duration: 2000
+      });
+      switch (node.name) {
+        case "my_badge":
+          // 我的徽章
+          // global.PUBLIC.util.jumpNavigateTo("mine-jump/main?page=1");
+          break;
+        case "my_collection":
+          //我的收藏（课程 | 文章）
+          // global.PUBLIC.util.jumpNavigateTo("mine-jump/main?page=2");
+          break;
+        case "my_participated":
+          // 我参加过的（课程 | 活动）
+          // global.PUBLIC.util.jumpNavigateTo("mine-jump/main?page=3");
+          break;
+        case "my_evaluation":
+          //我的评价（课程 | 内容）
+          // global.PUBLIC.util.jumpNavigateTo("mine-jump/main?page=4");
+          break;
+        case "my_browse":
+          //最近浏览
+          // global.PUBLIC.util.jumpNavigateTo("mine-jump/main?page=5");
+          break;
+      }
     }
   }
 };

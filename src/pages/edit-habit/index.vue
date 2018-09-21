@@ -50,7 +50,7 @@ export default {
       } else if (this.hasDataNum === "2") {
         // 课程表弹出框的编辑 TODO
         const { id } = this.data.schedule;
-        global.PUBLIC.util.httpGet(`/lesson/user`, { id }).then(res => {
+        global.PUBLIC.util.httpGet(`/habit/user`, { id }).then(res => {
           const items = res.data.items[0];
           this.data = items;
           // 时间
@@ -91,7 +91,7 @@ export default {
     onSubmit() {
       const { describe } = this.data;
       if (this.hasDataNum === "1") {
-        // 修改习惯
+        // 更新框编辑习惯
         global.PUBLIC.util
           .httpOther(
             "PUT",
@@ -102,13 +102,15 @@ export default {
           )
           .then(res => {});
       } else if (this.hasDataNum === "2") {
-        // 弹出框编辑习惯
+        // 弹出框更新框编辑习惯
         global.PUBLIC.util
-          .httpOther("POST", `/habit/user`, {
-            describe,
-            habit_id: this.data.id,
-            trainee_id: 2
-          })
+          .httpOther(
+            "PUT",
+            `/habit/user/${this.data.id || this.data.schedule.id}`,
+            {
+              describe
+            }
+          )
           .then(res => {});
       } else {
         // 添加习惯备注

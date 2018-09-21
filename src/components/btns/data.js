@@ -47,8 +47,7 @@ const btns2 = {
 
 const btns3 = {
   isMore: true,
-  data: [
-    {
+  data: [{
       label: '英语',
       name: 'english',
       selected: false
@@ -103,8 +102,7 @@ const btns3 = {
 
 const btns4 = {
   isMore: true,
-  data: [
-    {
+  data: [{
       label: '学而思',
       name: 's',
       selected: false
@@ -122,7 +120,7 @@ const btns4 = {
   ]
 }
 
-export default {
+module.exports = {
   btns1,
   btns2,
   btns3,

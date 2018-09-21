@@ -7,7 +7,7 @@
  */
 <template>
   <div class="list-comp">
-    <div class="flex-both" v-for="item of data" :key="item.name">
+    <div @click="onNext(item)" class="flex-both" v-for="item of data" :key="item.name">
       <div class="flex-left-center">
         <img :class="item.name" :src="onlineUrl + item.name + '.png'" />
         <span>{{item.label}}</span>
@@ -29,6 +29,14 @@ export default {
   props: {
     data: {
       type: Array
+    }
+  },
+  methods: {
+    /** 单击列表
+     * @param {Object} node 导航栏
+     */
+    onNext(node) {
+      this.$emit('onNodeClick', node)
     }
   }
 };

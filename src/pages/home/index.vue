@@ -61,7 +61,7 @@
               <p class="title-1">{{item.name}}</p>
               <p class="gray">{{item.addr}}</p>
             </div>
-            <p class="punch">打卡</p>
+            <p @click="onPunch(item)" class="punch">打卡</p>
           </div>
         </div>
         <div v-if="content2.length === 0" class="none-div">
@@ -145,6 +145,14 @@ export default {
   },
   computed: {},
   methods: {
+    /** 打卡 */
+    onPunch() {
+      wx.showToast({
+        title: "功能待完善",
+        icon: "none",
+        duration: 2000
+      });
+    },
     /** 点击跳转到课程 */
     jumpCourse() {
       global.PUBLIC.util.jumpSwitchTab("course/main");

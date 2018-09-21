@@ -1,9 +1,10 @@
 {
   "pages": [
-    "pages/mine/main",
-    "pages/add-user/main",
-    "pages/course/main",
     "pages/home/main",
+    "pages/course/main",
+    "pages/mine/main",
+    "pages/mine-jump/main",
+    "pages/add-user/main",
     "pages/perspective/main",
     "pages/evaluation/main",
     "pages/institutional-products/main",

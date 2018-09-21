@@ -71,10 +71,19 @@
             <div class="pop-main">
               <p class="title">您的孩子已经参加过的课程名称：</p>
               <Btns @onBtnsClick="(e) => onBtnsClick(e, 3)" :data='btns3' />
-              <input class="btn-1" type="text" placeholder="其他（课程名称）"/>
+              <input 
+                class="btn-1" 
+                @change="onValChange"
+                v-model="courseVal" 
+                type="text" 
+                placeholder="其他（课程名称）"/>
               <p class="title mechanism">所属机构：</p>
               <Btns @onBtnsClick="(e) => onBtnsClick(e, 4)" :data='btns4' />
-              <input class="btn-1" type="text" placeholder="其他（机构名称）"/>
+              <input class="btn-1" 
+                v-model="mechanismVal" 
+                type="text" 
+                @change="onValChange"
+                placeholder="其他（机构名称）"/>
               <p class="btn-1 next" @click="onNext">继续</p>
               <p class='jump' @click="onJumpOver">跳过此步骤</p>
             </div>
@@ -82,22 +91,13 @@
           <div v-if="page === 4" class="pop-content pop-4 flex-top-center">
             <div class="pop-main">
               <p class="title">您的孩子已经参加过的课程名称：</p>
-              <p class="active btn-1">英语</p>
-              <div class="time-select">
-                <input class="btn-1" type="text" placeholder="选择课程时间"/>
-                <i class="icon icon-right"/>
+              <div v-for="(item, i) in courseArr" :key="item.id">
+                <p class="active btn-1">{{item.name}}</p>
+                <div class="time-select">
+                  <Picker @onTimePicker='(v) => onSelectTime(item, v, i)' cls='1' :info="item.time || '请选择课程时间'" type='time'/>
+                </div>
               </div>
-              <p class="active btn-1">游泳</p>
-              <div class="time-select">
-                <input class="btn-1" type="text" placeholder="选择课程时间"/>
-                <i class="icon icon-right"/>
-              </div>
-              <p class="active btn-1">网球</p>
-              <div class="time-select">
-                <input class="btn-1" type="text" placeholder="选择课程时间"/>
-                <i class="icon icon-right"/>
-              </div>
-
+              
               <p class="btn-1 next" @click="onNext">制定专属的日程安排</p>
               <p class='jump' @click="onJumpOver">跳过此步骤</p>
             </div>
@@ -112,13 +112,24 @@ import dataList from "../../components/date-list/list";
 import EditCard from "../../components/edit-card/edit-card";
 // import editCardData from "../../components/edit-card/data.js";
 import Btns from "../../components/btns/btns";
-import btnsData from "../../components/btns/data.js";
+import { btns1, btns2, btns3, btns4 } from "../../components/btns/data.js";
 import service from "./service.js";
+import Picker from "../../components/picker/picker";
 
 export default {
   data() {
     return {
       ...dataList,
+      // 弹出框 课程名
+      courseVal: "",
+      // 弹框3的选择数据
+      courseArr: [],
+      // 机构选择的数据
+      mechanismArr: [],
+      // 弹出框 机构名
+      mechanismVal: "",
+      // 保存弹出框3选择数据
+      savePop3: "",
       // 是否显示add弹出窗
       hasAdd: false,
       // EditCard组件数据
@@ -126,19 +137,24 @@ export default {
       // 弹出哪个弹出框 {1|2|3|4|5}  等于5表示不弹出
       page: 5,
       // btns组件数据
-      ...btnsData,
+      btns1,
+      btns2,
+      btns3,
+      btns4,
       // 是否显示课程表编辑的弹窗 {0 | 1 | 2}
       hasShowEdit: 0,
       // 保存当天数据
       saveData: null,
       onlineUrl: process.env.onlineUrl,
       // 获取接口数据
-      apiData: null
+      apiData: null,
+      // 保存弹出框节点属性
+      savePopNode: null
     };
   },
-  components: { DateList, EditCard, Btns },
+  components: { DateList, EditCard, Btns, Picker },
   onLoad() {
-    this.page = Number(wx.getStorageSync('page')) || 1;
+    this.page = Number(wx.getStorageSync("page")) || 1;
     this.init();
   },
   /** 页面返回执行方法 */
@@ -150,6 +166,10 @@ export default {
   },
   computed: {},
   methods: {
+    /** 弹出框调用接口 */
+    trainee(params) {
+      global.PUBLIC.util.httpOther("PUT", `/trainee/2`, params).then(res => {});
+    },
     /** 缓存数据
      * @param {String} value 保存的值
      */
@@ -231,17 +251,86 @@ export default {
     /** 点击弹窗叉号 */
     onCross() {
       this.page = 5;
-      this.saveLocal(this.page)
+      this.saveLocal(this.page);
+    },
+    /** 时间选择器
+     * @param {Object} node 节点属性
+     * @param {string} s 选择的时间
+     * @param {number} i 数组索引
+     */
+    onSelectTime(node, s, i) {
+      node.time = `${s[0]} ${s[1]}:${s[2]}~${s[3]}:${s[4]}`;
+      this.$set(this.courseArr, i, node)
+      this.savePopNode = '继续';
+    },
+    /** 输入框输入，弹出框可以点击继续 */
+    onValChange() {
+      this.savePopNode = '继续';
     },
     /** 单击继续 */
     onNext() {
+      const params = {};
+      const { savePopNode, btns3, btns4 } = this;
+      // console.log(savePopNode)
+      if (!savePopNode) {
+        wx.showToast({
+          title: "请选择内容",
+          icon: "none",
+          duration: 2000
+        });
+        return false;
+      }
+      switch (this.page) {
+        case 1:
+          // 弹窗1参数
+          params.grade = savePopNode.label;
+          break;
+        case 2:
+          params.want_habit = savePopNode.label;
+          break;
+        case 3:
+          // 课程
+          const arr1 = btns3.data.filter(value => {
+            return value.selected;
+          });
+          this.courseArr = arr1.map(v => {
+            return { name: v.label };
+          });
+          if (this.courseVal.trim()) {
+            this.courseArr.push({ name: this.courseVal });
+          }
+          params.attend_course = this.courseArr;
+          // 培训机构
+          const arr2 = btns4.data.filter(value => {
+            return value.selected;
+          });
+          this.mechanismArr = arr2.map(v => {
+            return { name: v.label };
+          });
+          if (this.mechanismVal.trim()) {
+            this.mechanismArr.push({ name: this.mechanismVal });
+          }
+          params.attend_merchants = this.mechanismArr;
+          break;
+        case 4:
+          params.attend_course = this.courseArr
+          break;
+      }
+      this.trainee(params)
       this.page += 1;
-      this.saveLocal(this.page)
+      if (this.courseArr.length === 0 && this.page === 4) {
+        this.page = 5;
+      }
+      this.saveLocal(this.page);
+      this.savePopNode = null;
     },
     /** 跳过此步骤 */
     onJumpOver() {
       this.page += 1;
-      this.saveLocal(this.page)
+      if (this.courseArr.length === 0 && this.page === 4) {
+        this.page = 5;
+      }
+      this.saveLocal(this.page);
     },
     /** 单击 + 号 */
     onShowAdd() {
@@ -301,6 +390,7 @@ export default {
      * @memberOf Btns
      */
     onBtnsClick(node, index) {
+      this.savePopNode = node;
       switch (index) {
         case 1:
           // 问题1
@@ -431,6 +521,7 @@ export default {
 
   .pop-2 {
     height: 1040rpx;
+    overflow: auto;
     .title {
       font-size: 40rpx;
       text-align: center;
