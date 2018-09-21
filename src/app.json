@@ -4,7 +4,7 @@
     "pages/home/main",
     "pages/course/main",
     "pages/mine/main",
-    "pages/mine-jump/main",
+    "pages/mine-collection/main",
     "pages/add-user/main",
     "pages/perspective/main",
     "pages/evaluation/main",

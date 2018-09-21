@@ -6,9 +6,9 @@
  */
  <template>
   <div>
-   <Search @onSearch='onSearch' />
-   <Navbar @onNodeClick='onNavbar' :index='index' :data='navbarData' />
-   <IconRightList @onNodeClick='onIconRList' :data='iconRightListData'/>
+    <Search @onSearch='onSearch' />
+    <Navbar @onNodeClick='onNavbar' :index='index' :data='navbarData' />
+    <IconRightList @onNodeClick='onIconRList' :data='iconRightListData'/>
   </div>
  </template>
 

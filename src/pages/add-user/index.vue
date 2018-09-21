@@ -14,7 +14,7 @@
         </div>
         <p class="label flex-left-center"><img src="../../../static/images/all/pan.png" /><span>昵称</span></p>
         <input class="btn-1" type="text" placeholder="填写昵称" />
-        <p class="submit">确  定</p>
+        <p @click='onSubmit' class="submit">确  定</p>
     </div>
 </template>
 
@@ -29,6 +29,11 @@ export default {
   },
   computed: {},
   methods: {
+    /** 提交 */
+    onSubmit() {
+      console.log('123')
+      wx.navigateBack({ changed: true });
+    },
     /** 从相册选择图片，或者拍照 */
     uploadPhoto() {
       const that = this;
@@ -36,10 +41,10 @@ export default {
         count: 1, // 默认9
         sizeType: ["original", "compressed"], // 可以指定是原图还是压缩图，默认二者都有
         sourceType: ["album", "camera"], // 可以指定来源是相册还是相机，默认二者都有
-        success: (res) => {
+        success: res => {
           // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
           var tempFilePaths = res.tempFilePaths;
-          this.imgUrl = tempFilePaths[0]
+          this.imgUrl = tempFilePaths[0];
           // this.upload(that, tempFilePaths);
         }
       });

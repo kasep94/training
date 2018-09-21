@@ -89,14 +89,15 @@ export default {
           // global.PUBLIC.util.jumpNavigateTo("mine-jump/main?page=1");
           break;
         case "my_collection":
-        //我的收藏（课程 | 文章）
+          //我的收藏（课程 | 文章）
+          global.PUBLIC.util.jumpNavigateTo(`mine-collection/main`);
+          break;
         case "my_participated":
         // 我参加过的（课程 | 活动）
         case "my_evaluation":
         //我的评价（课程 | 内容）
         case "my_browse":
           //最近浏览
-          global.PUBLIC.util.jumpNavigateTo(`mine-jump/main?page=${node.name}`);
           break;
       }
     }

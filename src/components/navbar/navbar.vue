@@ -56,6 +56,7 @@ export default {
      * @param {Number} index 索引
      */
     onSelect(node, index) {
+      this.index = index;
       this.$emit("onNodeClick", node, index);
     }
   }
