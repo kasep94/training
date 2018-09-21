@@ -118,7 +118,7 @@ export default {
             return {
               ...v,
               type: "habit",
-              object_id: this.data.id,
+              object_id: this.data.id || this.data.schedule.id,
               trainee_id: this.data.trainee_id
             };
           })

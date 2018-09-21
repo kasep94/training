@@ -260,12 +260,12 @@ export default {
      */
     onSelectTime(node, s, i) {
       node.time = `${s[0]} ${s[1]}:${s[2]}~${s[3]}:${s[4]}`;
-      this.$set(this.courseArr, i, node)
-      this.savePopNode = '继续';
+      this.$set(this.courseArr, i, node);
+      this.savePopNode = "继续";
     },
     /** 输入框输入，弹出框可以点击继续 */
     onValChange() {
-      this.savePopNode = '继续';
+      this.savePopNode = "继续";
     },
     /** 单击继续 */
     onNext() {
@@ -313,10 +313,10 @@ export default {
           params.attend_merchants = this.mechanismArr;
           break;
         case 4:
-          params.attend_course = this.courseArr
+          params.attend_course = this.courseArr;
           break;
       }
-      this.trainee(params)
+      this.trainee(params);
       this.page += 1;
       if (this.courseArr.length === 0 && this.page === 4) {
         this.page = 5;
@@ -473,6 +473,8 @@ export default {
     margin-top: 150rpx;
     .main {
       width: 503rpx;
+      max-height: 800rpx;
+      overflow: auto;
       background: white;
       border-radius: 6rpx;
       > div {

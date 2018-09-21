@@ -1,105 +1,73 @@
 <template>
-  <div class="container" @click="clickHandle('test click', $event)">
-
-    <div class="userinfo" @click="bindViewTap">
-      <img class="userinfo-avatar" v-if="userInfo.avatarUrl" :src="userInfo.avatarUrl" background-size="cover" />
-      <div class="userinfo-nickname">
-        <card :text="userInfo.nickName"></card>
-      </div>
-    </div>
-
-    <div class="usermotto">
-      <div class="user-motto">
-        <card :text="motto"></card>
-      </div>
-    </div>
-
-    <form class="form-container">
-      <input type="text" class="form-control" v-model="motto" placeholder="v-model" />
-      <input type="text" class="form-control" v-model.lazy="motto" placeholder="v-model.lazy" />
-    </form>
-    <a href="/pages/counter/main" class="counter">去往Vuex示例页面</a>
+  <div>
+   <view class="userinfo">
+     <button open-type="getUserInfo" lang="zh_CN" @getuserinfo="onGotUserInfo">
+      <view class="userinfo-avatar">
+        <open-data  type="userAvatarUrl"></open-data>
+      </view>
+      <open-data type="userNickName"></open-data>
+    </button>
+  </view>
   </div>
 </template>
 
 <script>
-import card from '@/components/card'
-
 export default {
-  data () {
-    return {
-      motto: 'Hello World',
-      userInfo: {}
+  onLoad() {
+    const userInfo = wx.getStorageSync("$userInfo");
+    if (userInfo) {
+      global.PUBLIC.util.jumpSwitchTab("home/main");
     }
   },
-
-  components: {
-    card
-  },
-
   methods: {
-    bindViewTap () {
-      const url = 'logs/main'
-      wx.navigateTo({ url })
-    },
-    getUserInfo () {
-      // 调用登录接口
-      wx.login({
-        success: () => {
-          wx.getUserInfo({
-            success: (res) => {
-              this.userInfo = res.userInfo
-            }
-          })
-        }
-      })
-    },
-    clickHandle (msg, ev) {
-      console.log('clickHandle:', msg, ev)
+    onGotUserInfo: e => {
+      // 用户信息
+      wx.setStorage({
+        key: "$userInfo",
+        data: JSON.stringify(e.target.userInfo)
+      });
+      // 所有信息
+      wx.setStorage({
+        key: "$loginInfo",
+        data: JSON.stringify(e.target)
+      });
+      global.PUBLIC.util.jumpSwitchTab("home/main");
     }
-  },
-
-  created () {
-    // 调用应用实例的方法获取全局数据
-    this.getUserInfo()
   }
-}
+};
 </script>
 
-<style scoped>
+<style>
 .userinfo {
+  position: relative;
+  width: 750rpx;
+  height: 320rpx;
+  color: black;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-
 .userinfo-avatar {
-  width: 128rpx;
-  height: 128rpx;
-  margin: 20rpx;
-  border-radius: 50%;
-}
-
-.userinfo-nickname {
-  color: #aaa;
-}
-
-.usermotto {
-  margin-top: 150px;
-}
-
-.form-control {
+  overflow: hidden;
   display: block;
-  padding: 0 12px;
-  margin-bottom: 5px;
-  border: 1px solid #ccc;
+  width: 160rpx;
+  height: 160rpx;
+  margin: 20rpx;
+  margin-top: 50rpx;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
 }
-
-.counter {
-  display: inline-block;
-  margin: 10px auto;
-  padding: 5px 10px;
-  color: blue;
-  border: 1px solid blue;
+.userinfo {
+  margin-top: 200rpx;
+  /* color: #fff; */
+  font-size: 14px;
+  /* background-color: #c0c0c0;
+  border-radius: 40%; */
+}
+button {
+  background: white;
+  border: 0;
 }
 </style>
+
