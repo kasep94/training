@@ -1,3 +1,9 @@
+/**
+ * 文档作者: kasepa94
+ * 创建时间：2018年08月16日
+ * 修改时间：2018年08月16日
+ * 描述信息：登入页
+ */
 <template>
   <div>
    <view class="userinfo">
@@ -13,10 +19,16 @@
 
 <script>
 export default {
+  data() {
+    return {
+      // 登入到页面地址
+      loginPage: 'mine/main'
+    }
+  },
   onLoad() {
     const userInfo = wx.getStorageSync("$userInfo");
     if (userInfo) {
-      global.PUBLIC.util.jumpSwitchTab("home/main");
+      global.PUBLIC.util.jumpSwitchTab(this.loginPage);
     }
   },
   methods: {
@@ -31,7 +43,7 @@ export default {
         key: "$loginInfo",
         data: JSON.stringify(e.target)
       });
-      global.PUBLIC.util.jumpSwitchTab("home/main");
+      global.PUBLIC.util.jumpSwitchTab(this.loginPage);
     }
   }
 };

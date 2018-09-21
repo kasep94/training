@@ -21,7 +21,7 @@
           </div>
         </div>
       </div>
-      <div class="box">
+      <div :class="['box', content1.length === 0 ? '' : 'bt-border']">
         <div class="flex-both">
           <div class="flex-left-center">
             <img src="../../../static/images/all/schedule.png" />
@@ -45,7 +45,7 @@
         </div> -->
       </div>
 
-      <div class="box">
+      <div :class="['box', content2.length === 0 ? '' : 'bt-border']">
         <div class="flex-both">
           <div class="flex-left-center">
             <i class="icon icon-calendar" />
@@ -201,6 +201,10 @@ export default {
       font-size: 26rpx;
     }
   }
+}
+.bt-border {
+  border-bottom: 20rpx solid @cl-19 !important;
+  // padding-bottom: 20rpx;
 }
 .box {
   > .flex-both {

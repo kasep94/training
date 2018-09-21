@@ -83,31 +83,20 @@ export default {
      * @memberof NextList
      */
     onNextList(node) {
-      wx.showToast({
-        title: "页面待完善",
-        icon: "none",
-        duration: 2000
-      });
       switch (node.name) {
         case "my_badge":
           // 我的徽章
           // global.PUBLIC.util.jumpNavigateTo("mine-jump/main?page=1");
           break;
         case "my_collection":
-          //我的收藏（课程 | 文章）
-          // global.PUBLIC.util.jumpNavigateTo("mine-jump/main?page=2");
-          break;
+        //我的收藏（课程 | 文章）
         case "my_participated":
-          // 我参加过的（课程 | 活动）
-          // global.PUBLIC.util.jumpNavigateTo("mine-jump/main?page=3");
-          break;
+        // 我参加过的（课程 | 活动）
         case "my_evaluation":
-          //我的评价（课程 | 内容）
-          // global.PUBLIC.util.jumpNavigateTo("mine-jump/main?page=4");
-          break;
+        //我的评价（课程 | 内容）
         case "my_browse":
           //最近浏览
-          // global.PUBLIC.util.jumpNavigateTo("mine-jump/main?page=5");
+          global.PUBLIC.util.jumpNavigateTo(`mine-jump/main?page=${node.name}`);
           break;
       }
     }

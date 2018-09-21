@@ -14,19 +14,16 @@
 export default {
   onLoad(option) {
     switch (option.page) {
-      case "1":
-        // 我的徽章
-        break;
-      case "2":
+      case "my_collection":
         //我的收藏（课程 | 文章）
         break;
-      case "3":
+      case "my_participated":
         // 我参加过的（课程 | 活动）
         break;
-      case "4":
+      case "my_evaluation":
         //我的评价（课程 | 内容）
         break;
-      case "5":
+      case "my_browse":
         //最近浏览
         break;
     }
