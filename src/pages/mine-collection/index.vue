@@ -7,7 +7,7 @@
 <template>
   <div>
     <Navbar @onNodeClick='onNavbar' :data='navbar3' />
-    <IconRightList v-if="tabName === 'article'" @onNodeClick='onIconRList' :data='data'/>
+    <IconRightList v-if="tabName === 'article'" @onNodeClick='onIconRList' :data='iconRightListData'/>
     <ViewList v-else @onSortClick='onSortClick' :data='viewListData' />
   </div>
 </template>
@@ -27,7 +27,7 @@ export default {
       // 导航栏数据
       navbar3,
       // 文章列表数据
-      data,
+      iconRightListData: data,
       // 课程列表数据
       viewListData,
       // { article | course }

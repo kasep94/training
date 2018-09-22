@@ -106,6 +106,7 @@ export default {
         //我的评价（课程 | 内容）
         case "my_browse":
           //最近浏览
+          global.PUBLIC.util.jumpNavigateTo(`mine-browse/main`);
           break;
       }
     }

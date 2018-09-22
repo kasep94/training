@@ -29,20 +29,33 @@ const navbar3 = [{
 ]
 
 const navbar4 = [{
-  label: '课程',
-  name: 'course'
-},
-{
-  label: '活动',
-  name: 'active'
-}
+    label: '课程',
+    name: 'course'
+  },
+  {
+    label: '活动',
+    name: 'active'
+  }
 ]
 
-
+const navbar5 = [{
+    label: '文章',
+    name: 'article'
+  },
+  {
+    label: '课程',
+    name: 'course'
+  },
+  {
+    label: '活动',
+    name: 'active'
+  }
+]
 
 module.exports = {
   navbar1,
   navbar2,
   navbar3,
-  navbar4
+  navbar4,
+  navbar5
 }

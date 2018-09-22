@@ -18,7 +18,7 @@
               <Star :data='item.org_score/10'/>
             </div>
           </div>
-          <p class="edit">评价</p>
+          <p :class="type === 'edit' ? 'edit' : ''">{{type === 'edit' ? '评价' : item.update_time}}</p>
         </div>
         
         <div class="score">
@@ -41,6 +41,10 @@ export default {
   props: {
     data: {
       type: Array
+    },
+    type: {
+      type: String,
+      default: 'edit'
     }
   },
   components: { Star },

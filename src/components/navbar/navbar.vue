@@ -13,7 +13,7 @@
       :class="[i == index ? 'active' : '', 'flex-top-center']"
       :key='item.id'>
       {{item.label}}
-      <span v-if="i == index" :style="{marginLeft: botLeft + 'rpx'}" class="bot" />
+      <span v-if="i == index" :style="{marginLeft: botLeft}" class="bot" />
     </div>
   </div>
 </template>
@@ -24,11 +24,6 @@ export default {
     // 数据
     data: {
       type: Array
-    },
-    // 几个标题
-    size: {
-      type: String,
-      default: "2"
     },
     // 选中第几个数组
     index: {
@@ -44,11 +39,11 @@ export default {
       botLeft: 0
     };
   },
-  created() {
+  onLoad() {
     const width = 750;
-    const size = Number(this.size);
+    const size = Number(this.data.length);
     this.width = width / size;
-    this.botLeft = this.width / 2 - 65 / 2;
+    this.botLeft = `${(this.width - 65) / 2}rpx`;
   },
   methods: {
     /** 单击节点

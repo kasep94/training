@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/mine-browse/main",
     "pages/mine/main",
     "pages/mine-participated/main",
     "pages/home/main",
