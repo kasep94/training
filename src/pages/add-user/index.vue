@@ -31,7 +31,6 @@ export default {
   methods: {
     /** 提交 */
     onSubmit() {
-      console.log('123')
       wx.navigateBack({ changed: true });
     },
     /** 从相册选择图片，或者拍照 */

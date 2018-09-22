@@ -67,6 +67,13 @@ export default {
       hasPop: false
     };
   },
+  created() {
+    wx.login({
+      success: res => {
+        console.log(res);
+      }
+    });
+  },
   computed: {},
   methods: {
     /** 单击头像 */
@@ -94,6 +101,7 @@ export default {
           break;
         case "my_participated":
         // 我参加过的（课程 | 活动）
+          global.PUBLIC.util.jumpNavigateTo(`mine-participated/main`);
         case "my_evaluation":
         //我的评价（课程 | 内容）
         case "my_browse":

@@ -1,9 +1,9 @@
 {
   "pages": [
-    "pages/index/main",
+    "pages/mine/main",
+    "pages/mine-participated/main",
     "pages/home/main",
     "pages/course/main",
-    "pages/mine/main",
     "pages/mine-collection/main",
     "pages/add-user/main",
     "pages/perspective/main",
@@ -14,6 +14,7 @@
     "pages/course-add/main",
     "pages/add-habit/main",
     "pages/web-view/main",
+    "pages/index/main",
     "pages/product-evaluation/main"
   ],
   "window": {
