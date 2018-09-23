@@ -1,7 +1,8 @@
 {
   "pages": [
-    "pages/mine-browse/main",
     "pages/mine/main",
+    "pages/punch/main",
+    "pages/mine-browse/main",
     "pages/mine-participated/main",
     "pages/home/main",
     "pages/course/main",

@@ -33,16 +33,19 @@
             </div>
         </div>
         <div class="content">
-          <div class="flex-left-center progress">
-            <i class="icon icon-calendar" />
-            <span>习惯养成打卡进展</span>
-          </div>
-          <div class="habit">
-            <NextList :data="mine1" />
-            <div class="more flex-center">
-              <i class="icon icon-down-more" />
+          <div v-if="content1 && content1.length > 0">
+            <div class="flex-left-center progress">
+              <i class="icon icon-calendar" />
+              <span>习惯养成打卡进展</span>
+            </div>
+            <div class="habit">
+              <NextList :data="content1" />
+              <!-- <div class="more flex-center">
+                <i class="icon icon-down-more" />
+              </div> -->
             </div>
           </div>
+          
           <div class="footer-bottom">
             <NextList @onNodeClick='onNextList' :data="mine2" />
           </div>
@@ -61,10 +64,15 @@ export default {
     return {
       userInfo,
       othterInfo,
+      date: global.PUBLIC.util.getDate(),
       // 列表数据
       ...listData,
       // 是否显示弹出框
-      hasPop: false
+      hasPop: false,
+      // 课程
+      content1: null,
+      // 习惯
+      content2: null,
     };
   },
   created() {
@@ -73,6 +81,34 @@ export default {
         console.log(res);
       }
     });
+    global.PUBLIC.util
+      .httpGet("/schedule/trainee/2", {
+        start: this.date.calendar1,
+        end: "2018-09-29"
+      })
+      .then(res => {
+        if (Object.prototype.toString.call(res.data) === "[object Object]") {
+          this.content1 = [];
+          this.content2 = [];
+        } else {
+          res.data.forEach(value => {
+            const schedules = value.schedules[0];
+            if (schedules.schedule.type !== "leaning") {
+              this.content2.push({
+                time: `${schedules.start_hour}~${schedules.end_hour}`,
+                name: schedules.schedule.title,
+                addr: ""
+              });
+            } else {
+              this.content1.push({
+                time: `${schedules.start_hour}~${schedules.end_hour}`,
+                name: schedules.schedule.title,
+                addr: ""
+              });
+            }
+          });
+        }
+      });
   },
   computed: {},
   methods: {
@@ -100,10 +136,12 @@ export default {
           global.PUBLIC.util.jumpNavigateTo(`mine-collection/main`);
           break;
         case "my_participated":
-        // 我参加过的（课程 | 活动）
+          // 我参加过的（课程 | 活动）
           global.PUBLIC.util.jumpNavigateTo(`mine-participated/main`);
+          break;
         case "my_evaluation":
-        //我的评价（课程 | 内容）
+          //我的评价（课程 | 内容）
+          break;
         case "my_browse":
           //最近浏览
           global.PUBLIC.util.jumpNavigateTo(`mine-browse/main`);

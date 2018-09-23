@@ -43,6 +43,8 @@ export default {
     return {
       // 选中的时间
       timeArr: [],
+      // 发送给接口
+      apiArr: [],
       // course页面带过来到参数
       data: {},
       // 判断是修改还是添加
@@ -51,7 +53,7 @@ export default {
   },
   onLoad(option) {
     this.data = service.getData();
-    this.hasEdit = option.hasOwnProperty("hasData")
+    this.hasEdit = option.hasOwnProperty("hasData");
     if (option.hasOwnProperty("hasData")) {
       if (option.hasData === "1") {
         // TODO
@@ -99,10 +101,26 @@ export default {
      */
     onSelectTime(data) {
       this.timeArr.push(data);
+      this.apiArr.push(data);
     },
     /** 保存 */
     onSubmit() {
-      console.log(this.data)
+      if (this.apiArr.length > 0) {
+        global.PUBLIC.util
+          .httpOther("POST", `/rule/batch`, {
+            batch: global.PUBLIC.util.conversionDate(this.apiArr).map(v => {
+              return {
+                ...v,
+                type: "habit",
+                object_id: this.data.id || this.data.schedule.id,
+                trainee_id: this.data.trainee_id
+              };
+            })
+          })
+          .then(res => {
+            wx.navigateBack({ changed: true });
+          });
+      }
     }
   }
 };

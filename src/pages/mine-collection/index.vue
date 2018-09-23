@@ -8,7 +8,7 @@
   <div>
     <Navbar @onNodeClick='onNavbar' :data='navbar3' />
     <IconRightList v-if="tabName === 'article'" @onNodeClick='onIconRList' :data='iconRightListData'/>
-    <ViewList v-else @onSortClick='onSortClick' :data='viewListData' />
+    <ViewList v-else @onViewList='onViewListClick' :data='viewListData' />
   </div>
 </template>
 
@@ -19,6 +19,7 @@ import { navbar3 } from "../../components/navbar/data.js";
 import data from "../../components/icon-rl-list/data.js";
 import ViewList from "../../components/view-list/view-list";
 import viewListData from "../../components/view-list/data.js";
+import service from "../evaluation/service.js";
 
 export default {
   components: { Navbar, IconRightList, ViewList },
@@ -41,7 +42,9 @@ export default {
      * @memberof IconRightList
      */
     onIconRList(node) {
-      console.log(node);
+      global.PUBLIC.util.jumpNavigateTo(
+        `web-view/main?url=${encodeURIComponent(node.url)}`
+      );
     },
     /** 单击导航栏
      * @param {Object} node 节点属性
@@ -58,6 +61,16 @@ export default {
         }
         return value;
       });
+    },
+    /** 子组件传值
+     * @param {Object} 节点属性
+     * @memberof ViewList
+     */
+    onViewListClick(node) {
+      service.setData(node);
+      global.PUBLIC.util.jumpNavigateTo(
+        `institutional-products/main?dp_code=${node.dp_code}`
+      );
     }
   }
 };

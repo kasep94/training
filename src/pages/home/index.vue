@@ -72,7 +72,7 @@
         </div> -->
       </div>
 
-      <div class="box">
+      <!-- <div class="box">
         <div class="flex-both">
           <div class="flex-left-center">
             <i class="icon icon-ranking" />
@@ -85,7 +85,7 @@
           <ScrollX :data='scrollData' />
           <ScrollX :data='scrollData' />
         </div>
-      </div>
+      </div> -->
     </div>
 </template>
 
@@ -99,7 +99,9 @@ export default {
     return {
       imgIcon,
       imgUrls,
+      // 课程
       content1: [],
+      // 习惯
       content2: [],
       scrollData,
       date: global.PUBLIC.util.getDate(),

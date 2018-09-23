@@ -52,10 +52,11 @@ const navbar5 = [{
   }
 ]
 
+
 module.exports = {
   navbar1,
   navbar2,
   navbar3,
   navbar4,
-  navbar5
+  navbar5,
 }

@@ -34,6 +34,8 @@ export default {
     return {
       // 选中的时间
       timeArr: [],
+      // 发送给接口
+      apiArr: [],
       // course页面带过来到参数
       data: {},
       // 保存url search
@@ -43,7 +45,7 @@ export default {
   onLoad(option) {
     this.hasDataNum = option.hasData;
     this.data = service.getData();
-    console.log(this.data, this.hasDataNum)
+    console.log(this.data, this.hasDataNum);
     if (this.hasDataNum) {
       if (this.hasDataNum === "1") {
         // 习惯养成计划的编辑
@@ -87,6 +89,7 @@ export default {
      */
     onSelectTime(data) {
       this.timeArr.push(data);
+      this.apiArr.push(data);
     },
     /** 单击保存 */
     onSubmit() {
@@ -112,20 +115,22 @@ export default {
           })
           .then(res => {});
       }
-      global.PUBLIC.util
-        .httpOther("POST", `/rule/batch`, {
-          batch: global.PUBLIC.util.conversionDate(this.timeArr).map(v => {
-            return {
-              ...v,
-              type: "habit",
-              object_id: this.data.id || this.data.schedule.id,
-              trainee_id: this.data.trainee_id
-            };
+      if (this.apiArr.length > 0) {
+        global.PUBLIC.util
+          .httpOther("POST", `/rule/batch`, {
+            batch: global.PUBLIC.util.conversionDate(this.apiArr).map(v => {
+              return {
+                ...v,
+                type: "habit",
+                object_id: this.data.id || this.data.schedule.id,
+                trainee_id: this.data.trainee_id
+              };
+            })
           })
-        })
-        .then(res => {
-          wx.navigateBack({ changed: true });
-        });
+          .then(res => {
+            wx.navigateBack({ changed: true });
+          });
+      }
     }
   }
 };
