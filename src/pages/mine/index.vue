@@ -33,7 +33,7 @@
             </div>
         </div>
         <div class="content">
-          <div v-if="content1 && content1.length > 0">
+          <div>
             <div class="flex-left-center progress">
               <i class="icon icon-calendar" />
               <span>习惯养成打卡进展</span>
@@ -129,7 +129,7 @@ export default {
       switch (node.name) {
         case "my_badge":
           // 我的徽章
-          // global.PUBLIC.util.jumpNavigateTo("mine-jump/main?page=1");
+          global.PUBLIC.util.jumpNavigateTo(`mine-badge/main`);
           break;
         case "my_collection":
           //我的收藏（课程 | 文章）

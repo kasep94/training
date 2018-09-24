@@ -9,7 +9,7 @@
   <div>
     <scroll-view scroll-x class="div-2-main scroll-div">
       <view class="scroll-child" v-for="item of data" :key="item.id">
-        <img mode='center' class="content" :src="item.img || onlineUrl + 'mrtx/back1.png'" />
+        <img mode='center' class="scroll-content" :src="item.img || onlineUrl + 'mrtx/back1.png'" />
         <p class="cl-black">{{item.name}}</p>
         <div class="flex" v-if="item.score">
           <Star :data='item.score' />
@@ -42,7 +42,7 @@ export default {
 .scroll-div {
   white-space: nowrap;
   display: flex;
-  .content {
+  .scroll-content {
     height: 138rpx;
     width: 199.2rpx;
     border-radius: 8rpx;
