@@ -1,7 +1,7 @@
 {
   "pages": [
-    "pages/mine/main",
     "pages/punch/main",
+    "pages/mine/main",
     "pages/mine-badge/main",
     "pages/mine-browse/main",
     "pages/mine-participated/main",
