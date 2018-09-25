@@ -8,11 +8,11 @@
     <div class="home_page">
         <div class="header">
             <div class="flex-left-center top">
-                <img class="avatar1" @click="onAvatar" :src="userInfo.img"/>
+                <img class="avatar1" @click="onAvatar" v-if='onlineUrl' :src="userInfo.head_pic ? userInfo.head_pic : onlineUrl + 'mrtx/avatar.png'"/>
                 <div class="header-content">
-                    <p class="user-name">{{userInfo.name}}</p>
+                    <p class="user-name">{{userInfo.name || '无'}}</p>
                     <div class="flex">
-                        <span>身份: {{userInfo.identity}}</span>
+                        <span>身份: {{userInfo.role || '家长'}}</span>
                         <span>(孩子) {{userInfo.grade}}</span>
                     </div>
                 </div>
@@ -29,7 +29,7 @@
             </div>
             <div class="flex-left-center bottom">
                 <div class="flex-center"><img class="img1" src="../../../static/images/all/grade.png" />等级: Lv{{userInfo.level}}</div>
-                <div class="flex-center"><img src="../../../static/images/all/integral.png" />积分: {{userInfo.integral}}</div>
+                <div class="flex-center"><img src="../../../static/images/all/integral.png" />积分: {{userInfo.points}}</div>
             </div>
         </div>
         <div class="content">
@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import { userInfo, othterInfo } from "./data.js";
+import {  othterInfo } from "./data.js";
 import NextList from "../../components/next-list/next-list";
 import listData from "../../components/next-list/data.js";
 
@@ -62,7 +62,9 @@ export default {
   components: { NextList },
   data() {
     return {
-      userInfo,
+      onlineUrl: process.env.onlineUrl,
+      // 用户信息
+      userInfo: {},
       othterInfo,
       date: global.PUBLIC.util.getDate(),
       // 列表数据
@@ -72,13 +74,20 @@ export default {
       // 课程
       content1: null,
       // 习惯
-      content2: null,
+      content2: null
     };
   },
   created() {
     wx.login({
       success: res => {
-        console.log(res);
+        global.PUBLIC.util
+          .httpOther("POST", `/login`, {
+            wechat_id: res.code,
+            role: 'parent'
+          })
+          .then(res => {
+            this.userInfo = res.data;
+          });
       }
     });
     global.PUBLIC.util

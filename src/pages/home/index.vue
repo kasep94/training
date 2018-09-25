@@ -116,7 +116,7 @@ export default {
     global.PUBLIC.util
       .httpGet("/schedule/trainee/2", {
         start: this.date.calendar1,
-        end: "2018-09-29"
+        end: this.date.calendar1
       })
       .then(res => {
         if (Object.prototype.toString.call(res.data) === "[object Object]") {

@@ -29,8 +29,57 @@ export default {
   components: { ScrollX },
   data() {
     return {
-      data
+      data: []
     };
+  },
+  onLoad() {
+    global.PUBLIC.util.httpGet("/medal?trainee_id=2", {}).then(res => {
+      const learning = { data: [] };
+      const living = { data: [] };
+      const friend = { data: [] };
+      const health = { data: [] };
+      const behave = { data: [] };
+      res.data.forEach(v => {
+        switch (v.type) {
+          case "learning":
+            learning.label = "学习勋章";
+            learning.data.push({
+              ...v,
+              img: v.remark.icon
+            });
+            break;
+          case "living":
+            learning.label = "生活勋章";
+            living.data.push({
+              ...v,
+              img: v.remark.icon
+            });
+            break;
+          case "friend":
+            learning.label = "交友勋章";
+            friend.data.push({
+              ...v,
+              img: v.remark.icon
+            });
+            break;
+          case "health":
+            learning.label = "健康勋章";
+            health.data.push({
+              ...v,
+              img: v.remark.icon
+            });
+            break;
+          case "behave":
+            learning.label = "行为勋章";
+            behave.data.push({
+              ...v,
+              img: v.remark.icon
+            });
+            break;
+        }
+        this.data = [learning, living, friend, health, behave];
+      });
+    });
   },
   computed: {},
   methods: {}

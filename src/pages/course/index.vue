@@ -220,6 +220,7 @@ export default {
           this.dataList[0].push(month + "月");
           this.dataList[0].push(
             ...date.map(value => {
+              console.log(value)
               return `${value.week}${value.day.split("-")[2]}日`;
             })
           );

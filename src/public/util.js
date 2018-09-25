@@ -43,7 +43,7 @@ const util = (() => {
       // 获取当月天数
       const dayCount = dayCountOfMonth[month - 1]
       if (day > dayCount) {
-        day = 0
+        day = 1
         month += 1
         if (month > 12) {
           month = 1
