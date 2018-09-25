@@ -168,7 +168,7 @@ export default {
   methods: {
     /** 弹出框调用接口 */
     trainee(params) {
-      global.PUBLIC.util.httpOther("PUT", `/trainee/2`, params).then(res => {});
+      global.PUBLIC.util.httpOther("PUT", `/trainee/${global.PUBLIC.util.getUser().trainee_id}`, params).then(res => {});
     },
     /** 缓存数据
      * @param {String} value 保存的值
@@ -196,7 +196,7 @@ export default {
       this.initCourse();
       global.PUBLIC.util
         .httpGet("/habit/user", {
-          trainee_id: 2
+          trainee_id: global.PUBLIC.util.getUser().trainee_id
         })
         .then(res => {
           this.editCardData = res.data.items.map(v => {
@@ -210,7 +210,7 @@ export default {
     initCourse() {
       const date = global.PUBLIC.util.getDate().thisWeek;
       global.PUBLIC.util
-        .httpGet("/schedule/trainee/2", {
+        .httpGet(`/schedule/trainee/${global.PUBLIC.util.getUser().trainee_id}`, {
           start: date[0].day,
           end: date[6].day
         })
@@ -220,7 +220,6 @@ export default {
           this.dataList[0].push(month + "月");
           this.dataList[0].push(
             ...date.map(value => {
-              console.log(value)
               return `${value.week}${value.day.split("-")[2]}日`;
             })
           );
@@ -272,7 +271,6 @@ export default {
     onNext() {
       const params = {};
       const { savePopNode, btns3, btns4 } = this;
-      // console.log(savePopNode)
       if (!savePopNode) {
         wx.showToast({
           title: "请选择内容",
@@ -354,7 +352,7 @@ export default {
     /** 跳转到添加课程 */
     onJumpCourseAdd() {
       this.hasAdd = false;
-      global.PUBLIC.util.jumpNavigateTo("course-add/main");
+      global.PUBLIC.util.jumpNavigateTo("edit-course/main?type=add");
     },
     /** 单击导出课程表 */
     onScreenshot() {
@@ -382,7 +380,7 @@ export default {
       global.PUBLIC.util.jumpNavigateTo(
         node.schedule.type !== "leaning"
           ? "edit-habit/main?hasData=2"
-          : "edit-course/main?hasData=2"
+          : "edit-course/main?type=edit"
       );
     },
     /** 单击节点

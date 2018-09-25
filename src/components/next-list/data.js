@@ -22,13 +22,13 @@ const mine2 = [
     name: 'my_collection',
   },
   {
-    label: '我参加过的（课程 | 活动）',
+    label: '我参加过的（活动）',
     name: 'my_participated',
   },
-  {
+  /* {
     label: '我的评价（课程 | 内容）',
     name: 'my_evaluation',
-  },
+  }, */
   {
     label: '最近浏览',
     name: 'my_browse',

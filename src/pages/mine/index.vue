@@ -13,12 +13,12 @@
                     <p class="user-name">{{userInfo.name || '无'}}</p>
                     <div class="flex">
                         <span>身份: {{userInfo.role === 'parent' ? '家长' : userInfo.role}}</span>
-                        <span>(孩子) {{userInfo.grade || 1}}</span>
+                        <span class="children">(孩子) {{userInfo.grade || 1}}年级</span>
                     </div>
                 </div>
             </div>
-            <div v-if="hasPop" @click="() => {hasPop = false}"  class="pop">
-              <div class="flex-left-center" v-for="item of othterInfo" :key="item.id">
+            <div v-if="hasPop"  class="pop">
+              <div class="flex-left-center" @click="selectUser(item)" v-for="item of othterInfo" :key="item.id">
                 <img class="other-img" v-if="onlineUrl" :src="item.img ? item.img : onlineUrl + 'mrtx/avatar.png'"/>
                 <p class="other-name">{{item.name}}</p>
               </div>
@@ -57,6 +57,7 @@
 import { othterInfo } from "./data.js";
 import NextList from "../../components/next-list/next-list";
 import listData from "../../components/next-list/data.js";
+import mineService from "./mine.server.js";
 
 export default {
   components: { NextList },
@@ -79,49 +80,27 @@ export default {
       content2: null
     };
   },
-  created() {
-    wx.login({
-      success: res => {
-        global.PUBLIC.util
-          .httpOther("POST", `/login`, {
-            // 登入
-            wechat_id: res.code,
-            role: "parent"
-          })
-          .then(res => {
-            this.userInfo = res.data;
-            return res.data;
-          })
-          .then(res => {
-            if (res.children.length === 0) {
-              global.PUBLIC.util
-                .httpOther("POST", `/login/${res.id}/trainee`, {
-                  relation: "child",
-                  head_pic: res.remark.icon
-                })
-                .then(res => {
-                  this.userInfo.children.push(res.data);
-                });
-            }
-            return this.userInfo;
-          })
-          .then(() => {
-            this.userInfo.trainee_id = this.userInfo.children[0].id
-            this.userInfo.grade = this.userInfo.children[0].grade
-            global.PUBLIC.util.setUser(this.userInfo);
-            this.othterInfo = this.userInfo.children.map(v => {
-              return {
-                ...v,
-                img: v.head_pic
-              }
+  async created() {
+    await this.init();
+    mineService.updatePage.subscribe(() => {
+      wx.login({
+        success: res => {
+          global.PUBLIC.util
+            .httpOther("POST", `/login`, {
+              // 登入
+              wechat_id: res.code,
+              role: "parent"
+            })
+            .then(res => {
+              this.userInfo.children = res.data.children;
             });
-          });
-      }
+        }
+      });
     });
     global.PUBLIC.util
-      .httpGet("/schedule/trainee/2", {
+      .httpGet(`/schedule/trainee/${global.PUBLIC.util.getUser().trainee_id}`, {
         start: this.date.calendar1,
-        end: "2018-09-29"
+        end: this.date.calendar1
       })
       .then(res => {
         if (Object.prototype.toString.call(res.data) === "[object Object]") {
@@ -149,6 +128,59 @@ export default {
   },
   computed: {},
   methods: {
+    /** 初始化 */
+    init() {
+      wx.login({
+        success: res => {
+          global.PUBLIC.util
+            .httpOther("POST", `/login`, {
+              // 登入
+              wechat_id: res.code,
+              role: "parent"
+            })
+            .then(res => {
+              this.userInfo = res.data;
+              return res.data;
+            })
+            .then(res => {
+              if (res.children.length === 0) {
+                global.PUBLIC.util
+                  .httpOther("POST", `/login/${res.id}/trainee`, {
+                    relation: "child",
+                    head_pic: res.remark.icon
+                  })
+                  .then(res => {
+                    this.userInfo.children.push(res.data);
+                  });
+              }
+              return this.userInfo;
+            })
+            .then(() => {
+              this.userInfo.trainee_id = this.userInfo.children[0].id;
+              this.userInfo.grade = this.userInfo.children[0].grade;
+              global.PUBLIC.util.setUser(this.userInfo);
+              this.othterInfo = this.userInfo.children.map(v => {
+                return {
+                  ...v,
+                  img: v.head_pic
+                };
+              });
+            });
+        }
+      });
+    },
+    /** 切换用户
+     * @param {Object} node 节点属性
+     */
+    selectUser(node) {
+      this.hasPop = false;
+      const { grade, id, head_pic, name } = node;
+      this.userInfo.grade = grade;
+      this.userInfo.trainee_id = id;
+      this.userInfo.head_pic = head_pic;
+      this.userInfo.name = name;
+      global.PUBLIC.util.setUser(this.userInfo);
+    },
     /** 单击头像 */
     onAvatar() {
       this.hasPop = !this.hasPop;
@@ -192,12 +224,15 @@ export default {
 <style scoped lang='less'>
 .header {
   position: relative;
+  .children {
+    margin-left: 56rpx;
+  }
   .pop {
     position: absolute;
     background-color: @cl-17;
     border-radius: 6rpx;
     overflow: hidden;
-    top:110px;
+    top: 110px;
     left: 30rpx;
     .add {
       height: 76rpx;

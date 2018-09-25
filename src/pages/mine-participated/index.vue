@@ -6,9 +6,9 @@
  */
 <template>
     <div>
-        <Navbar @onNodeClick='onNavbar' :data='navbar4' />
-        <ViewListEval v-if="saveNavbarNode === 'course'" :data='courseData'/>
-        <IconLeftList v-else type='left' :data='activeData' />
+        <!-- <Navbar @onNodeClick='onNavbar' :data='navbar4' /> -->
+        <!-- <ViewListEval v-if="saveNavbarNode === 'course'" :data='courseData'/> -->
+        <IconLeftList type='left' @onNodeClick='onActivity' :data='activeData' />
     </div>
 </template>
 
@@ -27,12 +27,28 @@ export default {
       // navbar数据
       navbar4,
       // 课程列表数据
-      courseData: viewListEvalData,
+      courseData: [],
       // 保存tab切换数据
       saveNavbarNode: "course",
       // 活动列表数据
-      activeData: iconLeftListData
+      activeData: []
     };
+  },
+  onLoad() {
+    global.PUBLIC.util
+      .httpOther("GET", `/punch/login`, {
+        // 获取收藏
+        login_id: global.PUBLIC.util.getUser().id
+      })
+      .then(res => {
+        this.courseData = res.data.course;
+        this.activeData = res.data.activity.map(v => {
+          return {
+            ...v.activity,
+            tags: v.create_date
+          };
+        });
+      });
   },
   computed: {},
   methods: {
@@ -42,6 +58,15 @@ export default {
      */
     onNavbar(node) {
       this.saveNavbarNode = node.name;
+    },
+    /** 单击节点
+     * @param {Object} node 节点属性
+     * @memberof IconLeftList
+     */
+    onActivity(node) {
+      global.PUBLIC.util.jumpNavigateTo(
+        `web-view/main?url=${encodeURIComponent(node.url)}`
+      );
     }
   }
 };

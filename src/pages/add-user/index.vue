@@ -13,25 +13,52 @@
             </div>
         </div>
         <p class="label flex-left-center"><img src="../../../static/images/all/pan.png" /><span>昵称</span></p>
-        <input class="btn-1" type="text" placeholder="填写昵称" />
+        <input class="btn-1" v-model="inputVal" type="text" placeholder="填写昵称" />
         <p @click='onSubmit' class="submit">确  定</p>
     </div>
 </template>
 
 <script>
+import mineService from "../mine/mine.server.js";
+
 export default {
   data() {
     return {
       onlineUrl: process.env.onlineUrl,
       // 上传的图片地址
-      imgUrl: null
+      imgUrl: null,
+      // 输入框值
+      inputVal: "",
+      isLoad: false
     };
+  },
+  // 销毁
+  onUnload() {
+    this.isLoad = false;
   },
   computed: {},
   methods: {
     /** 提交 */
     onSubmit() {
-      wx.navigateBack({ changed: true });
+      if (!this.isLoad) {
+        this.isLoad = true;
+        global.PUBLIC.util
+          .httpOther(
+            "POST",
+            `/login/${global.PUBLIC.util.getUser().id}/trainee`,
+            {
+              relation: "child",
+              head_pic: this.imgUrl,
+              name: this.inputVal
+            }
+          )
+          .then(res => {
+            setTimeout(() => {
+              mineService.updatePage.next();
+              wx.navigateBack({ changed: true });
+            }, 1500);
+          });
+      }
     },
     /** 从相册选择图片，或者拍照 */
     uploadPhoto() {

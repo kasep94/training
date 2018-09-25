@@ -53,11 +53,20 @@ export default {
   },
   onLoad(option) {
     this.data = service.getData();
-    this.hasEdit = option.hasOwnProperty("hasData");
+    this.hasEdit = option.hasOwnProperty("type");
+    console.log(this.data)
+    // 获取所有机构
+    global.PUBLIC.util.httpGet(`/merchants/search?query=`, {}).then(res => {
+      console.log(res.data);
+    });
+    // 获取所有课程
+    global.PUBLIC.util.httpGet(`/merchants/class?query=`, {}).then(res => {
+      console.log(res.data);
+    });
     if (option.hasOwnProperty("hasData")) {
-      if (option.hasData === "1") {
+      if (option.hasData === "add") {
         // TODO
-      } else {
+      } else if (option.hasData === "edit") {
         // 课程表弹出框的编辑TODO
         const { id } = this.data.schedule;
         // 获取课程数据
@@ -89,11 +98,18 @@ export default {
      * @param {number} index 索引
      */
     onRemove(node, index) {
-      global.PUBLIC.util
-        .httpOther("DELETE", `/rule/${node[5].id}`, {})
-        .then(res => {
-          this.timeArr.splice(index, 1);
-        });
+      if (node[5] && node[5].id) {
+        global.PUBLIC.util
+          .httpOther("DELETE", `/rule/${node[5].id}`, {})
+          .then(res => {});
+      }
+      this.timeArr.splice(index, 1);
+      this.apiArr.find((v, i) => {
+        if (v === node) {
+          this.apiArr.splice(i, 1);
+        }
+        return v === node
+      })
     },
     /** 获取日期选择的数据
      * @param {Array} data 选择的数据
@@ -111,15 +127,25 @@ export default {
             batch: global.PUBLIC.util.conversionDate(this.apiArr).map(v => {
               return {
                 ...v,
-                type: "habit",
+                type: "leaning",
                 object_id: this.data.id || this.data.schedule.id,
                 trainee_id: this.data.trainee_id
               };
             })
           })
           .then(res => {
-            wx.navigateBack({ changed: true });
+            if (res.code !== 200) {
+              wx.showToast({
+                title: res.message,
+                icon: "none",
+                duration: 2000
+              });
+            } else {
+              wx.navigateBack({ changed: true });
+            }
           });
+      } else {
+        wx.navigateBack({ changed: true });
       }
     }
   }

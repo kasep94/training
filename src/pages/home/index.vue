@@ -112,9 +112,9 @@ export default {
       onlineUrl: process.env.onlineUrl
     };
   },
-  created() {
+  onLoad() {
     global.PUBLIC.util
-      .httpGet("/schedule/trainee/2", {
+      .httpGet(`/schedule/trainee/${global.PUBLIC.util.getUser().trainee_id}`, {
         start: this.date.calendar1,
         end: this.date.calendar1
       })

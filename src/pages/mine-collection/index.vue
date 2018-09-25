@@ -18,7 +18,7 @@ import IconRightList from "../../components/icon-rl-list/icon-rl-list";
 import { navbar3 } from "../../components/navbar/data.js";
 import data from "../../components/icon-rl-list/data.js";
 import ViewList from "../../components/view-list/view-list";
-import viewListData from "../../components/view-list/data.js";
+// import viewListData from "../../components/view-list/data.js";
 import service from "../evaluation/service.js";
 
 export default {
@@ -28,12 +28,23 @@ export default {
       // 导航栏数据
       navbar3,
       // 文章列表数据
-      iconRightListData: data,
+      iconRightListData: [],
       // 课程列表数据
-      viewListData,
+      viewListData: [],
       // { article | course }
       tabName: "article"
     };
+  },
+  onLoad() {
+    global.PUBLIC.util
+      .httpOther("GET", `/collect`, {
+        // 获取收藏
+        login_id: global.PUBLIC.util.getUser().id
+      })
+      .then(res => {
+        this.iconRightListData = res.data.document;
+        this.viewListData = res.data.course;
+      });
   },
   computed: {},
   methods: {

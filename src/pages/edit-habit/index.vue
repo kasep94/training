@@ -42,6 +42,11 @@ export default {
       hasDataNum: null
     };
   },
+  onUnload() {
+    this.timeArr = [];
+    this.apiArr = [];
+    this.hasDataNum = null;
+  },
   onLoad(option) {
     this.hasDataNum = option.hasData;
     this.data = service.getData();
@@ -49,6 +54,7 @@ export default {
     if (this.hasDataNum) {
       if (this.hasDataNum === "1") {
         // 习惯养成计划的编辑
+        console.log(global.PUBLIC.util.jumpApiDate(this.data.rules))
         this.timeArr = global.PUBLIC.util.jumpApiDate(this.data.rules);
       } else if (this.hasDataNum === "2") {
         // 课程表弹出框的编辑 TODO
@@ -77,11 +83,18 @@ export default {
      * @param {number} index 索引
      */
     onRemove(node, index) {
-      global.PUBLIC.util
-        .httpOther("DELETE", `/rule/${node[5].id}`, {})
-        .then(res => {
-          this.timeArr.splice(index, 1);
-        });
+      if (node[5] && node[5].id) {
+        global.PUBLIC.util
+          .httpOther("DELETE", `/rule/${node[5].id}`, {})
+          .then(res => {});
+      }
+      this.timeArr.splice(index, 1);
+      this.apiArr.find((v, i) => {
+        if (v === node) {
+          this.apiArr.splice(i, 1);
+        }
+        return v === node;
+      });
     },
     /** 获取日期选择的数据
      * @param {Array} data 选择的数据
@@ -111,25 +124,35 @@ export default {
           .httpOther("POST", `/habit/user`, {
             describe,
             habit_id: this.data.id,
-            trainee_id: 2
+            trainee_id: global.PUBLIC.util.getUser().trainee_id
           })
           .then(res => {});
       }
+      console.log(this.apiArr);
       if (this.apiArr.length > 0) {
-        global.PUBLIC.util
-          .httpOther("POST", `/rule/batch`, {
-            batch: global.PUBLIC.util.conversionDate(this.apiArr).map(v => {
-              return {
-                ...v,
-                type: "habit",
-                object_id: this.data.id || this.data.schedule.id,
-                trainee_id: this.data.trainee_id
-              };
+        console.log(global.PUBLIC.util.conversionDate(this.apiArr));
+        global.PUBLIC.util.conversionDate(this.apiArr).forEach(v => {
+          global.PUBLIC.util
+            .httpOther("POST", `/rule`, {
+              ...v,
+              type: "habit",
+              object_id: this.data.id || this.data.schedule.id,
+              trainee_id: this.data.trainee_id
             })
-          })
-          .then(res => {
-            wx.navigateBack({ changed: true });
-          });
+            .then(res => {
+              if (res.code !== 0 || res.code === 200) {
+                wx.showToast({
+                  title: res.message,
+                  icon: "none",
+                  duration: 2000
+                });
+              } else {
+                wx.navigateBack({ changed: true });
+              }
+            });
+        });
+      } else {
+        wx.navigateBack({ changed: true });
       }
     }
   }

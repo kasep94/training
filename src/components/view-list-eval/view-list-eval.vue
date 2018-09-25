@@ -18,7 +18,7 @@
               <Star :data='item.org_score/10'/>
             </div>
           </div>
-          <p :class="type === 'edit' ? 'edit' : ''">{{type === 'edit' ? '评价' : item.update_time}}</p>
+          <!-- <p :class="type === 'edit' ? 'edit' : ''">{{type === 'edit' ? '评价' : item.update_time}}</p> -->
         </div>
         
         <div class="score">

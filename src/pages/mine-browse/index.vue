@@ -7,9 +7,9 @@
 <template>
     <div class="home_page">
         <Navbar @onNodeClick='onNavbar' :data='navbar5' />
-        <IconRlList v-if="tabName === 'article'" @onNodeClick='onIconRList' :data='articleData'/>
-        <ViewListEval v-else-if="tabName === 'course'" @onSortClick='onSortClick' :data='courseData' />
-        <IconRlList type='left' v-else-if="tabName === 'active'" @onNodeClick='onIconRList' :data='activeData'/>
+        <IconRlList @onNodeClick="onWebView" v-if="tabName === 'article'" :data='articleData'/>
+        <ViewListEval v-else-if="tabName === 'course'" @onViewList='onViewListClick' :data='courseData' />
+        <IconRlList @onNodeClick="onWebView" type='left' v-else-if="tabName === 'active'" :data='activeData'/>
     </div>
 </template>
 
@@ -20,6 +20,7 @@ import IconRlList from "../../components/icon-rl-list/icon-rl-list";
 import data from "../../components/icon-rl-list/data.js";
 import ViewListEval from "../../components/view-list-eval/view-list-eval";
 import courseData from "../../components/view-list/data.js";
+import service from "../evaluation/service.js";
 
 export default {
   components: { Navbar, IconRlList, ViewListEval },
@@ -29,12 +30,25 @@ export default {
       // 保存tab切换节点名
       tabName: "article",
       // 文章列表数据
-      articleData: data,
+      articleData: [],
       // 课程列表数据
-      courseData,
+      courseData: [],
       // 活动列表数据
-      activeData: data
+      activeData: []
     };
+  },
+  onLoad() {
+    global.PUBLIC.util
+      .httpOther("GET", `/visit`, {
+        // 获取收藏
+        login_id: global.PUBLIC.util.getUser().id
+      })
+      .then(res => {
+        const { course, activity, document } = res.data;
+        this.courseData = course;
+        this.articleData = document;
+        this.activeData = activity;
+      });
   },
   computed: {},
   methods: {
@@ -44,6 +58,25 @@ export default {
      */
     onNavbar(node) {
       this.tabName = node.name;
+    },
+    /** 单击文章和活动
+     * @param {Object} node
+     */
+    onWebView(node) {
+      console.log(node);
+      global.PUBLIC.util.jumpNavigateTo(
+        `web-view/main?url=${encodeURIComponent(node.url)}`
+      );
+    },
+    /** 子组件传值
+     * @param {Object} 节点属性
+     * @memberof ViewList
+     */
+    onViewListClick(node) {
+      service.setData(node);
+      global.PUBLIC.util.jumpNavigateTo(
+        `institutional-products/main?dp_code=${node.dp_code}`
+      );
     }
   }
 };
