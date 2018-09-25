@@ -61,7 +61,7 @@
               <p class="title-1">{{item.name}}</p>
               <p class="gray">{{item.addr}}</p>
             </div>
-            <p @click="onPunch(item)" class="punch">打卡</p>
+            <p @click="onPunch(item)" :class="['punch', item.has_punched ? 'punched' : '']">{{item.has_punched ? '已打卡' : '打卡'}}</p>
           </div>
         </div>
         <div v-if="content2.length === 0" class="none-div">
@@ -90,7 +90,7 @@
 </template>
 
 <script>
-import { imgIcon, imgUrls, content1, content2, scrollData } from "./data.js";
+import { imgIcon, imgUrls, scrollData } from "./data.js";
 import ScrollX from "../../components/scroll-x/scroll-x";
 
 export default {
@@ -99,6 +99,8 @@ export default {
     return {
       imgIcon,
       imgUrls,
+      /** 接口数据 */
+      schedules: {},
       // 课程
       content1: [],
       // 习惯
@@ -124,12 +126,14 @@ export default {
           this.content2 = [];
         } else {
           res.data.forEach(value => {
+            this.schedules = value.schedules[0];
             const schedules = value.schedules[0];
             if (schedules.schedule.type !== "leaning") {
               this.content2.push({
                 time: `${schedules.start_hour}~${schedules.end_hour}`,
                 name: schedules.schedule.title,
-                addr: ""
+                addr: "",
+                has_punched: schedules.has_punched
               });
             } else {
               this.content1.push({
@@ -147,13 +151,20 @@ export default {
   },
   computed: {},
   methods: {
-    /** 打卡 */
-    onPunch() {
-      wx.showToast({
-        title: "功能待完善",
-        icon: "none",
-        duration: 2000
-      });
+    /** 打卡
+     * @param {Object} node 节点数据
+     */
+    onPunch(node) {
+      if (!node.has_punched) {
+        global.PUBLIC.util.httpOther("POST", `/punch`, {
+          trainee_id: global.PUBLIC.util.getUser().trainee_id,
+          type: "habit",
+          day: this.date.calendar1,
+          start_hour: this.schedules.start_hour,
+          object_id: this.schedules.schedule.id
+        });
+      }
+      node.has_punched = true;
     },
     /** 点击跳转到课程 */
     jumpCourse() {
@@ -251,6 +262,9 @@ export default {
         line-height: 50rpx;
         text-align: center;
         font-size: 24rpx;
+      }
+      .punched {
+        background: @cl-2 !important;
       }
     }
   }

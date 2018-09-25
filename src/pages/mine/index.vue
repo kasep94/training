@@ -39,7 +39,7 @@
               <span>习惯养成打卡进展</span>
             </div>
             <div class="habit">
-              <NextList :data="content1" />
+              <NextList @onNodeClick='onJumpPunch' :data="content2" />
               <!-- <div class="more flex-center">
                 <i class="icon icon-down-more" />
               </div> -->
@@ -74,13 +74,11 @@ export default {
       ...listData,
       // 是否显示弹出框
       hasPop: false,
-      // 课程
-      content1: null,
       // 习惯
-      content2: null
+      content2: []
     };
   },
-  async created() {
+  async onLoad() {
     await this.init();
     mineService.updatePage.subscribe(() => {
       wx.login({
@@ -97,37 +95,17 @@ export default {
         }
       });
     });
-    global.PUBLIC.util
-      .httpGet(`/schedule/trainee/${global.PUBLIC.util.getUser().trainee_id}`, {
-        start: this.date.calendar1,
-        end: this.date.calendar1
-      })
-      .then(res => {
-        if (Object.prototype.toString.call(res.data) === "[object Object]") {
-          this.content1 = [];
-          this.content2 = [];
-        } else {
-          res.data.forEach(value => {
-            const schedules = value.schedules[0];
-            if (schedules.schedule.type !== "leaning") {
-              this.content2.push({
-                time: `${schedules.start_hour}~${schedules.end_hour}`,
-                name: schedules.schedule.title,
-                addr: ""
-              });
-            } else {
-              this.content1.push({
-                time: `${schedules.start_hour}~${schedules.end_hour}`,
-                name: schedules.schedule.title,
-                addr: ""
-              });
-            }
-          });
-        }
-      });
   },
+
   computed: {},
   methods: {
+    /** 单击习惯列表
+     * @param {Object} node 节点属性
+     */
+    onJumpPunch(node) {
+      console.log(node);
+      global.PUBLIC.util.jumpNavigateTo("punch/main");
+    },
     /** 初始化 */
     init() {
       wx.login({
@@ -156,6 +134,7 @@ export default {
               return this.userInfo;
             })
             .then(() => {
+              // 获取习惯
               this.userInfo.trainee_id = this.userInfo.children[0].id;
               this.userInfo.grade = this.userInfo.children[0].grade;
               global.PUBLIC.util.setUser(this.userInfo);
@@ -165,6 +144,39 @@ export default {
                   img: v.head_pic
                 };
               });
+            })
+            .then(() => {
+              global.PUBLIC.util
+                .httpGet(
+                  `/schedule/trainee/${
+                    global.PUBLIC.util.getUser().trainee_id
+                  }`,
+                  {
+                    start: this.date.calendar1,
+                    end: this.date.calendar1
+                  }
+                )
+                .then(res => {
+                  console.log(res);
+                  if (
+                    Object.prototype.toString.call(res.data) ===
+                    "[object Object]"
+                  ) {
+                    this.content2 = [];
+                  } else {
+                    res.data.forEach(value => {
+                      const schedules = value.schedules[0];
+                      if (schedules.schedule.type !== "leaning") {
+                        this.content2.push({
+                          ...schedules,
+                          time: `${schedules.start_hour}~${schedules.end_hour}`,
+                          label: schedules.schedule.title,
+                          img: schedules.schedule.habit_lib.remark.icon
+                        });
+                      }
+                    });
+                  }
+                });
             });
         }
       });

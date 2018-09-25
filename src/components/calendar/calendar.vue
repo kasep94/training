@@ -192,7 +192,9 @@ export default {
     color: @cl-5;
   }
   .this-day {
-    border: 1px solid red;
+    // border: 1px solid red;
+    background: @cl-4;
+    color: white;
   }
   .header {
     font-size: 30rpx;

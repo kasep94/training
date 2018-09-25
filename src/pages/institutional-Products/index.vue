@@ -15,7 +15,7 @@
                         <Star :data='institutionalInfo.org_score/10'/>
                         <p class="gray flex"><span>{{institutionalInfo.detail.addr}}</span> | <span>{{institutionalInfo.detail.lola}}</span></p>
                     </div>
-                    <p class="collection flex-left-center"><img src="../../../static/images/all/e_collection.png"/><span>收藏</span></p>
+                    <!-- <p @click="onCollection" class="collection flex-left-center"><img src="../../../static/images/all/e_collection.png"/><span>收藏</span></p> -->
                 </div>
             </div>
             
@@ -92,6 +92,8 @@ export default {
   },
   computed: {},
   methods: {
+    /** 收藏 */
+    onCollection() {},
     /** 获取课程数据 */
     getCourse() {
       global.PUBLIC.util

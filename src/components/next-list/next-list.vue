@@ -9,7 +9,7 @@
   <div class="list-comp">
     <div @click="onNext(item)" class="flex-both" v-for="item of data" :key="item.name">
       <div class="flex-left-center">
-        <img :class="item.name" :src="onlineUrl + item.name + '.png'" />
+        <img :class="item.name" :src="item.img ? item.img : onlineUrl + item.name + '.png'" />
         <span>{{item.label}}</span>
       </div>
       <i class="icon icon-more" />
