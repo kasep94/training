@@ -77,28 +77,29 @@ export default {
       });
     });
 
-    if (option.hasOwnProperty("hasData")) {
-      if (option.hasData === "add") {
-        // TODO
-      } else if (option.hasData === "edit") {
-        // 课程表弹出框的编辑TODO
-        const { id } = this.data.schedule;
-        // 获取课程数据
-        global.PUBLIC.util.httpGet(`/lesson/user`, { id }).then(res => {
-          const items = res.data.items[0];
-          // 地址
-          this.data.addr = items.merchant.addr;
-          // 课程名
-          this.data.name = items.class.item_name;
+    if (this.type === "add") {
+      // TODO
+    } else if (this.type === "edit") {
+      // 课程表弹出框的编辑TODO
+      const { id } = this.data.schedule;
+      // 获取课程数据
+      global.PUBLIC.util.httpGet(`/lesson/user`, { id }).then(res => {
+        console.log(JSON.stringify(res.data));
+        const items = res.data.items[0];
+        this.saveMPicker = {
           // 机构名称
-          this.data.merchantName = items.merchant.merchantName;
-          // 时间
-          this.timeArr = global.PUBLIC.util.jumpApiDate(items.rules);
-        });
-      }
-    } else {
-      this.data = {};
-      this.timeArr = [];
+          name: items.merchant.merchantName,
+          dp_code: items.merchant.dp_code
+        };
+        this.saveCPicker = {
+          // 课程名
+          name: items.class.item_name,
+          id: items.class.id
+        };
+        this.getCourses();
+        // 时间
+        this.timeArr = global.PUBLIC.util.jumpApiDate(items.rules);
+      });
     }
   },
   mounted() {
@@ -120,7 +121,10 @@ export default {
      */
     onMechanismPicker(index) {
       this.saveMPicker = this.mechanismPicker[index];
-      // 获取所有课程
+      this.getCourses();
+    },
+    /** 获取所有课程 */
+    getCourses() {
       global.PUBLIC.util
         .httpGet(`/merchant/class`, {
           dp_code: this.saveMPicker.dp_code

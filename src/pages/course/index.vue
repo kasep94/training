@@ -184,7 +184,7 @@ export default {
      * @memberof DateList
      */
     onDateList(node) {
-      const data = this.apiData.find(value => {
+      const data = this.apiData && this.apiData.find(value => {
         return value.day === node[0].day;
       });
       this.saveData = data;
@@ -378,7 +378,7 @@ export default {
       this.hasShowEdit = 0;
       service.setData(node);
       global.PUBLIC.util.jumpNavigateTo(
-        node.schedule.type !== "leaning"
+        node.schedule.type !== "lesson"
           ? "edit-habit/main?hasData=2"
           : "edit-course/main?type=edit"
       );
