@@ -12,14 +12,14 @@
                 <div class="header-content">
                     <p class="user-name">{{userInfo.name || '无'}}</p>
                     <div class="flex">
-                        <span>身份: {{userInfo.role || '家长'}}</span>
-                        <span>(孩子) {{userInfo.grade}}</span>
+                        <span>身份: {{userInfo.role === 'parent' ? '家长' : userInfo.role}}</span>
+                        <span>(孩子) {{userInfo.grade || 1}}</span>
                     </div>
                 </div>
             </div>
-            <div v-if="hasPop" class="pop">
+            <div v-if="hasPop" @click="() => {hasPop = false}"  class="pop">
               <div class="flex-left-center" v-for="item of othterInfo" :key="item.id">
-                <img class="other-img" :src="item.img"/>
+                <img class="other-img" v-if="onlineUrl" :src="item.img ? item.img : onlineUrl + 'mrtx/avatar.png'"/>
                 <p class="other-name">{{item.name}}</p>
               </div>
               <div @click="onAdd" class="flex-left-center add">
@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import {  othterInfo } from "./data.js";
+import { othterInfo } from "./data.js";
 import NextList from "../../components/next-list/next-list";
 import listData from "../../components/next-list/data.js";
 
@@ -63,9 +63,11 @@ export default {
   data() {
     return {
       onlineUrl: process.env.onlineUrl,
-      // 用户信息
+      // 登入的用户信息
       userInfo: {},
-      othterInfo,
+      // 保存选中的信息
+      childrenInfo: {},
+      othterInfo: [],
       date: global.PUBLIC.util.getDate(),
       // 列表数据
       ...listData,
@@ -82,11 +84,37 @@ export default {
       success: res => {
         global.PUBLIC.util
           .httpOther("POST", `/login`, {
+            // 登入
             wechat_id: res.code,
-            role: 'parent'
+            role: "parent"
           })
           .then(res => {
             this.userInfo = res.data;
+            return res.data;
+          })
+          .then(res => {
+            if (res.children.length === 0) {
+              global.PUBLIC.util
+                .httpOther("POST", `/login/${res.id}/trainee`, {
+                  relation: "child",
+                  head_pic: res.remark.icon
+                })
+                .then(res => {
+                  this.userInfo.children.push(res.data);
+                });
+            }
+            return this.userInfo;
+          })
+          .then(() => {
+            this.userInfo.trainee_id = this.userInfo.children[0].id
+            this.userInfo.grade = this.userInfo.children[0].grade
+            global.PUBLIC.util.setUser(this.userInfo);
+            this.othterInfo = this.userInfo.children.map(v => {
+              return {
+                ...v,
+                img: v.head_pic
+              }
+            });
           });
       }
     });
@@ -123,7 +151,7 @@ export default {
   methods: {
     /** 单击头像 */
     onAvatar() {
-      this.hasPop = true;
+      this.hasPop = !this.hasPop;
     },
     /** 单击添加一个孩子信息 */
     onAdd() {
@@ -169,7 +197,7 @@ export default {
     background-color: @cl-17;
     border-radius: 6rpx;
     overflow: hidden;
-    bottom: -130rpx;
+    top:110px;
     left: 30rpx;
     .add {
       height: 76rpx;

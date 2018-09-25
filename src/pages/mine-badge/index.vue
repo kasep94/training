@@ -33,7 +33,7 @@ export default {
     };
   },
   onLoad() {
-    global.PUBLIC.util.httpGet("/medal?trainee_id=2", {}).then(res => {
+    global.PUBLIC.util.httpGet(`/medal?trainee_id=${global.PUBLIC.util.getUser().trainee_id}`, {}).then(res => {
       const learning = { data: [] };
       const living = { data: [] };
       const friend = { data: [] };
