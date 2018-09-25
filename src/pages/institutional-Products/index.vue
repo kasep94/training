@@ -34,7 +34,7 @@
         </div>
         <div class="footer">
             <p class="col">你可能感兴趣的机构</p>
-            <ScrollX :data='scrollXData'/>
+            <ScrollX @onNodeClick='onScrollX' :data='scrollXData'/>
         </div>
     </div>
 </template>
@@ -43,7 +43,6 @@
 import service from "../evaluation/service.js";
 import Star from "../../components/star/star";
 import ScrollX from "../../components/scroll-x/scroll-x";
-import scrollXData from "../../components/scroll-x/data.js";
 
 export default {
   components: { Star, ScrollX },
@@ -56,7 +55,7 @@ export default {
       // 列表数据
       listData: null,
       // 底部移动的数据
-      scrollXData,
+      scrollXData: [],
       // 是否有课程介绍
       hasIntroduction: false,
       onlineUrl: process.env.onlineUrl
@@ -67,21 +66,56 @@ export default {
     this.dp_code = dp_code;
     this.institutionalInfo = service.getData();
     // 获取课程数据
-    global.PUBLIC.util.httpGet(`/merchant/${dp_code}/course`, {}).then(res => {
-      this.listData = res.data;
-      this.hasIntroduction =
-        Object.prototype.toString.call(res.data) === "[object Array]";
-    });
-    // 获取课程数据
-    /* global.PUBLIC.util.httpGet("/course", { dp_code }).then(res => {
-      this.listData = res.data.items;
-    }); */
+    this.getCourse();
+    const { latitude, longitude } = this.institutionalInfo;
+    // 获取感兴趣的机构
+    global.PUBLIC.util
+      .httpGet(`/assess/search`, {
+        page_size: 5,
+        teaching: 1,
+        latitude,
+        longitude
+      })
+      .then(res => {
+        this.scrollXData = res.data.map(v => {
+          return {
+            ...v,
+            img: v.head_pic_more,
+            name: v.org_name,
+            score: v.org_score
+          };
+        });
+      });
   },
   mounted() {
     global.PUBLIC.util.setTitle("机构产品");
   },
   computed: {},
   methods: {
+    /** 获取课程数据 */
+    getCourse() {
+      global.PUBLIC.util
+        .httpGet(`/merchant/${this.dp_code}/course`, {})
+        .then(res => {
+          this.listData = res.data;
+          this.hasIntroduction =
+            Object.prototype.toString.call(res.data) === "[object Array]";
+        });
+    },
+    /** 单击节点
+     * @param {Object} node 节点属性
+     * @memberof ScrollX
+     */
+    onScrollX(node) {
+      console.log(node);
+      this.dp_code = node.dp_code;
+      const { latitude, longitude } = node.detail;
+      global.PUBLIC.util.calDistance(latitude, longitude).then(res => {
+        node.detail.lola = res;
+      });
+      this.institutionalInfo = node;
+      this.getCourse();
+    },
     /** 单击列表
      * @param {Object} node
      */

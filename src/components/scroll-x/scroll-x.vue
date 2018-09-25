@@ -8,7 +8,7 @@
 <template>
   <div>
     <scroll-view scroll-x class="div-2-main scroll-div">
-      <view class="scroll-child" v-for="item of data" :key="item.id">
+      <view class="scroll-child" v-for="item of data" :key="item.id" @click='onNodeClick(item)'>
         <img mode='center' class="scroll-content" :src="item.img || onlineUrl + 'mrtx/back1.png'" />
         <p class="cl-black">{{item.name}}</p>
         <div class="flex" v-if="item.score">
@@ -34,7 +34,12 @@ export default {
       type: Array
     }
   },
-  components: {Star}
+  components: {Star},
+  methods: {
+    onNodeClick(node) {
+      this.$emit('onNodeClick', node)
+    }
+  }
 };
 </script>
 
@@ -58,6 +63,8 @@ export default {
   }
   .cl-black {
     margin: 10rpx 0;
+    width: 200rpx;
+    .nowrap();
   }
 }
 

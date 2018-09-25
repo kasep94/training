@@ -71,7 +71,7 @@
         </div>
         <div class="div-5 top-border">
             <p class="cl-b-black">你可能感兴趣的机构</p>
-            <ScrollX :data='scrollXData'/>
+            <ScrollX @onNodeClick='onScrollX' :data='scrollXData'/>
         </div>
     </div>
 </template>
@@ -151,6 +151,11 @@ export default {
     global.PUBLIC.util.setTitle("产品测评");
   },
   methods: {
+    /** 单击节点
+     * @param {Object} node 节点属性
+     * @memberof ScrollX
+     */
+    onScrollX(node) {},
     /** 获取评论数据 */
     getCommint() {
       if (this.page !== null) {
