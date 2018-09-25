@@ -79,9 +79,9 @@
 <script>
 // import data from "./data.js";
 import CommentList from "../../components/comment-list/comment-list";
-import commentListData from "../../components/comment-list/data.js";
+// import commentListData from "../../components/comment-list/data.js";
 import ScrollX from "../../components/scroll-x/scroll-x";
-import scrollXData from "../../components/scroll-x/data.js";
+// import scrollXData from "../../components/scroll-x/data.js";
 import Star from "../../components/star/star";
 import service from "../evaluation/service.js";
 
@@ -97,11 +97,11 @@ export default {
       // 详情数据
       details: null,
       // CommentList数据
-      commentListData,
+      commentListData: [],
       // 评论数据
       commentList: null,
       // scroll-x数据
-      scrollXData,
+      scrollXData: [],
       // 课程价格
       price: 0,
       // 老师介绍
@@ -117,9 +117,34 @@ export default {
     global.PUBLIC.util.httpGet(`/courseDetail/${course_id}`, {}).then(res => {
       this.price = res.data.origin_price;
       this.introduction = res.data.teachers;
-      this.details = { ...res.data.course, ...res.data.merchant_detail, ...service.getData() };
-      this.details.update_time = this.details.update_time.substr(0, 7).replace('-', '.')
+      this.details = {
+        ...res.data.course,
+        ...res.data.merchant_detail,
+        ...service.getData()
+      };
+      this.details.update_time = this.details.update_time
+        .substr(0, 7)
+        .replace("-", ".");
     });
+    const { latitude, longitude } = service.getData().detail;
+    // 获取感兴趣的机构
+    global.PUBLIC.util
+      .httpGet(`/assess/search`, {
+        page_size: 5,
+        teaching: 1,
+        latitude,
+        longitude
+      })
+      .then(res => {
+        this.scrollXData = res.data.map(v => {
+          return {
+            ...v,
+            img: v.head_pic_more,
+            name: v.org_name,
+            score: v.org_score
+          };
+        });
+      });
     // 获取评论数量
     global.PUBLIC.util
       .httpGet(`/merchantCommit/${dp_code}/category`, {})
@@ -155,7 +180,16 @@ export default {
      * @param {Object} node 节点属性
      * @memberof ScrollX
      */
-    onScrollX(node) {},
+    onScrollX(node) {
+      const { latitude, longitude } = node.detail;
+      global.PUBLIC.util.calDistance(latitude, longitude).then(res => {
+        node.detail.lola = res;
+      });
+      service.setData(node);
+      global.PUBLIC.util.jumpNavigateTo(
+        `institutional-products/main?dp_code=${node.dp_code}`
+      );
+    },
     /** 获取评论数据 */
     getCommint() {
       if (this.page !== null) {
@@ -187,7 +221,10 @@ export default {
             "<score": arr[1]
           })
           .then(res => {
-            this.page = res.data.items.length === 0 || res.data.items.length !== 10 ? null : page + 1;
+            this.page =
+              res.data.items.length === 0 || res.data.items.length !== 10
+                ? null
+                : page + 1;
             const data = res.data.items.map(value => {
               value.create_time = value.create_time.substr(0, 10);
               return value;
@@ -234,7 +271,7 @@ export default {
     .top {
       border-bottom: 1px solid #e5e8f0;
       padding: 30rpx 0;
-      >.flex-left-center {
+      > .flex-left-center {
         margin: 11rpx 0 17rpx 0;
       }
     }

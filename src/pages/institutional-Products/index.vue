@@ -107,7 +107,6 @@ export default {
      * @memberof ScrollX
      */
     onScrollX(node) {
-      console.log(node);
       this.dp_code = node.dp_code;
       const { latitude, longitude } = node.detail;
       global.PUBLIC.util.calDistance(latitude, longitude).then(res => {
