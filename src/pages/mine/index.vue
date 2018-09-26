@@ -103,7 +103,6 @@ export default {
      * @param {Object} node 节点属性
      */
     onJumpPunch(node) {
-      console.log(node);
       global.PUBLIC.util.jumpNavigateTo("punch/main");
     },
     /** 初始化 */
@@ -191,6 +190,7 @@ export default {
       this.userInfo.trainee_id = id;
       this.userInfo.head_pic = head_pic;
       this.userInfo.name = name;
+      mineService.changeUser.next()
       global.PUBLIC.util.setUser(this.userInfo);
     },
     /** 单击头像 */

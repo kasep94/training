@@ -28,6 +28,7 @@
 <script>
 import Picker from "../../components/picker/picker";
 import service from "../course/service.js";
+import courseService from "../course/course.service.js";
 
 export default {
   data() {
@@ -126,18 +127,20 @@ export default {
             habit_id: this.data.id,
             trainee_id: global.PUBLIC.util.getUser().trainee_id
           })
-          .then(res => {});
+          .then(res => {
+            setTimeout(() => {
+              courseService.habitSub.next()
+            }, 1000)
+          });
       }
-      console.log(this.apiArr);
       if (this.apiArr.length > 0) {
-        console.log(global.PUBLIC.util.conversionDate(this.apiArr));
         global.PUBLIC.util.conversionDate(this.apiArr).forEach(v => {
           global.PUBLIC.util
             .httpOther("POST", `/rule`, {
               ...v,
               type: "habit",
               object_id: this.data.id || this.data.schedule.id,
-              trainee_id: this.data.trainee_id
+              trainee_id: global.PUBLIC.util.getUser().trainee_id
             })
             .then(res => {
               if (res.code !== 0 || res.code === 200) {

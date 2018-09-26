@@ -180,7 +180,4 @@ const dataList = [
 
 
 
-export default {
-  dataList,
-  // apiData
-}
+export default dataList

@@ -41,6 +41,7 @@
 import Picker from "../../components/picker/picker";
 import service from "../course/service.js";
 import SinglePicker from "../../components/single-picker/single-picker";
+import courseService from "../course/course.service.js";
 
 export default {
   components: { Picker, SinglePicker },
@@ -64,6 +65,10 @@ export default {
       saveCPicker: {}
     };
   },
+  onShow() {
+    // 重置data 完成初始化
+    Object.assign(this.$data, this.$options.data())
+  },
   onLoad(option) {
     this.data = service.getData();
     this.type = option.type;
@@ -84,7 +89,6 @@ export default {
       const { id } = this.data.schedule;
       // 获取课程数据
       global.PUBLIC.util.httpGet(`/lesson/user`, { id }).then(res => {
-        console.log(JSON.stringify(res.data));
         const items = res.data.items[0];
         this.saveMPicker = {
           // 机构名称
@@ -203,6 +207,7 @@ export default {
                   });
                 } else {
                   wx.navigateBack({ changed: true });
+                  courseService.courseSub.next();
                 }
               });
           } else {

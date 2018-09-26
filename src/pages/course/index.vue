@@ -115,11 +115,13 @@ import Btns from "../../components/btns/btns";
 import { btns1, btns2, btns3, btns4 } from "../../components/btns/data.js";
 import service from "./service.js";
 import Picker from "../../components/picker/picker";
+import courseService from './course.service.js'
+import mineService from "../mine/mine.server.js";
 
 export default {
   data() {
     return {
-      ...dataList,
+      dataList: [],
       // 弹出框 课程名
       courseVal: "",
       // 弹框3的选择数据
@@ -154,13 +156,22 @@ export default {
   },
   components: { DateList, EditCard, Btns, Picker },
   onLoad() {
+    courseService.courseSub.subscribe(() => {
+      this.initCourse()
+    })
+    courseService.habitSub.subscribe(() => {
+      this.getHabit()
+    })
+    mineService.changeUser.subscribe(() => {
+      this.init()
+    })
     this.page = Number(wx.getStorageSync("page")) || 1;
     this.init();
   },
   /** 页面返回执行方法 */
-  onShow() {
+  /* onShow() {
     this.init();
-  },
+  }, */
   mounted() {
     global.PUBLIC.util.setTitle("课程表");
   },
@@ -194,6 +205,11 @@ export default {
     /** 初始化 */
     init() {
       this.initCourse();
+      // 获取习惯接口
+      this.getHabit()
+    },
+    /** 获取习惯接口 */
+    getHabit() {
       global.PUBLIC.util
         .httpGet("/habit/user", {
           trainee_id: global.PUBLIC.util.getUser().trainee_id
@@ -208,6 +224,7 @@ export default {
     },
     /** 课程表数据 */
     initCourse() {
+      this.dataList = JSON.parse(JSON.stringify(dataList))
       const date = global.PUBLIC.util.getDate().thisWeek;
       global.PUBLIC.util
         .httpGet(`/schedule/trainee/${global.PUBLIC.util.getUser().trainee_id}`, {
@@ -246,6 +263,7 @@ export default {
               this.dataList[y][index + 1].push(child);
             });
           });
+          this.dataList = JSON.parse(JSON.stringify(this.dataList))
         });
     },
     /** 点击弹窗叉号 */

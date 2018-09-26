@@ -92,6 +92,7 @@
 <script>
 import { imgIcon, imgUrls, scrollData } from "./data.js";
 import ScrollX from "../../components/scroll-x/scroll-x";
+import courseService from "../course/course.service.js";
 
 export default {
   components: { ScrollX },
@@ -115,42 +116,52 @@ export default {
     };
   },
   onLoad() {
-    global.PUBLIC.util
-      .httpGet(`/schedule/trainee/${global.PUBLIC.util.getUser().trainee_id}`, {
-        start: this.date.calendar1,
-        end: this.date.calendar1
-      })
-      .then(res => {
-        if (Object.prototype.toString.call(res.data) === "[object Object]") {
-          this.content1 = [];
-          this.content2 = [];
-        } else {
-          res.data.forEach(value => {
-            this.schedules = value.schedules[0];
-            const schedules = value.schedules[0];
-            if (schedules.schedule.type !== "leaning") {
-              this.content2.push({
-                time: `${schedules.start_hour}~${schedules.end_hour}`,
-                name: schedules.schedule.title,
-                addr: "",
-                has_punched: schedules.has_punched
-              });
-            } else {
-              this.content1.push({
-                time: `${schedules.start_hour}~${schedules.end_hour}`,
-                name: schedules.schedule.title,
-                addr: ""
-              });
-            }
-          });
-        }
-      });
+    mineService.changeUser.subscribe(() => {
+      this.init();
+    });
+    this.init();
   },
   mounted() {
     global.PUBLIC.util.setTitle("首页");
   },
   computed: {},
   methods: {
+    // 初始化
+    init() {
+      global.PUBLIC.util
+        .httpGet(
+          `/schedule/trainee/${global.PUBLIC.util.getUser().trainee_id}`,
+          {
+            start: this.date.calendar1,
+            end: this.date.calendar1
+          }
+        )
+        .then(res => {
+          if (Object.prototype.toString.call(res.data) === "[object Object]") {
+            this.content1 = [];
+            this.content2 = [];
+          } else {
+            res.data.forEach(value => {
+              this.schedules = value.schedules[0];
+              const schedules = value.schedules[0];
+              if (schedules.schedule.type !== "leaning") {
+                this.content2.push({
+                  time: `${schedules.start_hour}~${schedules.end_hour}`,
+                  name: schedules.schedule.title,
+                  addr: "",
+                  has_punched: schedules.has_punched
+                });
+              } else {
+                this.content1.push({
+                  time: `${schedules.start_hour}~${schedules.end_hour}`,
+                  name: schedules.schedule.title,
+                  addr: ""
+                });
+              }
+            });
+          }
+        });
+    },
     /** 打卡
      * @param {Object} node 节点数据
      */
