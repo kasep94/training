@@ -176,7 +176,7 @@ export default {
     background: @cl-4;
     color: white;
     margin: 0 auto;
-    width: 542rpx;
+    width: 690rpx;
     margin-top: 188rpx;
   }
 }

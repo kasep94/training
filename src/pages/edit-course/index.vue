@@ -9,7 +9,7 @@
         <div class="content">
 
             <div class="label-inp">
-                <p><i class="icon icon-book" />机构名称</p>
+                <p><i class="icon icon-mechanism" />机构名称</p>
                 <SinglePicker :data='mechanismPicker' @onPicker='onMechanismPicker' :info="saveMPicker && saveMPicker.name || '请选择机构'" />
             </div>
             
@@ -235,7 +235,7 @@ export default {
     background: @cl-4;
     color: white;
     margin: 0 auto;
-    width: 542rpx;
+    width: 690rpx;
     margin-top: 188rpx;
   }
 }

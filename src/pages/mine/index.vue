@@ -39,7 +39,8 @@
               <span>习惯养成打卡进展</span>
             </div>
             <div class="habit">
-              <NextList @onNodeClick='onJumpPunch' :data="content2" />
+              <NextList v-if="content2 && content2.length > 0" @onNodeClick='onJumpPunch' :data="content2" />
+              <p v-else class='no-punch'>今日无打卡安排</p>
               <!-- <div class="more flex-center">
                 <i class="icon icon-down-more" />
               </div> -->
@@ -233,6 +234,11 @@ export default {
 </script>
 
 <style scoped lang='less'>
+.no-punch {
+  font-size: 28rpx;
+  margin-left: 30rpx;
+  padding: 15rpx 0;
+}
 .header {
   position: relative;
   .children {

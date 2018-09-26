@@ -49,28 +49,28 @@ export default {
             });
             break;
           case "living":
-            learning.label = "生活勋章";
+            living.label = "生活勋章";
             living.data.push({
               ...v,
               img: v.remark.icon
             });
             break;
           case "friend":
-            learning.label = "交友勋章";
+            friend.label = "交友勋章";
             friend.data.push({
               ...v,
               img: v.remark.icon
             });
             break;
           case "health":
-            learning.label = "健康勋章";
+            health.label = "健康勋章";
             health.data.push({
               ...v,
               img: v.remark.icon
             });
             break;
           case "behave":
-            learning.label = "行为勋章";
+            behave.label = "行为勋章";
             behave.data.push({
               ...v,
               img: v.remark.icon
