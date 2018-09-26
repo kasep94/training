@@ -46,13 +46,13 @@
       </div>
 
       <div :class="['box', content2.length === 0 ? '' : 'bt-border']">
-        <div class="flex-both">
+        <div @click='jumpCourse' class="flex-both">
           <div class="flex-left-center">
             <i class="icon icon-calendar" />
             <span class="title">习惯养成</span>
             <span class="cl-b-gray">{{date.calendar}} | {{date.week}}</span>
           </div>
-          <span @click='jumpCourse' class="gray"><i class="icon icon-more" /></span>
+          <span class="gray"><i class="icon icon-more" /></span>
         </div>
         <div v-if="content2.length > 0" class="content flex" v-for="item of content2" :key='item.id'>
           <span class="left">{{item.time}}</span>
