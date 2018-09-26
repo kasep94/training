@@ -91,7 +91,6 @@ export default {
             session_token: wx.getStorageSync("session_token")
           },
           success: function(res) {
-            console.log(res);
             if (res.statusCode != 200) {
               wx.showModal({
                 title: "提示",
@@ -107,7 +106,6 @@ export default {
             });
           },
           fail: function(e) {
-            console.log(e);
             wx.showModal({
               title: "提示",
               content: "上传失败",

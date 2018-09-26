@@ -63,7 +63,6 @@ export default {
      * @param {Object} node
      */
     onWebView(node) {
-      console.log(node);
       global.PUBLIC.util.jumpNavigateTo(
         `web-view/main?url=${encodeURIComponent(node.url)}`
       );

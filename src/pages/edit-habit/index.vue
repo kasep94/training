@@ -51,11 +51,9 @@ export default {
   onLoad(option) {
     this.hasDataNum = option.hasData;
     this.data = service.getData();
-    console.log(this.data, this.hasDataNum);
     if (this.hasDataNum) {
       if (this.hasDataNum === "1") {
         // 习惯养成计划的编辑
-        console.log(global.PUBLIC.util.jumpApiDate(this.data.rules))
         this.timeArr = global.PUBLIC.util.jumpApiDate(this.data.rules);
       } else if (this.hasDataNum === "2") {
         // 课程表弹出框的编辑 TODO

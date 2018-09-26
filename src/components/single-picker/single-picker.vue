@@ -35,7 +35,6 @@ export default {
   },
   methods: {
     bindTimePickerChange: function(e) {
-      console.log(e.mp.detail.value)
       this.$emit("onPicker", e.mp.detail.value);
     }
   }

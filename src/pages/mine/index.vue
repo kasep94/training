@@ -156,7 +156,6 @@ export default {
                   }
                 )
                 .then(res => {
-                  console.log(res);
                   if (
                     Object.prototype.toString.call(res.data) ===
                     "[object Object]"
