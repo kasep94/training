@@ -15,7 +15,7 @@
                         <Star :data='institutionalInfo.org_score/10'/>
                         <p class="gray flex"><span>{{institutionalInfo.detail.addr}}</span> | <span>{{institutionalInfo.detail.lola}}</span></p>
                     </div>
-                    <!-- <p @click="onCollection" class="collection flex-left-center"><img src="../../../static/images/all/e_collection.png"/><span>收藏</span></p> -->
+                    <p @click="onCollection" class="collection flex-left-center"><img src="../../../static/images/all/e_collection.png"/><span>{{institutionalInfo.has_collected ? '取消收藏' : '收藏'}}</span></p>
                 </div>
             </div>
             
@@ -93,7 +93,21 @@ export default {
   computed: {},
   methods: {
     /** 收藏 */
-    onCollection() {},
+    onCollection() {
+      const { id, has_collected, has_collected_collect_id } = this.institutionalInfo;
+      if (this.institutionalInfo.has_collected) {
+        // 取消收藏
+        global.PUBLIC.util.httpOther("DELETE", `/collect/${has_collected_collect_id}`);
+      } else {
+        // 收藏
+        global.PUBLIC.util.httpOther("POST", `/collect`, {
+          login_id: global.PUBLIC.util.getUser().id,
+          type: "merchant",
+          object_id: id
+        });
+      }
+      this.institutionalInfo.has_collected = !has_collected;
+    },
     /** 获取课程数据 */
     getCourse() {
       global.PUBLIC.util

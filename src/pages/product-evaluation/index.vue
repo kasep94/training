@@ -15,7 +15,7 @@
         </swiper>
         <div class="header bt-border">
             <div class="top">
-                <p>{{details.org_name}}</p>
+                <div class="flex-both"><p>{{details.org_name}}</p><p @click="onCollection" class="collection flex-left-center"><img src="../../../static/images/all/e_collection.png"/><span>{{apiCourseDetail.has_collected ? '取消收藏' : '收藏'}}</span></p></div>
                 <div class="flex-left-center">
                   <Star :data='details.org_score/10' />
                     <p class="price">{{price || 0}}元/课时</p>
@@ -30,14 +30,16 @@
                 <p class="cl-gray">效果: {{details.the_effect}} | 师资: {{details.teach_quality}} | 环境: {{details.environment}}</p>
             </div>
             <div class="flex-both footer">
-                <p class="cl-black flex-left-center"><img src="../../../static/images/product-evaluation/address.png" /> <span>{{details.detail.addr}}</span></p>
+                <p class="cl-black flex-left-center">
+                <img src="../../../static/images/product-evaluation/address.png" /> 
+                  <span>{{details.detail.addr}}</span></p>
                 <img src="../../../static/images/product-evaluation/phone.png" />
             </div>
         </div>
         <div class="introduction bt-border">
             <div class="title flex-end">
                 <p class="cl-b-black">机构介绍</p>
-                <p class="cl-gray">{{details.detail.addr}}</p>
+                <p class="cl-gray addr-1">{{details.detail.addr}}</p>
             </div>
             <p class="cl-gray">{{details.service}}</p>
         </div>
@@ -97,7 +99,30 @@ export default {
       // 详情数据
       details: null,
       // CommentList数据
-      commentListData: [],
+      commentListData: {
+        selected: [
+          {
+            label: "全部",
+            type: 1,
+            num: 0
+          },
+          {
+            label: "好评",
+            type: 2,
+            num: 0
+          },
+          {
+            label: "中评",
+            type: 3,
+            num: 0
+          },
+          {
+            label: "差评",
+            type: 4,
+            num: 0
+          }
+        ]
+      },
       // 评论数据
       commentList: null,
       // scroll-x数据
@@ -107,25 +132,33 @@ export default {
       // 老师介绍
       introduction: null,
       // 评论 1:全部评论 2: 好评 3:中评 4:差评
-      type: 1
+      type: 1,
+      course_id: null,
+      apiCourseDetail: null,
     };
   },
   onLoad(option) {
     const { dp_code, course_id } = option;
+    this.course_id = course_id;
     this.dp_code = dp_code;
     // 获取课程数据
-    global.PUBLIC.util.httpGet(`/courseDetail/${course_id}`, {}).then(res => {
-      this.price = res.data.origin_price;
-      this.introduction = res.data.teachers;
-      this.details = {
-        ...res.data.course,
-        ...res.data.merchant_detail,
-        ...service.getData()
-      };
-      this.details.update_time = this.details.update_time
-        .substr(0, 7)
-        .replace("-", ".");
-    });
+    global.PUBLIC.util
+      .httpGet(`/courseDetail/${course_id}`, {
+        login_id: global.PUBLIC.util.getUser().id
+      })
+      .then(res => {
+        this.price = res.data.origin_price;
+        this.introduction = res.data.teachers;
+        this.apiCourseDetail = res.data;
+        this.details = {
+          ...service.getData(),
+          ...res.data.course,
+          ...res.data.merchant_detail
+        };
+        this.details.update_time = this.details.update_time
+          .substr(0, 7)
+          .replace("-", ".");
+      });
     const { latitude, longitude } = service.getData().detail;
     // 获取感兴趣的机构
     global.PUBLIC.util
@@ -176,6 +209,25 @@ export default {
     global.PUBLIC.util.setTitle("产品测评");
   },
   methods: {
+    /** 单击收藏 */
+    onCollection() {
+      const { has_collected, has_collected_collect_id } = this.apiCourseDetail;
+      if (has_collected) {
+        // 取消收藏
+        global.PUBLIC.util.httpOther(
+          "DELETE",
+          `/collect/${has_collected_collect_id}`
+        );
+      } else {
+        // 收藏
+        global.PUBLIC.util.httpOther("POST", `/collect`, {
+          login_id: global.PUBLIC.util.getUser().id,
+          type: "course",
+          object_id: this.course_id
+        });
+      }
+      this.apiCourseDetail.has_collected = !has_collected;
+    },
     /** 单击节点
      * @param {Object} node 节点属性
      * @memberof ScrollX
@@ -254,8 +306,22 @@ export default {
 </script>
 
 <style lang='less' scoped>
+.addr-1 {
+  width: 550rpx;
+  .nowrap();
+}
 .product-evaluation-page {
   padding-bottom: 80rpx;
+  .collection {
+    img {
+      height: 58rpx !important;
+      width: 58rpx !important;
+    }
+    span {
+      font-size: 26rpx;
+      margin-left: 10rpx;
+    }
+  }
   swiper,
   .slide-image {
     text-align: center;

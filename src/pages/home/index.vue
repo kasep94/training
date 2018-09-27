@@ -168,6 +168,7 @@ export default {
      */
     onPunch(node) {
       if (!node.has_punched) {
+        node.has_punched = true;
         global.PUBLIC.util.httpOther("POST", `/punch`, {
           trainee_id: global.PUBLIC.util.getUser().trainee_id,
           type: "habit",
@@ -176,7 +177,6 @@ export default {
           object_id: this.schedules.schedule.id
         });
       }
-      node.has_punched = true;
     },
     /** 点击跳转到课程 */
     jumpCourse() {

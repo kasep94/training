@@ -41,7 +41,7 @@ export default {
       page: 1,
     };
   },
-  created() {
+  onLoad() {
     // 获取搜索头
     global.PUBLIC.util.httpGet("/merchantsTemplate").then(res => {
       this.subject = res.data.items;
@@ -97,12 +97,14 @@ export default {
      * @param {string} query 搜索的内容
      */
     getList(query = "") {
+      const login_id = global.PUBLIC.util.getUser().id
       return new Promise(resolve => {
         if (this.page !== null) {
           global.PUBLIC.util
             .httpGet("/assess/search", {
               ...this.params,
               page: this.page,
+              login_id,
               query
             })
             .then(res => {
