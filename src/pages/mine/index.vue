@@ -92,6 +92,12 @@ export default {
             })
             .then(res => {
               this.userInfo.children = res.data.children;
+              this.othterInfo = this.userInfo.children.map(v => {
+                return {
+                  ...v,
+                  img: v.head_pic
+                };
+              });
             });
         }
       });
@@ -134,7 +140,16 @@ export default {
               return this.userInfo;
             })
             .then(() => {
-              this.getHabit()
+              // 获取习惯
+              this.userInfo.trainee_id = this.userInfo.children[0].id;
+              this.userInfo.grade = this.userInfo.children[0].grade;
+              global.PUBLIC.util.setUser(this.userInfo);
+              this.othterInfo = this.userInfo.children.map(v => {
+                return {
+                  ...v,
+                  img: v.head_pic
+                };
+              });
             })
             .then(() => {
               global.PUBLIC.util
@@ -169,18 +184,6 @@ export default {
                 });
             });
         }
-      });
-    },
-    getHabit() {
-      // 获取习惯
-      this.userInfo.trainee_id = this.userInfo.children[0].id;
-      this.userInfo.grade = this.userInfo.children[0].grade;
-      global.PUBLIC.util.setUser(this.userInfo);
-      this.othterInfo = this.userInfo.children.map(v => {
-        return {
-          ...v,
-          img: v.head_pic
-        };
       });
     },
     /** 切换用户

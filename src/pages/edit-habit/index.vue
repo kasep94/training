@@ -128,7 +128,7 @@ export default {
           .then(res => {
             setTimeout(() => {
               courseService.habitSub.next()
-            }, 1000)
+            }, 500)
           });
       }
       if (this.apiArr.length > 0) {

@@ -9,7 +9,7 @@
         <swiper interval='3000' autoplay=false indicatorDots=false duration=1000>
             <block  v-for="item in details.detail_img_more" :key='item'>
               <swiper-item>
-                  <img mode='center' :src="item" class="slide-image" width="355" height="150"/>
+                  <img mode='widthFix' :src="item" class="slide-image" width="355" height="150"/>
               </swiper-item>
             </block>
         </swiper>

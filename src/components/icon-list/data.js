@@ -1,4 +1,4 @@
-const url = process.env.onlineUrl + 'test/'
+const url = process.env.onlineUrl + 'test2/'
 
 const data = [{
     // 节点名
