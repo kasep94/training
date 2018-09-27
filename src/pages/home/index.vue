@@ -93,6 +93,7 @@
 import { imgIcon, imgUrls, scrollData } from "./data.js";
 import ScrollX from "../../components/scroll-x/scroll-x";
 import courseService from "../course/course.service.js";
+import mineService from "../mine/mine.server.js";
 
 export default {
   components: { ScrollX },

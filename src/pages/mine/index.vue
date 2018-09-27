@@ -134,16 +134,7 @@ export default {
               return this.userInfo;
             })
             .then(() => {
-              // 获取习惯
-              this.userInfo.trainee_id = this.userInfo.children[0].id;
-              this.userInfo.grade = this.userInfo.children[0].grade;
-              global.PUBLIC.util.setUser(this.userInfo);
-              this.othterInfo = this.userInfo.children.map(v => {
-                return {
-                  ...v,
-                  img: v.head_pic
-                };
-              });
+              this.getHabit()
             })
             .then(() => {
               global.PUBLIC.util
@@ -180,6 +171,18 @@ export default {
         }
       });
     },
+    getHabit() {
+      // 获取习惯
+      this.userInfo.trainee_id = this.userInfo.children[0].id;
+      this.userInfo.grade = this.userInfo.children[0].grade;
+      global.PUBLIC.util.setUser(this.userInfo);
+      this.othterInfo = this.userInfo.children.map(v => {
+        return {
+          ...v,
+          img: v.head_pic
+        };
+      });
+    },
     /** 切换用户
      * @param {Object} node 节点属性
      */
@@ -190,7 +193,7 @@ export default {
       this.userInfo.trainee_id = id;
       this.userInfo.head_pic = head_pic;
       this.userInfo.name = name;
-      mineService.changeUser.next()
+      mineService.changeUser.next();
       global.PUBLIC.util.setUser(this.userInfo);
     },
     /** 单击头像 */

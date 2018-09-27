@@ -14,7 +14,7 @@
         </header>
         <div class="content">
             <div class="box" v-for="item of data" :key="item.id">
-                <p class="title"><span>{{item.label}}</span><span><span class="mine-badge-blue">{{item.data.length}}</span>/5</span></p>
+                <p class="title"><span>{{item.label}}</span><span><span class="mine-badge-blue">{{item.data.length}}</span>/{{item.size}}</span></p>
                 <ScrollX :data='item.data'/>
             </div>
         </div>
@@ -34,11 +34,11 @@ export default {
   },
   onLoad() {
     global.PUBLIC.util.httpGet(`/medal?trainee_id=${global.PUBLIC.util.getUser().trainee_id}`, {}).then(res => {
-      const learning = { data: [] };
-      const living = { data: [] };
-      const friend = { data: [] };
-      const health = { data: [] };
-      const behave = { data: [] };
+      const learning = { data: [], size: 5};
+      const living = { data: [], size: 5 };
+      const friend = { data: [], size: 6 };
+      const health = { data: [], size: 4 };
+      const behave = { data: [], size: 6 };
       res.data.forEach(v => {
         switch (v.type) {
           case "learning":
