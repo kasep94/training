@@ -17,7 +17,7 @@ export default {
   props: {
     // {'time'}判断哪种选择器
     type: {
-      type: String 
+      type: String
     },
     info: {
       type: String
@@ -40,21 +40,29 @@ export default {
     // 分
     const minute = 60;
     for (let x = 0; x < hour; x++) {
-      date[1].push(x < 10 ? `0${x}` :x);
+      if (x <= 22 && x >= 6) {
+        date[1].push(x < 10 ? `0${x}` : x);
+      }
     }
     for (let y = 0; y < hour; y++) {
-      date[2].push(y < 10 ? `0${y}` :y);
+      date[2].push(y < 10 ? `0${y}` : y);
     }
-    date[3] = date[1]
-    date[4] = date[2]
+    date[3] = date[1];
+    date[4] = date[2];
     this.timeArray = date;
   },
   methods: {
     bindTimePickerChange: function(e) {
       const arr = e.mp.detail.value;
-      const {timeArray} = this
-      const select = [timeArray[0][arr[0]], timeArray[1][arr[1]], timeArray[2][arr[2]], timeArray[3][arr[3]], timeArray[4][arr[4]]]
-      this.$emit('onTimePicker', select)
+      const { timeArray } = this;
+      const select = [
+        timeArray[0][arr[0]],
+        timeArray[1][arr[1]],
+        timeArray[2][arr[2]],
+        timeArray[3][arr[3]],
+        timeArray[4][arr[4]]
+      ];
+      this.$emit("onTimePicker", select);
     }
   }
 };
