@@ -146,7 +146,6 @@ export default {
               this.userInfo.grade = this.userInfo.children[0].grade;
               global.PUBLIC.util.setUser(this.userInfo);
               this.othterInfo = this.userInfo.children.map(v => {
-                console.log(`${process.env.ip}/trainee/pic/${v.id}`)
                 return {
                   ...v,
                   // img: v.head_pic

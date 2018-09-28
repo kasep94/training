@@ -5,18 +5,27 @@
  * 描述信息：编辑课程页面
  */
 <template>
-    <div class="edit-course-page flex-content-center">
+    <div @click="onHidePop" class="edit-course-page flex-content-center">
         <div class="content">
 
-            <div class="label-inp">
+            <div class="label-inp selected">
                 <p><i class="icon icon-mechanism" />机构名称</p>
-                <SinglePicker :data='mechanismPicker' @onPicker='onMechanismPicker' :info="saveMPicker && saveMPicker.name || '请选择机构'" />
+                <input class="btn-1" @input="onMechanismChange" v-model='mechanismVal' placeholder='请选择机构'/>
+                <div v-if="mechanismArr.length > 0">
+                  <p @click="onSelected(item, 'mechanism')" v-for="item of mechanismArr" :key="item.id">
+                    {{item.org_name}}
+                  </p>
+                </div>
             </div>
             
-            <div class="label-inp">
+            <div class="label-inp selected">
                 <p><i class="icon icon-book" />课程名称</p>
-                <input v-if="!saveMPicker" @click="onInfo" class="btn-1" placeholder='请选择课程名称'/>
-                <SinglePicker v-else :data='coursePicker' @onPicker='onCoursePicker' :info="saveCPicker.name || '请选择课程名称'" />
+                <input class="btn-1" @input="getCourses" v-model="courseVal" placeholder='请选择课程名称'/>
+                <div v-if="courseArr.length > 0">
+                  <p @click="onSelected(item, 'course')" v-for="item of courseArr" :key="item.id">
+                    {{item.product_name}}
+                  </p>
+                </div>
             </div>
             
             <div class="label-inp">
@@ -27,10 +36,10 @@
                 </div>
                 <Picker @onTimePicker='onSelectTime' info='选择课程时间' type='time' />
             </div>
-            <!-- <div class="label-inp">
+            <div class="label-inp">
                 <p><i class="icon icon-book" />上课地点</p>
-                <input class="btn-1" type="text" v-model="data.addr" placeholder="填写书籍名称" />
-            </div> -->
+                <input class="btn-1" type="text" v-model="address" placeholder="填写书籍名称" />
+            </div>
 
             <p @click="onSubmit" class="btn-1 add-course">保  存</p>
         </div>
@@ -55,32 +64,29 @@ export default {
       data: {},
       // {'add' | 'edit'}是修改还是添加
       type: "",
-      // 机构picker数据
-      mechanismPicker: [],
-      // 保存选择的机构Picker数据
-      saveMPicker: null,
-      // 课程picker数据
-      coursePicker: [],
-      // 保存选择的机构Picker数据
-      saveCPicker: {}
+      // 输入的机构名
+      mechanismVal: "",
+      // 保存3个搜索的
+      mechanismArr: [],
+      // 输入的课程名
+      courseVal: "",
+      // 课程保存3个搜索的
+      courseArr: [],
+      // 保存延迟
+      saveSetTime: null,
+      // 地址
+      address: "",
+      // 更新需要的id
+      id: null
     };
   },
   onShow() {
     // 重置data 完成初始化
-    Object.assign(this.$data, this.$options.data())
+    Object.assign(this.$data, this.$options.data());
   },
   onLoad(option) {
     this.data = service.getData();
     this.type = option.type;
-    // 获取所有机构
-    global.PUBLIC.util.httpGet(`/merchants/search?query=`, {}).then(res => {
-      this.mechanismPicker = res.data.map(v => {
-        return {
-          ...v,
-          name: v.org_name
-        };
-      });
-    });
 
     if (this.type === "add") {
       // TODO
@@ -90,17 +96,12 @@ export default {
       // 获取课程数据
       global.PUBLIC.util.httpGet(`/lesson/user`, { id }).then(res => {
         const items = res.data.items[0];
-        this.saveMPicker = {
-          // 机构名称
-          name: items.merchant.merchantName,
-          dp_code: items.merchant.dp_code
-        };
-        this.saveCPicker = {
-          // 课程名
-          name: items.class.item_name,
-          id: items.class.id
-        };
-        this.getCourses();
+        const { lesson_name, address, merchant, id } = items;
+        this.courseVal = lesson_name;
+        this.address = address;
+        this.mechanismVal = merchant;
+        this.id = id;
+        console.log(items);
         // 时间
         this.timeArr = global.PUBLIC.util.jumpApiDate(items.rules);
       });
@@ -111,43 +112,73 @@ export default {
   },
   computed: {},
   methods: {
-    /** 提示 */
-    onInfo() {
-      wx.showToast({
-        title: "请先选择机构",
-        icon: "none",
-        duration: 2000
+    /** 全局单击隐藏 */
+    onHidePop() {
+      setTimeout(() => {
+        this.mechanismArr = [];
+        this.courseArr = [];
       });
     },
-    /** 选择机构
-     * @param {Object} index 数组索引
-     * @memberof single-picker
+    /** 选中下拉
+     * @param {Object} node 节点属性
+     * @param {'mechanism' | 'course'} name 名字
      */
-    onMechanismPicker(index) {
-      this.saveMPicker = this.mechanismPicker[index];
-      this.getCourses();
+    onSelected(node, name) {
+      if (name === "mechanism") {
+        this.mechanismVal = node.org_name;
+      } else {
+        this.courseVal = node.product_name;
+      }
     },
-    /** 获取所有课程 */
+    /** 输入机构名 */
+    onMechanismChange() {
+      if (this.saveSetTime) {
+        this.saveSetTime = null;
+      } else {
+        // 获取所有机构
+        this.saveSetTime = setTimeout(() => {
+          global.PUBLIC.util
+            .httpGet(`/merchants/search?query=${this.mechanismVal}`, {})
+            .then(res => {
+              const { data } = res;
+              if (Object.prototype.toString.call(data) === "[object Object]") {
+                this.mechanismArr = [];
+              } else {
+                if (data.length > 3) {
+                  this.mechanismArr = data.slice(0, 3);
+                } else {
+                  this.mechanismArr = data;
+                }
+              }
+            });
+        }, 50);
+      }
+    },
+    /** 输入获取所有课程 */
     getCourses() {
-      global.PUBLIC.util
-        .httpGet(`/merchant/class`, {
-          dp_code: this.saveMPicker.dp_code
-        })
-        .then(res => {
-          this.coursePicker = res.data.map(v => {
-            return {
-              ...v,
-              name: v.item_name
-            };
-          });
-        });
-    },
-    /** 选择课程
-     * @param {Object} index 数组索引
-     * @memberof single-picker
-     */
-    onCoursePicker(index) {
-      this.saveCPicker = this.coursePicker[index] || {};
+      if (this.saveSetTime) {
+        this.saveSetTime = null;
+      } else {
+        this.saveSetTime = setTimeout(() => {
+          global.PUBLIC.util
+            .httpGet(`/courseDetail`, {
+              show: "product_name",
+              "@product_name": this.courseVal
+            })
+            .then(res => {
+              const data = res.data.items;
+              if (Object.prototype.toString.call(data) === "[object Object]") {
+                this.courseArr = [];
+              } else {
+                if (data.length > 3) {
+                  this.courseArr = data.slice(0, 3);
+                } else {
+                  this.courseArr = data;
+                }
+              }
+            });
+        }, 500);
+      }
     },
     /** 删除选中的日期
      * @param {Array} node 节点属性
@@ -178,10 +209,16 @@ export default {
     /** 保存 */
     onSubmit() {
       global.PUBLIC.util
-        .httpOther("POST", `/lesson/user`, {
-          trainee_id: global.PUBLIC.util.getUser().trainee_id,
-          class_id: this.saveCPicker.id
-        })
+        .httpOther(
+          this.type === "add" ? "POST" : "PUT",
+          `/lesson/user${this.type === "add" ? "" : "/" + this.id}`,
+          {
+            trainee_id: global.PUBLIC.util.getUser().trainee_id,
+            merchant: this.mechanismVal,
+            address: this.address,
+            lesson_name: this.courseVal
+          }
+        )
         .then(res => {
           return res.data;
         })
@@ -199,6 +236,7 @@ export default {
                 })
               })
               .then(res => {
+                courseService.courseSub.next();
                 if (res.code !== 0) {
                   wx.showToast({
                     title: res.message,
@@ -207,10 +245,10 @@ export default {
                   });
                 } else {
                   wx.navigateBack({ changed: true });
-                  courseService.courseSub.next();
                 }
               });
           } else {
+            courseService.courseSub.next();
             wx.navigateBack({ changed: true });
           }
         });
@@ -224,6 +262,26 @@ export default {
   padding-bottom: 30rpx;
   .content {
     width: 690rpx;
+  }
+  .selected {
+    position: relative;
+    div {
+      position: absolute;
+      border: 1rpx solid @cl-2;
+      border-radius: 6rpx;
+      background: white;
+      z-index: 3;
+      width: 690rpx;
+      p {
+        font-size: 28rpx;
+        height: 60rpx;
+        line-height: 60rpx;
+        border-bottom: 1rpx solid @cl-2;
+        margin-bottom: -1rpx;
+        padding-left: 5rpx;
+        .nowrap();
+      }
+    }
   }
   .label-inp {
     margin-top: 40rpx;

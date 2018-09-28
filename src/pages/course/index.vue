@@ -40,7 +40,7 @@
                 <div class="flex-both">
                   <p>
                     <span>{{item.start_hour}}~{{item.end_hour}}</span>
-                    <span>{{item.schedule.title}}</span>
+                    <span class="pop-title">{{item.schedule.title}}</span>
                   </p>
                   <span class="edit" @click="onPopEdit(item)">编辑</span>
                 </div>
@@ -448,6 +448,9 @@ export default {
   }
   /deep/ .flex-both:nth-of-type(3) {
     border-color: #52bcc5;
+  }
+  .pop-title {
+    width: 300rpx;
   }
   input.btn-1 {
     text-align: left;
