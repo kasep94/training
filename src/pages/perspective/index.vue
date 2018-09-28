@@ -28,8 +28,13 @@ export default {
       iconRightListData: null,
       // 保存单击节点数据 {'活动预告' | '往期活动' | '教育视角' | '育儿分享'}
       saveName: "",
+      // 数组索引
       index: 0
     };
+  },
+  /** 组件销毁 */
+  onUnload() {
+    this.index = 0;
   },
   onLoad(option) {
     const { type } = option;

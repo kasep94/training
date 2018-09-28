@@ -111,7 +111,7 @@ export default {
      * @param {Object} node 节点属性
      */
     onJumpPunch(node) {
-      global.PUBLIC.util.jumpNavigateTo("punch/main");
+      global.PUBLIC.util.jumpNavigateTo(`punch/main?id=${node.schedule.id}`);
     },
     /** 初始化 */
     init() {

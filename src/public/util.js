@@ -97,7 +97,7 @@ const util = (() => {
       minutes,
       second,
       calendar: `${year}年${month}月${day}日`,
-      calendar1: `${year}-${month}-${day}`,
+      calendar1: `${year}-${month < 10 ? '0' + month : month}-${day}`,
       dayCountOfMonth,
       thisWeek
     }

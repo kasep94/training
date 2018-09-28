@@ -25,7 +25,7 @@
      </div>
      <div class="box flex content-box">
       <p v-for="(item, i) of date" 
-        :class="['main', i%7 === 0 ? 'first': '', item.crossMonth ? 'cross-month' : '', item.thisDay ? 'this-day' : '']" 
+        :class="['main', i%7 === 0 ? 'first': '', item.crossMonth ? 'cross-month' : '', item.thisDay ? 'this-day' : '', item.selected ? 'slected-day' : '']" 
         :key="item.id">
         {{item.day}}
       </p>
@@ -35,6 +35,13 @@
 
  <script>
 export default {
+  props: {
+    // 哪天打卡
+    data: {
+      type: Array,
+      default: []
+    }
+  },
   data() {
     return {
       date: null,
@@ -71,7 +78,7 @@ export default {
      */
     onMonth(node) {
       this.month = node;
-      const time = new Date()
+      const time = new Date();
       if (this.month === time.getMonth() + 1) {
         this.date = this.getDate(`${this.year}-${this.month}-${this.day}`);
       } else {
@@ -127,14 +134,18 @@ export default {
       const weekNum = time.getDay();
       let copyWeekNum = weekNum;
       const arr = [];
+      // 设置日期。判断是否和this.data相等  如果相等说明打卡了
+      let selectedDate = "";
       // 计算1-day的时间
       for (let i = 0; i < day; i++) {
+        selectedDate = `${year}-${month + 1 < 10 ? "0" + (Number(month) + 1) : (Number(month) + 1)}-${copyDay < 10 ? "0" + copyDay : copyDay}`;
         arr.push({
           day: copyDay,
           week: copyWeekNum,
           thisDay:
             `${this.year}-${this.month}-${this.day}` ===
-            `${year}-${month + 1}-${copyDay}`
+            `${year}-${month + 1}-${copyDay}`,
+          selected: this.data.find(h => h === selectedDate)
         });
         copyDay -= 1;
         copyWeekNum -= 1;
@@ -147,10 +158,12 @@ export default {
       let copyFirstDay = firstDay;
       let lastMonth = dayCountOfMonth[month - 1 < 0 ? 11 : month - 1];
       for (let j = 0; j < firstDay; j++) {
+        selectedDate = `${year}-${month + 1 < 10 ? "0" + month : month}-${lastMonth < 10 ? "0" + lastMonth : lastMonth}`;
         arr.push({
           day: lastMonth,
           week: (copyFirstDay -= 1),
-          crossMonth: true
+          crossMonth: true,
+          selected: this.data.find(h => h === selectedDate)
         });
         lastMonth -= 1;
       }
@@ -159,11 +172,13 @@ export default {
       let copyDay1 = day;
       let copyOhterWeek = weekNum;
       for (let z = 0; z < otherDay; z++) {
+        selectedDate = `${year}-${month + 1 < 10 ? "0" + (Number(month) + 1) : (Number(month) + 1)}-${copyDay1 + 1 < 10 ? "0" + copyDay1 + 1 : copyDay1 + 1}`;
         copyOhterWeek += 1;
         if (copyOhterWeek === 7) copyOhterWeek = 0;
         arr.unshift({
           day: (copyDay1 += 1),
-          week: copyOhterWeek
+          week: copyOhterWeek,
+          selected: this.data.find(h => h === selectedDate)
         });
       }
       // 计算下一个月的时间
@@ -171,12 +186,14 @@ export default {
       let copyNot = not;
       let notDay = 0;
       for (let h = 0; h < 6 - not; h++) {
+        selectedDate = `${year}-${month + 1 < 10 ? "0" + (Number(month) + 2) : (Number(month) + 2)}-${notDay + 1 < 10 ? "0" + notDay + 1 : notDay + 1}`;
         let nextWeek = (copyNot += 1);
         if (nextWeek === 7) nextWeek = 0;
         arr.unshift({
           day: (notDay += 1),
           week: nextWeek,
-          crossMonth: true
+          crossMonth: true,
+          selected: this.data.find(h => h === selectedDate)
         });
       }
       return arr.reverse();
@@ -192,7 +209,11 @@ export default {
     color: @cl-5;
   }
   .this-day {
-    // border: 1px solid red;
+    border: 1px solid black;
+    // background: @cl-4;
+    // color: @cl-1;
+  }
+  .slected-day {
     background: @cl-4;
     color: white;
   }
