@@ -215,9 +215,9 @@ const util = (() => {
    * @param {Boolean} showError 是否显示错误信息
    */
   function httpGet(url = '', body = {}, showError = false) {
-    /* wx.showLoading({
+    wx.showLoading({
       title: '加载中',
-    }) */
+    })
     return new Promise((resolve, reject) => {
       wx.request({
         url: `${ip + url}`,
@@ -230,7 +230,7 @@ const util = (() => {
           "content-type": "application/json"
         },
         success: res => {
-          // wx.hideLoading()
+          wx.hideLoading()
           if (showError) {
             if (res.statusCode < 200 || res.statusCode > 300) {
               wx.showToast({

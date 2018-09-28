@@ -32,10 +32,6 @@ export default {
       isLoad: false
     };
   },
-  // 销毁
-  onUnload() {
-    this.isLoad = false;
-  },
   computed: {},
   methods: {
     /** 提交 */
@@ -48,15 +44,18 @@ export default {
             `/login/${global.PUBLIC.util.getUser().id}/trainee`,
             {
               relation: "child",
-              head_pic: this.imgUrl,
+              // head_pic: this.imgUrl,
               name: this.inputVal
             }
           )
           .then(res => {
+            if (this.imgUrl) {
+              this.upload(res.data.id);
+            }
             setTimeout(() => {
               mineService.updatePage.next();
               wx.navigateBack({ changed: true });
-            }, 1500);
+            }, 500);
           });
       }
     },
@@ -76,34 +75,26 @@ export default {
       });
     },
     /** 将本地资源上传到开发者服务器，客户端发起一个 HTTPS POST 请求，其中 content-type 为 multipart/form-data */
-    upload(page, path) {
+    upload(trainee_id) {
       wx.showToast({
         icon: "loading",
         title: "正在上传"
       }),
         wx.uploadFile({
-          url: constant.SERVER_URL + "/FileUploadServlet",
-          filePath: path[0],
+          url: `${process.env.ip}/trainee/upload/${trainee_id}`,
+          filePath: this.imgUrl,
           name: "file",
           header: { "Content-Type": "multipart/form-data" },
-          formData: {
+          /* formData: {
             //和服务器约定的token, 一般也可以放在header中
             session_token: wx.getStorageSync("session_token")
-          },
+          }, */
           success: function(res) {
-            if (res.statusCode != 200) {
-              wx.showModal({
-                title: "提示",
-                content: "上传失败",
-                showCancel: false
-              });
-              return;
-            }
-            var data = res.data;
-            page.setData({
+            /* var data = res.data;
+            this.setData({
               //上传成功修改显示头像
               src: path[0]
-            });
+            }); */
           },
           fail: function(e) {
             wx.showModal({
