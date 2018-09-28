@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import data from "./data.js";
+// import data from "./data.js";
 
 export default {
   props: {
@@ -29,12 +29,12 @@ export default {
   },
   data() {
     return {
-      timeIndex: [0, 0, 0, 0, 0],
-      timeArray: [[], [], [], [], []]
+      timeIndex: [0, 0, 0, 0, 0, 0],
+      timeArray: [["周一", "周二", "周三", "周四", "周五", "周六", "周日"],[], [], [], [], [], []]
     };
   },
   created() {
-    const { date } = data;
+    let date = this.timeArray
     // 小时
     const hour = 24;
     // 分
@@ -44,11 +44,15 @@ export default {
         date[1].push(x < 10 ? `0${x}` : x);
       }
     }
+    date[2] = ['时']
     for (let y = 0; y < hour; y++) {
-      date[2].push(y < 10 ? `0${y}` : y);
+      date[3].push(y < 10 ? `0${y}` : y);
     }
-    date[3] = date[1];
-    date[4] = date[2];
+    date[4] = ['分']
+    date[5] = date[1];
+    date[6] = ['时']
+    date[7] = date[3];
+    date[8] = ['分'];
     this.timeArray = date;
   },
   methods: {
@@ -56,11 +60,11 @@ export default {
       const arr = e.mp.detail.value;
       const { timeArray } = this;
       const select = [
-        timeArray[0][arr[0]],
+        (timeArray[0][arr[0]]).replace('周', '星期'),
         timeArray[1][arr[1]],
-        timeArray[2][arr[2]],
         timeArray[3][arr[3]],
-        timeArray[4][arr[4]]
+        timeArray[5][arr[5]],
+        timeArray[7][arr[7]]
       ];
       this.$emit("onTimePicker", select);
     }
