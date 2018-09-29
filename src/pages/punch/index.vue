@@ -12,6 +12,7 @@
 
 <script>
 import Calendar from "../../components/calendar/calendar";
+import mineService from '../mine/mine.server.js'
 
 export default {
   components: { Calendar },
@@ -27,6 +28,7 @@ export default {
   },
   computed: {},
   onLoad(option) {
+    console.log(mineService.getHabitData())
     global.PUBLIC.util
       .httpGet(`/punch/habit/${global.PUBLIC.util.getUser().trainee_id}`, {
         start: "2018-09-01",

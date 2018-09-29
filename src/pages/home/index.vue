@@ -10,7 +10,7 @@
         <swiper interval='3000' autoplay=false indicatorDots=false duration=1000>
           <block v-for="item in imgUrls" :key='item'>
             <swiper-item>
-              <img mode='center' @click="onJumpPage(imgIcon[0])" :src="item" class="slide-image" width="355" height="150"/>
+              <img mode='widthFix' @click="onJumpPage(imgIcon[0])" :src="item" class="slide-image" width="355" height="150"/>
             </swiper-item>
           </block>
         </swiper>
@@ -72,20 +72,20 @@
         </div> -->
       </div>
 
-      <!-- <div class="box">
+      <div class="box">
         <div class="flex-both">
           <div class="flex-left-center">
             <i class="icon icon-ranking" />
             <span class="title">课程排行榜</span>
           </div>
-          <span class="cl-b-gray">排行分类筛选<i class="icon icon-more" /></span>
+          <span class="cl-b-gray" @click="onJumpEvaluation">排行分类筛选<i class="icon icon-more" /></span>
         </div>
 
         <div class="bottom-footer">
-          <ScrollX :data='scrollData' />
-          <ScrollX :data='scrollData' />
+          <ScrollX @onNodeClick='onJumpEvaluation' :data='scrollData' />
+          <!-- <ScrollX :data='scrollData' /> -->
         </div>
-      </div> -->
+      </div>
     </div>
 </template>
 
@@ -107,7 +107,7 @@ export default {
       content1: [],
       // 习惯
       content2: [],
-      scrollData,
+      scrollData: [],
       date: global.PUBLIC.util.getDate(),
       indicatorDots: false,
       autoplay: false,
@@ -120,6 +120,21 @@ export default {
     mineService.changeUser.subscribe(() => {
       this.init();
     });
+    global.PUBLIC.util
+      .httpGet("/courseDetail", {
+        class_category_name: "钢琴",
+        sortby: "soldout_total",
+        sort: "desc"
+      })
+      .then(res => {
+        const arr = res.data.items.slice(0, 3)
+        this.scrollData = arr.map(v => {
+          return {
+            ...v,
+            img: v.head_pic_more
+          }
+        })
+      });
     this.init();
   },
   mounted() {
@@ -162,6 +177,10 @@ export default {
             });
           }
         });
+    },
+    /** 跳转到测评 */
+    onJumpEvaluation() {
+      global.PUBLIC.util.jumpSwitchTab("evaluation/main");
     },
     /** 打卡
      * @param {Object} node 节点数据

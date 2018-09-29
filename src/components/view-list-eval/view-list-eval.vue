@@ -8,7 +8,7 @@
 <template>
   <div class="view-list-comp">
     <div class="content" v-for="item of data" @click="onClick(item)" :key="item.id">
-      <img class="image" mode='center' :src="item.head_pic_more || onlineUrl + 'mrtx/back1.png'"/>
+      <img class="image" mode='widthFix' :src="item.head_pic_more || onlineUrl + 'mrtx/back1.png'"/>
       <div class="left-main">
         <div class="flex-both">
           <div>

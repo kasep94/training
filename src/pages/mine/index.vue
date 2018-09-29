@@ -111,6 +111,7 @@ export default {
      * @param {Object} node 节点属性
      */
     onJumpPunch(node) {
+      mineService.setHabitData(node)
       global.PUBLIC.util.jumpNavigateTo(`punch/main?id=${node.schedule.id}`);
     },
     /** 初始化 */
@@ -141,9 +142,11 @@ export default {
               return this.userInfo;
             })
             .then(() => {
+              const { id, grade } = this.userInfo.children[0];
               // 获取习惯
-              this.userInfo.trainee_id = this.userInfo.children[0].id;
+              this.userInfo.trainee_id = id;
               this.userInfo.grade = this.userInfo.children[0].grade;
+              this.userInfo.head_pic = `${process.env.ip}/trainee/pic/${id}`;
               global.PUBLIC.util.setUser(this.userInfo);
               this.othterInfo = this.userInfo.children.map(v => {
                 return {

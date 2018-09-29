@@ -8,13 +8,17 @@
  <template>
    <div class="icon-right-list">
      <div class="flex-both content" v-for="item of data" :key="item.id" @click="onNodeClick(item)">
-       <img v-if="type === 'left'" mode='center' :src="item.remark.pic_url || onlineUrl + 'mrtx/back1.png'" />
+       <img v-if="type === 'left'" mode='widthFix' :src="item.remark.pic_url || onlineUrl + 'mrtx/back1.png'" />
        <div>
-         <p class="title">{{item.title}}</p>
-         <p class="gray gray1">{{item.tags}}</p>
-         <p class="gray">{{item.create_date}}</p>
+          <p class="title">{{item.title}}</p>
+          <p class="gray gray1">{{item.tags}}</p>
+          <div class="flex-both">
+            <p class="gray">{{item.create_date}}</p>
+            <p v-if="hasCol" @click="onCollection(item)" class="collection flex-left-center"><img src="../../../static/images/all/e_collection.png"/><span>{{item.has_collected ? '取消收藏' : '收藏'}}</span></p>
+          </div>
+          
        </div>
-       <img v-if="type === 'right'" mode='center' :src="item.remark.pic_url || onlineUrl + 'mrtx/back1.png'" />
+       <img v-if="type === 'right'" mode='widthFix' :src="item.remark.pic_url || onlineUrl + 'mrtx/back1.png'" />
      </div>
    </div>
  </template>
@@ -23,7 +27,8 @@
 export default {
   data() {
     return {
-      onlineUrl: process.env.onlineUrl
+      onlineUrl: process.env.onlineUrl,
+      isOnCollection: false
     };
   },
   props: {
@@ -33,7 +38,11 @@ export default {
     // 图片在左还是右
     type: {
       type: String,
-      default: 'right'
+      default: "right"
+    },
+    // 是否显示收藏
+    hasCol: {
+      type: Boolean
     }
   },
   methods: {
@@ -41,7 +50,18 @@ export default {
      * @param {Object} node 节点属性
      */
     onNodeClick(node) {
-      this.$emit('onNodeClick', node)
+      if (this.isOnCollection) {
+        this.isOnCollection = false
+      } else {
+        this.$emit("onNodeClick", node);
+      }
+    },
+    /** 单击收藏
+     * @param {Object} node 节点属性
+     */
+    onCollection(node) {
+      this.isOnCollection = true;
+      this.$emit("onCollection", node);
     }
   }
 };
@@ -49,6 +69,15 @@ export default {
 
  <style lang='less'>
 .icon-right-list {
+  .collection {
+    font-size: 26rpx;
+    color: @cl-1;
+    img {
+      height: 58rpx;
+      width: 58rpx;
+      margin-right: 10rpx;
+    }
+  }
   .content {
     width: 690rpx;
     margin: 0 auto;

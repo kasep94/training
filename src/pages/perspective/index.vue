@@ -8,7 +8,7 @@
   <div>
     <Search @onSearch='onSearch' />
     <Navbar @onNodeClick='onNavbar' :index='index' :data='navbarData' />
-    <IconRightList @onNodeClick='onIconRList' :data='iconRightListData'/>
+    <IconRightList hasCol='true' @onCollection='onCollection' @onNodeClick='onIconRList' :data='iconRightListData'/>
   </div>
  </template>
 
@@ -29,7 +29,9 @@ export default {
       // 保存单击节点数据 {'活动预告' | '往期活动' | '教育视角' | '育儿分享'}
       saveName: "",
       // 数组索引
-      index: 0
+      index: 0,
+      // {activity | document}
+      type: ""
     };
   },
   /** 组件销毁 */
@@ -38,6 +40,7 @@ export default {
   },
   onLoad(option) {
     const { type } = option;
+    this.type = type;
     switch (type) {
       case "1":
         this.navbarData = navbar1;
@@ -61,11 +64,34 @@ export default {
     this.getData();
   },
   methods: {
+    /** 收藏
+     * @param {Object} node 节点属性
+     * @memberof IconRightList
+     */
+    onCollection(node) {
+      node.has_collected = !node.has_collected
+      const type = this.type === 1 || this.type === 2 ? "activity" : "document";
+      if (!node.has_collected) {
+        // 取消收藏
+        global.PUBLIC.util.httpOther(
+          "DELETE",
+          `/collect/${node.has_collected_collect_id}`
+        );
+      } else {
+        // 收藏
+        global.PUBLIC.util.httpOther("POST", `/collect`, {
+          login_id: global.PUBLIC.util.getUser().id,
+          object_id: node.id,
+          type
+        });
+      }
+    },
     /** 单击列表
      * @param {Object} node 节点属性
      * @memberof IconRightList
      */
     onIconRList(node) {
+      console.log(1);
       global.PUBLIC.util.jumpNavigateTo(
         `web-view/main?url=${encodeURIComponent(node.url)}`
       );
@@ -85,7 +111,8 @@ export default {
         .httpGet("/doc", {
           "@tags": this.saveName,
           order_by: "id",
-          "@title": title
+          "@title": title,
+          login_id: global.PUBLIC.util.getUser().id
         })
         .then(res => {
           this.iconRightListData = res.data.items;
