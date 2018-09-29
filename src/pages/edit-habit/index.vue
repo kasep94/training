@@ -85,7 +85,9 @@ export default {
       if (node[5] && node[5].id) {
         global.PUBLIC.util
           .httpOther("DELETE", `/rule/${node[5].id}`, {})
-          .then(res => {});
+          .then(res => {
+            courseService.habitSub.next();
+          });
       }
       this.timeArr.splice(index, 1);
       this.apiArr.find((v, i) => {
@@ -106,6 +108,9 @@ export default {
     /** 单击保存 */
     onSubmit() {
       const { describe } = this.data;
+      setTimeout(() => {
+        courseService.habitSub.next();
+      }, 500);
       if (this.hasDataNum === "1" || this.hasDataNum === "2") {
         // 更新框编辑习惯 | 弹出框更新框编辑习惯
         global.PUBLIC.util
@@ -125,11 +130,7 @@ export default {
             habit_id: this.data.id,
             trainee_id: global.PUBLIC.util.getUser().trainee_id
           })
-          .then(res => {
-            setTimeout(() => {
-              courseService.habitSub.next()
-            }, 500)
-          });
+          .then(res => {});
       }
       if (this.apiArr.length > 0) {
         global.PUBLIC.util.conversionDate(this.apiArr).forEach(v => {

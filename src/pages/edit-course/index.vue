@@ -188,7 +188,9 @@ export default {
       if (node[5] && node[5].id) {
         global.PUBLIC.util
           .httpOther("DELETE", `/rule/${node[5].id}`, {})
-          .then(res => {});
+          .then(res => {
+            courseService.courseSub.next();
+          });
       }
       this.timeArr.splice(index, 1);
       this.apiArr.find((v, i) => {
@@ -208,6 +210,9 @@ export default {
     },
     /** 保存 */
     onSubmit() {
+      setTimeout(() => {
+        courseService.courseSub.next();
+      }, 500)
       global.PUBLIC.util
         .httpOther(
           this.type === "add" ? "POST" : "PUT",
@@ -248,7 +253,6 @@ export default {
                 }
               });
           } else {
-            courseService.courseSub.next();
             wx.navigateBack({ changed: true });
           }
         });
