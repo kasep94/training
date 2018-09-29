@@ -202,8 +202,12 @@ export default {
 };
 </script>
 
- <style lang='less' scoped>
+ <style lang='less'>
+ page {
+   background-color: @cl-21;
+ }
 .calendar-comp {
+  background-color: white;
   padding: 30rpx;
   .cross-month {
     color: @cl-5;
