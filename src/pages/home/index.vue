@@ -10,7 +10,7 @@
         <swiper interval='3000' autoplay=false indicatorDots=false duration=1000>
           <block v-for="item in imgUrls" :key='item'>
             <swiper-item>
-              <img mode='widthFix' @click="onJumpPage(imgIcon[0])" :src="item" class="slide-image" width="355" height="150"/>
+              <img mode='widthFix' @click="onJumpPage(imgIcon[0])" :src="item.img" class="slide-image" width="355" height="150"/>
             </swiper-item>
           </block>
         </swiper>
@@ -90,7 +90,7 @@
 </template>
 
 <script>
-import { imgIcon, imgUrls, scrollData } from "./data.js";
+import { imgIcon, scrollData } from "./data.js";
 import ScrollX from "../../components/scroll-x/scroll-x";
 import courseService from "../course/course.service.js";
 import mineService from "../mine/mine.server.js";
@@ -100,7 +100,7 @@ export default {
   data() {
     return {
       imgIcon,
-      imgUrls,
+      imgUrls: [],
       /** 接口数据 */
       schedules: {},
       // 课程
@@ -117,6 +117,26 @@ export default {
     };
   },
   onLoad() {
+    wx.request({
+      url: `https://cdn.check-check.cn/adminApi/api/banner/list/index.php`,
+      data: {},
+      method: "GET",
+      header: {
+        "content-type": "application/json"
+      },
+      success: res => {
+        this.imgUrls = res.data.list
+      },
+      fail: res => {
+        if (showError) {
+          wx.showToast({
+            title: "服务器异常",
+            icon: "none",
+            duration: 2000
+          });
+        }
+      }
+    });
     mineService.changeUser.subscribe(() => {
       this.init();
     });
@@ -127,13 +147,13 @@ export default {
         sort: "desc"
       })
       .then(res => {
-        const arr = res.data.items.slice(0, 3)
+        const arr = res.data.items.slice(0, 3);
         this.scrollData = arr.map(v => {
           return {
             ...v,
             img: v.head_pic_more
-          }
-        })
+          };
+        });
       });
     this.init();
   },
