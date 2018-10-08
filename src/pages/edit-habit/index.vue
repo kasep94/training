@@ -63,7 +63,7 @@ export default {
           this.data = items;
           // 时间
           this.timeArr = global.PUBLIC.util.jumpApiDate(items.rules);
-        });
+        }, false, false);
       } else {
         // 添加习惯编辑
       }
@@ -119,7 +119,7 @@ export default {
             `/habit/user/${this.data.id || this.data.schedule.id}`,
             {
               describe
-            }
+            }, false, false
           )
           .then(res => {});
       } else {
@@ -129,7 +129,7 @@ export default {
             describe,
             habit_id: this.data.id,
             trainee_id: global.PUBLIC.util.getUser().trainee_id
-          })
+          }, false, false)
           .then(res => {});
       }
       if (this.apiArr.length > 0) {
@@ -140,7 +140,7 @@ export default {
               type: "habit",
               object_id: this.data.id || this.data.schedule.id,
               trainee_id: global.PUBLIC.util.getUser().trainee_id
-            })
+            }, false, false)
             .then(res => {
               if (res.code !== 0 || res.code === 200) {
                 wx.showToast({

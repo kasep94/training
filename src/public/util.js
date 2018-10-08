@@ -214,10 +214,13 @@ const util = (() => {
    * @param {Object<method: string, data: Object>} params 请求参数和传给服务器的数据
    * @param {Boolean} showError 是否显示错误信息
    */
-  function httpGet(url = '', body = {}, showError = false) {
-    wx.showLoading({
-      title: '加载中',
-    })
+  function httpGet(url = '', body = {}, showError = false, hasLoad = true) {
+    if (hasLoad) {
+      wx.showLoading({
+        title: '加载中',
+      })
+    }
+
     return new Promise((resolve, reject) => {
       wx.request({
         url: `${ip + url}`,
@@ -230,7 +233,9 @@ const util = (() => {
           "content-type": "application/json"
         },
         success: res => {
-          wx.hideLoading()
+          if (hasLoad) {
+            wx.hideLoading()
+          }
           if (showError) {
             if (res.statusCode < 200 || res.statusCode > 300) {
               wx.showToast({

@@ -213,7 +213,7 @@ export default {
       global.PUBLIC.util
         .httpGet("/habit/user", {
           trainee_id: global.PUBLIC.util.getUser().trainee_id
-        })
+        }, false, false)
         .then(res => {
           this.editCardData = res.data.items.map(v => {
             v.info = v.habit.name;
