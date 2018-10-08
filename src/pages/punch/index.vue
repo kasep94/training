@@ -6,7 +6,7 @@
  */
 <template>
     <div class="home_page">
-        <Calendar v-if="punchDate.length > 0" :data='punchDate' />
+        <Calendar :data='punchDate' />
         <div class="flex-left-center habit">
           <img :src="source.img"/>
           <p>{{source.label}}</p>
@@ -53,7 +53,6 @@ export default {
         trainee_id: global.PUBLIC.util.getUser().trainee_id
       })
       .then(res => {
-        console.log(res.data);
         this.badges = res.data.map(v => {
           return {
             ...v,
