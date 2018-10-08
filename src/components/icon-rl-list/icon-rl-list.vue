@@ -8,7 +8,7 @@
  <template>
    <div class="icon-right-list">
      <div class="flex-both content" v-for="item of data" :key="item.id" @click="onNodeClick(item)">
-       <img v-if="type === 'left'" mode='widthFix' :src="item.remark.pic_url || onlineUrl + 'mrtx/back1.png'" />
+       <img v-if="type === 'left'" mode='aspectFill' :src="item.remark.pic_url || onlineUrl + 'mrtx/back1.png'" />
        <div>
           <p class="title">{{item.title}}</p>
           <p class="gray gray1">{{item.tags}}</p>
@@ -18,7 +18,7 @@
           </div>
           
        </div>
-       <img v-if="type === 'right'" mode='widthFix' :src="item.remark.pic_url || onlineUrl + 'mrtx/back1.png'" />
+       <img v-if="type === 'right'" mode='aspectFill' :src="item.remark.pic_url || onlineUrl + 'mrtx/back1.png'" />
      </div>
    </div>
  </template>

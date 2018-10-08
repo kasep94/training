@@ -61,7 +61,7 @@
               <p class="title-1">{{item.name}}</p>
               <p class="gray">{{item.addr}}</p>
             </div>
-            <p @click="onPunch(item)" :class="['punch', item.has_punched ? 'punched' : '']">{{item.has_punched ? '已打卡' : '打卡'}}</p>
+            <p @click="onPunch(item)" :class="['punch', item.has_punched ? 'punched' : '']">{{item.has_punched ? '取消打卡' : '打卡'}}</p>
           </div>
         </div>
         <div v-if="content2.length === 0" class="none-div">
@@ -182,6 +182,7 @@ export default {
               const schedules = value.schedules[0];
               if (schedules.schedule.type !== "leaning") {
                 this.content2.push({
+                  ...schedules,
                   time: `${schedules.start_hour}~${schedules.end_hour}`,
                   name: schedules.schedule.title,
                   addr: "",
@@ -206,15 +207,23 @@ export default {
      * @param {Object} node 节点数据
      */
     onPunch(node) {
-      if (!node.has_punched) {
-        node.has_punched = true;
+      const {has_punched} = node;
+      node.has_punched = !has_punched;
+      if (!has_punched) {
+        // 打卡
         global.PUBLIC.util.httpOther("POST", `/punch`, {
           trainee_id: global.PUBLIC.util.getUser().trainee_id,
-          type: "habit",
+          type: "lesson",
           day: this.date.calendar1,
           start_hour: this.schedules.start_hour,
           object_id: this.schedules.schedule.id
         });
+      } else {
+        // 取消打卡
+        global.PUBLIC.util.httpOther(
+          "DELETE",
+          `/punch/${node.has_punched_id}`
+        );
       }
     },
     /** 点击跳转到课程 */

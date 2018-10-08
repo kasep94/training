@@ -9,7 +9,7 @@
   <div>
     <scroll-view scroll-x class="div-2-main scroll-div">
       <view class="scroll-child" v-for="item of data" :key="item.id" @click='onNodeClick(item)'>
-        <img mode='widthFix' :class="['scroll-content', item.has_achieved ? '' : 'img-gray']" :src="item.img || onlineUrl + 'mrtx/back1.png'" />
+        <img mode='aspectFill' :class="['scroll-content', !item.has_gray ? '' : 'img-gray']" :src="item.img || onlineUrl + 'mrtx/back1.png'" />
         <p class="cl-black">{{item.name}}</p>
         <div class="flex" v-if="item.score">
           <Star :data='item.score' />

@@ -157,7 +157,6 @@ export default {
               });
             })
             .then(() => {
-              mineService.changeUser.next();
               global.PUBLIC.util
                 .httpGet(
                   `/schedule/trainee/${

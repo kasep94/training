@@ -9,7 +9,7 @@
         <header class="flex-center">
             <div class="flex-content-center">
                 <img class="avatar" :src="userInfo.head_pic ? userInfo.head_pic : onlineUrl + 'mrtx/avatar.png'" />
-                <p class="star-num flex-left-center"><img class="star" src="../../../static/images/all/star.png" /><span>共获得19枚</span></p>
+                <p class="star-num flex-left-center"><img class="star" src="../../../static/images/all/star.png" /><span>共获得{{count}}枚</span></p>
             </div>
         </header>
         <div class="content">
@@ -33,6 +33,8 @@ export default {
       onlineUrl: process.env.onlineUrl,
       data: [],
       userInfo: null,
+      // 徽章总数
+      count: 0,
     };
   },
   onLoad() {
@@ -49,6 +51,7 @@ export default {
             learning.label = "学习勋章";
             learning.data.push({
               ...v,
+              has_gray: !v.has_achieved,
               img: v.remark.icon
             });
             if (v.has_achieved) {
@@ -59,6 +62,7 @@ export default {
             living.label = "生活勋章";
             living.data.push({
               ...v,
+              has_gray: !v.has_achieved,
               img: v.remark.icon
             });
             if (v.has_achieved) {
@@ -69,6 +73,7 @@ export default {
             friend.label = "交友勋章";
             friend.data.push({
               ...v,
+              has_gray: !v.has_achieved,
               img: v.remark.icon
             });
             if (v.has_achieved) {
@@ -79,6 +84,7 @@ export default {
             health.label = "健康勋章";
             health.data.push({
               ...v,
+              has_gray: !v.has_achieved,
               img: v.remark.icon
             });
             if (v.has_achieved) {
@@ -89,6 +95,7 @@ export default {
             behave.label = "行为勋章";
             behave.data.push({
               ...v,
+              has_gray: !v.has_achieved,
               img: v.remark.icon
             });
             if (v.has_achieved) {
@@ -96,6 +103,7 @@ export default {
             }
             break;
         }
+        this.count = learning.size + living.size + friend.size + health.size + behave.size
         this.data = [learning, living, friend, health, behave];
       });
     });

@@ -8,8 +8,8 @@
 <template>
   <div class="comment-list-comp">
     <header>
-      <p @click="onSelected(item)" class="gray" v-for="(item, i) of selected" :key="i">
-        {{item.label}}{{item.num ? '(' + item.num + ')' : ''}}
+      <p @click="onSelected(item)" class="gray l-div" v-for="(item, i) of selected" :key="i">
+        {{item.label}}{{item.num ? '(' + item.num + ')' : '(' + 0 + ')'}}
       </p>
     </header>
     <div class="main">

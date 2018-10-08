@@ -24,7 +24,7 @@
             <p class="col">课程介绍</p>
             <div v-for="item of listData" @click="onListClick(item)" :key="item.id" class="flex-center main">
                 <div class="flex-left-center">
-                    <img mode='widthFix' class="back" v-if="onlineUrl" :src="item.detail.head_pic_more || onlineUrl + 'mrtx/back1.png'"/>
+                    <img mode='aspectFill' class="back" v-if="onlineUrl" :src="item.detail.head_pic_more || onlineUrl + 'mrtx/back1.png'"/>
                     <div class="right">
                         <p class="type-name">{{item.detail.product_name}}</p>
                         <p class="gray">{{item.detail.learning_objective}}</p>
