@@ -225,6 +225,8 @@ export default {
           login_id: global.PUBLIC.util.getUser().id,
           type: "course",
           object_id: this.course_id
+        }).then(res => {
+          this.apiCourseDetail.has_collected_collect_id = res.data.id
         });
       }
       this.apiCourseDetail.has_collected = !has_collected;

@@ -113,7 +113,7 @@ export default {
       autoplay: false,
       interval: 5000,
       duration: 1000,
-      onlineUrl: process.env.onlineUrl
+      onlineUrl: process.env.onlineUrl,
     };
   },
   onLoad() {
@@ -213,10 +213,12 @@ export default {
         // 打卡
         global.PUBLIC.util.httpOther("POST", `/punch`, {
           trainee_id: global.PUBLIC.util.getUser().trainee_id,
-          type: "lesson",
+          type: node.schedule.type,
           day: this.date.calendar1,
           start_hour: this.schedules.start_hour,
           object_id: this.schedules.schedule.id
+        }).then(res => {
+          node.has_punched_id = res.data.id
         });
       } else {
         // 取消打卡

@@ -129,7 +129,9 @@ export default {
                       value.detail.lola = res;
                     });
                 }
-                return value;
+                return {
+                  ...value, 
+                  head_pic_more: value.head_pic_more !== 'http://img.weyoo-inc.comnull' ? value.head_pic_more : process.env.onlineUrl + 'mrtx/back1.png'};
               });
               this.viewListData =
                 this.page === 2 ? data : this.viewListData.concat(data);

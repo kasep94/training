@@ -83,6 +83,8 @@ export default {
           login_id: global.PUBLIC.util.getUser().id,
           object_id: node.id,
           type
+        }).then(res => {
+          node.has_collected_collect_id = res.data.id
         });
       }
     },

@@ -104,6 +104,8 @@ export default {
           login_id: global.PUBLIC.util.getUser().id,
           type: "merchant",
           object_id: id
+        }).then(res => {
+          this.institutionalInfo.has_collected_collect_id = res.data.id
         });
       }
       this.institutionalInfo.has_collected = !has_collected;
