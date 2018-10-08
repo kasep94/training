@@ -110,7 +110,7 @@ p {
   .main {
     margin-top: 20rpx;
     > div {
-      margin: 15rpx 25rpx;
+      margin: 15rpx 22rpx;
     }
     img {
       height: 127rpx;

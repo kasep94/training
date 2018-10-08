@@ -131,7 +131,7 @@ export default {
                 }
                 return {
                   ...value, 
-                  head_pic_more: value.head_pic_more !== 'http://img.weyoo-inc.comnull' ? value.head_pic_more : process.env.onlineUrl + 'mrtx/back1.png'};
+                  head_pic_more: value.head_pic_more !== 'http://img.weyoo-inc.comnull' ? value.head_pic_more : ''};
               });
               this.viewListData =
                 this.page === 2 ? data : this.viewListData.concat(data);
