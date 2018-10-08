@@ -157,6 +157,7 @@ export default {
               });
             })
             .then(() => {
+              mineService.changeUser.next();
               global.PUBLIC.util
                 .httpGet(
                   `/schedule/trainee/${
@@ -221,6 +222,7 @@ export default {
       switch (node.name) {
         case "my_badge":
           // 我的徽章
+          mineService.setBadgeData(this.userInfo)
           global.PUBLIC.util.jumpNavigateTo(`mine-badge/main`);
           break;
         case "my_collection":

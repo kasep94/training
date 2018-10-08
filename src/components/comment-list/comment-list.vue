@@ -26,6 +26,10 @@
       <p>查看更多评论</p>
       <i class="icon icon-bottom" />
     </div>
+    <div v-else-if='data.length > 10' class="footer flex-content-center" @click="onCollapse">
+      <p>收起评论</p>
+      <i class="icon icon-collapse" />
+    </div>
   </div>
 </template>
 
@@ -52,6 +56,10 @@ export default {
     }
   },
   methods: {
+    /** 收起评论 */
+    onCollapse() {
+      this.$emit("onCollapse");
+    },
     /** 单击查看更多评论 */
     onMore() {
       this.$emit("onMore");

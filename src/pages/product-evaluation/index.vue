@@ -68,6 +68,7 @@
               :hasMore='page'
               @onMore='onMoreComment'
               @onSelected='onCommentSelected'
+              @onCollapse='onCollapse'
               :data='commentList'
             />
         </div>
@@ -285,6 +286,14 @@ export default {
               page === 1 ? data : this.commentList.concat(data);
           });
       }
+    },
+    /** 收起评论
+     * @memberof CommentList
+     */
+    onCollapse() {
+      this.page = 2;
+      this.hasMore = true;
+      this.commentList = this.commentList.splice(0, 10)
     },
     /** 组件通信 查看更多评论
      * @memberof CommentList

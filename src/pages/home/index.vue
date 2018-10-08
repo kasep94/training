@@ -10,7 +10,7 @@
         <swiper interval='3000' autoplay=false indicatorDots=false duration=1000>
           <block v-for="item in imgUrls" :key='item'>
             <swiper-item>
-              <img mode='widthFix' @click="onJumpPage(imgIcon[0])" :src="item.img" class="slide-image" width="355" height="150"/>
+              <img mode='aspectFill' @click="onJumpPage(imgIcon[0])" :src="item.img" class="slide-image" width="355" height="150"/>
             </swiper-item>
           </block>
         </swiper>

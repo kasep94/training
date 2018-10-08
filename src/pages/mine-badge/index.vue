@@ -8,13 +8,13 @@
     <div class="mine-badge-page">
         <header class="flex-center">
             <div class="flex-content-center">
-                <img class="avatar" src="../../../static/images/all/h_activity.png" />
+                <img class="avatar" :src="userInfo.head_pic ? userInfo.head_pic : onlineUrl + 'mrtx/avatar.png'" />
                 <p class="star-num flex-left-center"><img class="star" src="../../../static/images/all/star.png" /><span>共获得19枚</span></p>
             </div>
         </header>
         <div class="content">
             <div class="box" v-for="item of data" :key="item.id">
-                <p class="title"><span>{{item.label}}</span><span><span class="mine-badge-blue">{{item.data.length}}</span>/{{item.size}}</span></p>
+                <p class="title"><span>{{item.label}}</span><span><span class="mine-badge-blue">{{item.size}}</span>/{{item.data.length}}</span></p>
                 <ScrollX :data='item.data'/>
             </div>
         </div>
@@ -24,21 +24,25 @@
 <script>
 import data from "./data.js";
 import ScrollX from "../../components/scroll-x/scroll-x";
+import mineService from '../mine/mine.server.js'
 
 export default {
   components: { ScrollX },
   data() {
     return {
-      data: []
+      onlineUrl: process.env.onlineUrl,
+      data: [],
+      userInfo: null,
     };
   },
   onLoad() {
+    this.userInfo = mineService.getBadgeData()
     global.PUBLIC.util.httpGet(`/medal?trainee_id=${global.PUBLIC.util.getUser().trainee_id}`, {}).then(res => {
-      const learning = { data: [], size: 5};
-      const living = { data: [], size: 5 };
-      const friend = { data: [], size: 6 };
-      const health = { data: [], size: 4 };
-      const behave = { data: [], size: 6 };
+      const learning = { data: [], size: 0};
+      const living = { data: [], size: 0 };
+      const friend = { data: [], size: 0 };
+      const health = { data: [], size: 0 };
+      const behave = { data: [], size: 0 };
       res.data.forEach(v => {
         switch (v.type) {
           case "learning":
@@ -47,6 +51,9 @@ export default {
               ...v,
               img: v.remark.icon
             });
+            if (v.has_achieved) {
+              learning.size += 1
+            }
             break;
           case "living":
             living.label = "生活勋章";
@@ -54,6 +61,9 @@ export default {
               ...v,
               img: v.remark.icon
             });
+            if (v.has_achieved) {
+              living.size += 1
+            }
             break;
           case "friend":
             friend.label = "交友勋章";
@@ -61,6 +71,9 @@ export default {
               ...v,
               img: v.remark.icon
             });
+            if (v.has_achieved) {
+              friend.size += 1
+            }
             break;
           case "health":
             health.label = "健康勋章";
@@ -68,6 +81,9 @@ export default {
               ...v,
               img: v.remark.icon
             });
+            if (v.has_achieved) {
+              health.size += 1
+            }
             break;
           case "behave":
             behave.label = "行为勋章";
@@ -75,6 +91,9 @@ export default {
               ...v,
               img: v.remark.icon
             });
+            if (v.has_achieved) {
+              behave.size += 1
+            }
             break;
         }
         this.data = [learning, living, friend, health, behave];
@@ -135,10 +154,14 @@ page {
     }
     /deep/ .div-2-main {
       .scroll-child {
-        margin-left: 48rpx;
+        // margin-left: 48rpx;
+        margin: 0;
       }
       .scroll-child:nth-of-type(1) {
-        margin: 0;
+        // margin: 0;
+      }
+      .cl-black {
+        width: 180rpx;
       }
       image {
         height: 122rpx;
