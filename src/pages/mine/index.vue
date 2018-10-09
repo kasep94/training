@@ -81,6 +81,7 @@ export default {
   },
   async onLoad() {
     await this.init();
+    wx.showShareMenu()
     mineService.updatePage.subscribe(() => {
       wx.login({
         success: res => {

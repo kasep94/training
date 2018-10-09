@@ -156,6 +156,7 @@ export default {
   },
   components: { DateList, EditCard, Btns, Picker },
   onLoad() {
+    wx.showShareMenu()
     courseService.courseSub.subscribe(() => {
       this.initCourse()
     })

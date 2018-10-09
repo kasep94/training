@@ -42,6 +42,7 @@ export default {
     };
   },
   onLoad() {
+    wx.showShareMenu()
     // 获取搜索头
     global.PUBLIC.util.httpGet("/merchantsTemplate").then(res => {
       this.subject = res.data.items;

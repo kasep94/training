@@ -17,8 +17,7 @@ export default {
     global.PUBLIC = {
       util
     };
-
-  }
+  },
 };
 </script>
 

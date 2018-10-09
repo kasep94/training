@@ -117,6 +117,7 @@ export default {
     };
   },
   onLoad() {
+    wx.showShareMenu()
     wx.request({
       url: `https://cdn.check-check.cn/adminApi/api/banner/list/index.php`,
       data: {},
