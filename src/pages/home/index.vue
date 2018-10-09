@@ -73,12 +73,12 @@
       </div>
 
       <div class="box">
-        <div class="flex-both">
+        <div class="flex-both" @click="onJumpEvaluation">
           <div class="flex-left-center">
             <i class="icon icon-ranking" />
             <span class="title">课程排行榜</span>
           </div>
-          <span class="cl-b-gray" @click="onJumpEvaluation">排行分类筛选<i class="icon icon-more" /></span>
+          <span class="cl-b-gray">排行分类筛选<i class="icon icon-more" /></span>
         </div>
 
         <div class="bottom-footer">
