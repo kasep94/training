@@ -19,7 +19,8 @@ export default {
   },
   computed: {},
   onLoad(option) {
-      this.url = decodeURIComponent(option.url)
+    wx.showShareMenu();
+    this.url = decodeURIComponent(option.url);
   },
   methods: {}
 };
