@@ -20,7 +20,8 @@ export default {
   computed: {},
   onLoad(option) {
     wx.showShareMenu();
-    this.url = decodeURIComponent(option.url);
+    const url = decodeURIComponent(option.url)
+    this.url = url.indexOf('%3A') !== -1 ? decodeURIComponent(url) : url;
   },
   methods: {}
 };
