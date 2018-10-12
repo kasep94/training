@@ -6,7 +6,7 @@
  */
 <template>
   <div>
-    <Navbar :index='index' @onNodeClick='onNavbar' :data='navbar3' />
+    <Navbar @onNodeClick='onNavbar' :data='navbar3' />
     <IconRightList v-if="tabName === 'article'" @onNodeClick='onIconRList' :data='iconRightListData'/>
     <ViewList v-else @onViewList='onViewListClick' :data='viewListData' />
   </div>
@@ -32,13 +32,13 @@ export default {
       // 课程列表数据
       viewListData: [],
       // { article | course }
-      tabName: "article",
-      index: 0,
+      tabName: "article"
+      // index: 0,
     };
   },
   onShow() {
     // 重置data 完成初始化
-    Object.assign(this.$data, this.$options.data());
+    // Object.assign(this.$data, this.$options.data());
   },
   onLoad() {
     global.PUBLIC.util
@@ -48,7 +48,15 @@ export default {
       })
       .then(res => {
         this.iconRightListData = res.data.document;
-        this.viewListData = res.data.course;
+        this.viewListData = res.data.course.map(value => {
+          if (value.detail.lola) {
+            const lolaArr = value.detail.lola.split(",");
+            global.PUBLIC.util.calDistance(lolaArr[1], lolaArr[0]).then(res => {
+              value.detail.lola = res;
+            });
+          }
+          return value;
+        });
       });
   },
   computed: {},
@@ -69,16 +77,6 @@ export default {
      */
     onNavbar(node, index) {
       this.tabName = node.name;
-      this.index = index
-      this.viewListData = this.viewListData.map(value => {
-        if (value.detail.lola) {
-          const lolaArr = value.detail.lola.split(",");
-          global.PUBLIC.util.calDistance(lolaArr[1], lolaArr[0]).then(res => {
-            value.detail.lola = res;
-          });
-        }
-        return value;
-      });
     },
     /** 子组件传值
      * @param {Object} 节点属性

@@ -74,7 +74,8 @@ export default {
         page_size: 5,
         teaching: 1,
         latitude,
-        longitude
+        longitude,
+        login_id: global.PUBLIC.util.getUser().id
       })
       .then(res => {
         this.scrollXData = res.data.map(v => {
@@ -126,6 +127,7 @@ export default {
      */
     onScrollX(node) {
       this.dp_code = node.dp_code;
+      console.log(node)
       const { latitude, longitude } = node.detail;
       global.PUBLIC.util.calDistance(latitude, longitude).then(res => {
         node.detail.lola = res;
